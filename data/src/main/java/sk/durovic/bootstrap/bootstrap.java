@@ -16,6 +16,8 @@ public class bootstrap implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        Employee marek = new Employee();
+        marek.setFirstName("Marek");
         employeeRepository.save(marek);
 
 
