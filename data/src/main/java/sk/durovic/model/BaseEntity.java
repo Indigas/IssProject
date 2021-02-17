@@ -7,10 +7,13 @@ import lombok.Setter;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
 
 @Getter
 @Setter
-public abstract class BaseEntity {
+@MappedSuperclass
+public abstract class BaseEntity implements Serializable {
 
     @Id
     @GeneratedValue
