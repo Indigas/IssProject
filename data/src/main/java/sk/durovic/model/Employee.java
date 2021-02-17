@@ -8,19 +8,23 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Employee {
+public class Employee extends BaseEntity {
 
-    @Id
-    @GeneratedValue
-    private long id;
-
+    private String firstName;
+    private String lastName;
     private String name;
+    private String email;
+    private String phone;
+    private Company company;
+    private String city;
+
 
 
 }

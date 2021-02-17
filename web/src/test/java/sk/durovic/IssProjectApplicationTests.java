@@ -1,4 +1,4 @@
-package sk.durovic.issproject.IssProject;
+package sk.durovic;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

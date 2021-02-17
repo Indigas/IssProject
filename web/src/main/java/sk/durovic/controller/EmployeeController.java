@@ -1,7 +1,7 @@
 package sk.durovic.controller;
 
 import org.springframework.stereotype.Controller;
-import sk.durovic.service.EmployeeRepository;
+import sk.durovic.repositories.EmployeeRepository;
 
 @Controller
 public class EmployeeController {
