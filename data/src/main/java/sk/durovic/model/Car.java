@@ -26,4 +26,16 @@ public class Car extends BaseEntity{
     private int powerKw;
     private double volume;
 
+    @Override
+    public String toString() {
+        return "Car{" +
+                "brand='" + brand + '\'' +
+                ", model='" + model + '\'' +
+                ", fuel=" + fuel +
+                ", gear=" + gear +
+                ", company=" + company +
+                ", powerKw=" + powerKw +
+                ", volume=" + volume +
+                '}';
+    }
 }

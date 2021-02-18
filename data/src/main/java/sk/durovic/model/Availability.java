@@ -21,4 +21,13 @@ public class Availability extends BaseEntity{
 
     @ManyToOne
     private Car carRented;
+
+    @Override
+    public String toString() {
+        return "Availability{" +
+                "start=" + start +
+                ", end=" + end +
+                ", carRented=" + carRented.getBrand() +
+                '}';
+    }
 }

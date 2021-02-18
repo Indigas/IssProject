@@ -49,5 +49,7 @@ public class bootstrap implements CommandLineRunner {
 
 
         System.out.println("Loaded in bootstrap: " + carRepository.count());
+        System.out.println();
+
     }
 }

@@ -25,4 +25,10 @@ public class Company extends BaseEntity {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
     private Set<Car> listOfCars;
+
+    @Override
+    public String toString() {
+        return "Company{" +
+                "name=" + name + "}";
+    }
 }
