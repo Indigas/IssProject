@@ -34,19 +34,21 @@ public class bootstrap implements CommandLineRunner {
         mod2.setBrand("BMW");
         mod2.setCompany(cm);
 
-        Availability av = new Availability(LocalDateTime.now(),
-                LocalDateTime.of(2021, Month.MARCH, 5, 10,5),
-                mod);
+        Availability av = new Availability();
+        av.setStart(LocalDateTime.of(2021,Month.FEBRUARY, 18,10,0));
+        av.setEnd(LocalDateTime.of(2021, Month.MARCH, 5, 10,5));
+        av.setCarRented(mod);
+
+        Availability av2 = new Availability();
+        av2.setStart(LocalDateTime.of(2021,Month.FEBRUARY,1,10,0));
+        av2.setEnd(LocalDateTime.of(2021, Month.FEBRUARY, 18,10,0));
+        av2.setCarRented(mod2);
 
         companyRepository.save(cm);
         carRepository.save(mod);
         carRepository.save(mod2);
         availabilityRepository.save(av);
-
-        av.setStart(LocalDateTime.of(2021,2,1,10,0));
-        av.setEnd(LocalDateTime.now());
-        av.setId(5);
-        availabilityRepository.save(av);
+        availabilityRepository.save(av2);
 
 
         System.out.println("Loaded in bootstrap: " + carRepository.count());
