@@ -29,7 +29,7 @@ public class AvailabilityServiceImpl implements AvailabilityService {
         return listOfAvailableCars;
     }
 
-    public static boolean isAvailable(Availability availability, LocalDateTime start, LocalDateTime end){
+    public boolean isAvailable(Availability availability, LocalDateTime start, LocalDateTime end){
 
         if(availability.getStart().isBefore(start) && availability.getEnd().isBefore(start))
             return true;
