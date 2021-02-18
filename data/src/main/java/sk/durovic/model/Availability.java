@@ -7,23 +7,18 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Car extends BaseEntity{
+public class Availability extends BaseEntity{
 
-    private String brand;
-    private String model;
-    private Fuel fuel;
-    private Gear gear;
+    private LocalDateTime start;
+    private LocalDateTime end;
 
     @ManyToOne
-    private Company company;
-    private int powerKw;
-    private double volume;
-
+    private Car carRented;
 }
