@@ -23,6 +23,20 @@ public class Availability extends BaseEntity{
     private Car carRented;
 
     @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Availability))
+            throw new IllegalArgumentException();
+
+        Availability av = (Availability) obj;
+        return getId() == av.getId();
+    }
+
+    @Override
     public String toString() {
         return "Availability{" +
                 "start=" + start +

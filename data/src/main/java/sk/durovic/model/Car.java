@@ -27,6 +27,20 @@ public class Car extends BaseEntity{
     private double volume;
 
     @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Car))
+            throw new IllegalArgumentException();
+
+        Car toCompareCar = (Car) obj;
+        return getId() == toCompareCar.getId();
+    }
+
+    @Override
     public String toString() {
         return "Car{" +
                 "brand='" + brand + '\'' +

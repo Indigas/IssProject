@@ -43,6 +43,7 @@ public class bootstrap implements CommandLineRunner {
         carRepository.save(mod2);
         availabilityRepository.save(av);
 
+        av.setStart(LocalDateTime.of(2021,2,1,10,0));
         av.setEnd(LocalDateTime.now());
         av.setId(5);
         availabilityRepository.save(av);
