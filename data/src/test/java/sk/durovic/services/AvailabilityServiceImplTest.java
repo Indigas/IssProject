@@ -2,10 +2,12 @@ package sk.durovic.services;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import sk.durovic.model.Availability;
 import sk.durovic.model.Car;
 import sk.durovic.repositories.AvailabilityRepository;
@@ -18,19 +20,17 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class AvailabilityServiceImplTest {
-
-    AvailabilityServiceImpl availabilityService;
 
     @Mock
     AvailabilityRepository availabilityRepository;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
+    @InjectMocks
+    AvailabilityServiceImpl availabilityService;
 
-        availabilityService = new AvailabilityServiceImpl(availabilityRepository);
-    }
+    @BeforeEach
+    void setUp() { }
 
     @Test
     void listOfAvailableCars() {
