@@ -5,9 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -23,6 +23,10 @@ public class Car extends BaseEntity{
 
     @ManyToOne
     private Company company;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "carRented")
+    private final Set<Availability> rentDates = new HashSet<>();
+
     private int powerKw;
     private double volume;
 
@@ -37,7 +41,7 @@ public class Car extends BaseEntity{
             throw new IllegalArgumentException();
 
         Car toCompareCar = (Car) obj;
-        return getId() == toCompareCar.getId();
+        return getId().equals(toCompareCar.getId());
     }
 
     @Override

@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -24,7 +25,7 @@ public class Company extends BaseEntity {
     private String email;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
-    private Set<Car> listOfCars;
+    private final Set<Car> listOfCars = new HashSet<>();
 
     @Override
     public String toString() {

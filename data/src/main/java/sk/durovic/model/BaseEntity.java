@@ -17,5 +17,5 @@ public abstract class BaseEntity implements Serializable {
 
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 }

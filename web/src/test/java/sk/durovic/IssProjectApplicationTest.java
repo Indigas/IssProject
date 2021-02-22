@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import sk.durovic.model.Car;
-import sk.durovic.services.AvailabilityServiceImpl;
+import sk.durovic.services.data.AvailabilityServiceImpl;
 
 import java.time.LocalDateTime;
 import java.time.Month;

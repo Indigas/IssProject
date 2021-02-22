@@ -6,26 +6,32 @@ import sk.durovic.model.*;
 import sk.durovic.repositories.AvailabilityRepository;
 import sk.durovic.repositories.CarRepository;
 import sk.durovic.repositories.CompanyRepository;
+import sk.durovic.services.AvailabilityService;
+import sk.durovic.services.CarService;
+import sk.durovic.services.CompanyService;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 public class bootstrap implements CommandLineRunner {
 
-    private final CarRepository carRepository;
-    private final CompanyRepository companyRepository;
-    private final AvailabilityRepository availabilityRepository;
+    private final AvailabilityService availabilityService;
+    private final CarService carService;
+    private final  CompanyService companyService;
 
-    public bootstrap(CarRepository carRepository, CompanyRepository companyRepository, AvailabilityRepository availability) {
-        this.carRepository = carRepository;
-        this.companyRepository = companyRepository;
-        this.availabilityRepository = availability;
+    public bootstrap(AvailabilityService availabilityService, CarService carService, CompanyService companyService) {
+        this.availabilityService = availabilityService;
+        this.carService = carService;
+        this.companyService = companyService;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        Car mod = new Car("Audi", "A4", Fuel.Diesel, Gear.Manual, null, 76, 2.2d);
+        Car mod = new Car("Audi", "A4", Fuel.Diesel, Gear.Manual,
+                null,76, 2.2d);
         Company cm = new Company();
         cm.setName("AAA auto");
         mod.setCompany(cm);
@@ -44,14 +50,14 @@ public class bootstrap implements CommandLineRunner {
         av2.setEnd(LocalDateTime.of(2021, Month.FEBRUARY, 18,10,0));
         av2.setCarRented(mod2);
 
-        companyRepository.save(cm);
-        carRepository.save(mod);
-        carRepository.save(mod2);
-        availabilityRepository.save(av);
-        availabilityRepository.save(av2);
+        mod.getRentDates().add(av);
+        mod2.getRentDates().add(av2);
+        cm.getListOfCars().add(mod);
+        cm.getListOfCars().add(mod2);
+        companyService.save(cm);
 
 
-        System.out.println("Loaded in bootstrap: " + carRepository.count());
+        System.out.println("Loaded in bootstrap: " + carService.findAll().size());
         System.out.println();
 
     }

@@ -6,11 +6,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import sk.durovic.model.Availability;
 import sk.durovic.model.Car;
 import sk.durovic.repositories.AvailabilityRepository;
+import sk.durovic.services.data.AvailabilityServiceImpl;
 
 import java.time.LocalDateTime;
 import java.time.Month;
