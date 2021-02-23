@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
     
 <head>
         <meta charset="UTF-8">
@@ -23,6 +23,9 @@
         <script src="assets/js/html5shiv.min.js"></script>
         <script src="assets/js/respond.min.js"></script>
         <![endif]-->
+
+    <script src="dist/the-datepicker.min.js"></script>
+    <link rel="stylesheet" href="dist/the-datepicker.css">
     </head>
     <body class="">
         <!-- MAIN -->
@@ -177,36 +180,38 @@
                 </div>
                 <div class="col-lg-6 col-lg-pull-6  padd-lr0">
                     <div class="wheel-start-form">
-                        <form action="#">
+                        <form th:action="@{/list}" th:object="${indexSearch}" method="post">
                             <label for="input-val11"><span>Dropping Off</span>
-                            <input type="text" id='input-val11' placeholder="ZIP, City, Airport or Address" required>
+                            <input th:field="*{dropOff}" type="text" id='input-val11' placeholder="ZIP, City, Airport or Address" required>
                             </label>
                             <label for="input-val12"><span>Picking Up</span>
-                            <input type="text" id='input-val12' placeholder="ZIP, City, Airport or Address" required>
+                            <input th:field="*{pickOff}" type="text" id='input-val12' placeholder="ZIP, City, Airport or Address" required>
                             </label>
                             <div class="clearfix">
                                 <div class="wheel-date">
                                     <span>Pickup Date</span>
-                                    <label for="input-val13" class="fa fa-calendar">
-                                    <input  class="datetimepicker" id='input-val13' type="text" value="29 Apr">
-                                    </label>
+                                   <!-- <label for="input-val13" class="fa fa-calendar">
+                                    <input th:field="*{startDate}" class="datetimepicker" id='input-val13' type="text" value="29 Apr">
+                                    </label>-->
+                                    <input th:field="*{startDate}" type="text" id="my-input">
                                 </div>
                                 <div class="wheel-date ">
                                     <span>Pickup time</span>
                                     <label for="input-val14" class="fa fa-clock-o">
-                                    <input class="timepicker" id='input-val14' type="text" value="18:00">
+                                    <input th:field="*{startTime}" class="timepicker" id='input-val14' type="text" value="18:00">
                                     </label>
                                 </div>
                                 <div class="wheel-date">
                                     <span>Return Date</span>
-                                    <label for="input-val15" class="fa fa-calendar">
-                                    <input  class="datetimepicker" id='input-val15' type="text" value="29 Apr">
-                                    </label>
+                                    <!--<label for="input-val15" class="fa fa-calendar">
+                                    <input th:field="*{endDate}" class="datetimepicker" id='input-val15' type="text" value="29 Apr">
+                                    </label>-->
+                                    <input th:field="*{endDate}" type="text" id="my-input2">
                                 </div>
                                 <div class="wheel-date">
                                     <span>Return Time</span>
                                     <label for="input-val16" class="fa fa-clock-o">
-                                    <input class="timepicker" id='input-val16' type="text" value="18:00">
+                                    <input th:field="*{endTime}" class="timepicker" id='input-val16' type="text" value="18:00">
                                     </label>
                                 </div>
                                 <div class="wheel-date">
@@ -791,6 +796,21 @@
         <script type="text/javascript" src="assets/js/bootstrap-select.min.js"></script>
         <script type="text/javascript" src="assets/js/index.js"></script>
         <!-- sixth block end -->
-    </body>
 
+
+
+    </body>
+<script>
+        (function () {
+            const input = document.getElementById('my-input');
+            const datepicker = new TheDatepicker.Datepicker(input);
+            datepicker.render();
+        })();
+
+        (function () {
+            const input2 = document.getElementById('my-input2');
+            const datepicker2 = new TheDatepicker.Datepicker(input2);
+            datepicker2.render();
+        })();
+    </script>
 </html>

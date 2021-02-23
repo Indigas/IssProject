@@ -9,5 +9,5 @@ import java.util.Set;
 
 public interface AvailabilityService extends CrudService<Availability, Long> {
 
-    Set<Car> listOfAvailableCars(LocalDateTime start, LocalDateTime end);
+    Set<Car> listOfAvailableCars(Set<Car> listOfCars, LocalDateTime start, LocalDateTime end);
 }

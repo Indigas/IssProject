@@ -33,25 +33,25 @@
     if ($('.datetimepicker').length) {
 
 
-        $.datetimepicker.setLocale('de');
+        $.datetimepicker.setLocale('en');
 
         $('.datetimepicker').datetimepicker({
             i18n: {
-                de: {
+                en: {
                     months: [
-                        'Januar', 'Februar', 'März', 'April',
-                        'Mai', 'Juni', 'Juli', 'August',
-                        'September', 'Oktober', 'November', 'Dezember',
+                        'Januar', 'Februar', 'March', 'April',
+                        'May', 'June', 'July', 'August',
+                        'September', 'Oktober', 'November', 'December',
                     ],
                     dayOfWeek: [
-                        "So.", "Mo", "Di", "Mi",
-                        "Do", "Fr", "Sa.",
+                        "Su", "Mo", "Tu", "We",
+                        "Th", "Fr", "Sa",
                     ]
                 }
             },
             timepicker: false,
 
-            format: 'd.m'
+            format: 'd.m.y'
         });
     }
 

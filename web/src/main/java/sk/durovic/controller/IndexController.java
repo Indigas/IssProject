@@ -3,6 +3,7 @@ package sk.durovic.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import sk.durovic.commands.IndexSearch;
 import sk.durovic.model.Company;
 import sk.durovic.services.CompanyService;
 
@@ -20,8 +21,9 @@ public class IndexController {
 
     @RequestMapping({"", "/", "/index"})
     public String getIndex(Model model){
-        Set<Company> listOfCompanies = companyService.findAll();
-        model.addAttribute("companies", listOfCompanies);
+        /*Set<Company> listOfCompanies = companyService.findAll();
+        model.addAttribute("companies", listOfCompanies);*/
+        model.addAttribute("indexSearch", new IndexSearch());
         return "index";
     }
 }

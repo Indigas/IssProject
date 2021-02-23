@@ -7,8 +7,10 @@ import sk.durovic.repositories.AvailabilityRepository;
 import sk.durovic.services.AvailabilityService;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 @Service
 public class AvailabilityServiceImpl implements AvailabilityService {
@@ -20,14 +22,16 @@ public class AvailabilityServiceImpl implements AvailabilityService {
     }
 
     @Override
-    public Set<Car> listOfAvailableCars(LocalDateTime start, LocalDateTime end) {
-        Set<Car> listOfAvailableCars = new HashSet<>();
+    public Set<Car> listOfAvailableCars(Set<Car> listOfCars, LocalDateTime start, LocalDateTime end) {
+        Set<Car> listOfNotAvailableCars = new HashSet<>();
+
         availabilityRepository.findAll().forEach(t -> {
-            if(isAvailable(t, start, end))
-                listOfAvailableCars.add(t.getCarRented());
+            if(!isAvailable(t, start, end))
+                listOfNotAvailableCars.add(t.getCarRented());
         });
 
-        return listOfAvailableCars;
+        listOfCars.removeAll(listOfNotAvailableCars);
+        return listOfCars;
     }
 
     public boolean isAvailable(Availability availability, LocalDateTime start, LocalDateTime end){

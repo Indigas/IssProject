@@ -40,7 +40,7 @@ class IssProjectApplicationTest {
 
     @Test
     void first(){
-        Set<Car> listCars = availabilityService.listOfAvailableCars(
+        Set<Car> listCars = availabilityService.listOfAvailableCars(carService.findAll(),
                 LocalDateTime.of(2020, Month.FEBRUARY, 15,10,0),
                 LocalDateTime.of(2020,Month.FEBRUARY, 17,10,0)
         );
