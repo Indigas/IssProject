@@ -31,14 +31,29 @@ public class bootstrap implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         Car mod = new Car("Audi", "A4", Fuel.Diesel, Gear.Manual,
-                null,76, 2.2d);
+                null,76, 2.2d, "Banská Bystrica",
+                "AAA auto/skoda_fabia.png", 5, AirCondition.AUTOMATIC,
+                "Style", Category.SEDAN, "");
+
+
+
+        mod.getPrices().add(new Prices(mod, 1,10));
+        mod.getPrices().add(new Prices(mod, 2, 8));
         Company cm = new Company();
         cm.setName("AAA auto");
         mod.setCompany(cm);
 
-        Car mod2 = new Car();
-        mod2.setBrand("BMW");
-        mod2.setCompany(cm);
+        Car mod2 = new Car("BMW", "320d", Fuel.Diesel, Gear.Manual,
+                cm, 126, 2.5d, "Prešov",
+                "AAA auto/skoda_fabia.png", 5,
+                AirCondition.AUTOMATIC, "Extra Plus", Category.COMBI, "");
+        mod2.getPrices().add(new Prices(mod2, 1, 15));
+
+        Car mod3 = new Car("Audi", "A5", Fuel.Diesel, Gear.Manual,
+                cm, 140, 2.0d, "Banská Bystrica",
+                "AAA auto/skoda_fabia.png", 5, AirCondition.AUTOMATIC,
+                "Packet Plus", Category.COMBI, "");
+        mod3.getPrices().add(new Prices(mod3, 1, 17));
 
         Availability av = new Availability();
         av.setStart(LocalDateTime.of(2021,Month.FEBRUARY, 18,10,0));
@@ -54,6 +69,7 @@ public class bootstrap implements CommandLineRunner {
         mod2.getRentDates().add(av2);
         cm.getListOfCars().add(mod);
         cm.getListOfCars().add(mod2);
+        cm.getListOfCars().add(mod3);
         companyService.save(cm);
 
 

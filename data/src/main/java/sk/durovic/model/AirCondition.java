@@ -1,12 +1,13 @@
 package sk.durovic.model;
 
-public enum Gear {
-    Automatic ("Automatická"),
-    Manual ("Manuálna");
+public enum AirCondition {
+    MANUAL ("manuálna"),
+    AUTOMATIC ("automatická"),
+    NO ("bez klimatizácie");
 
     private String value;
 
-    Gear(String value) {
+    AirCondition(String value) {
         this.value = value;
     }
 

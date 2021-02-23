@@ -8,13 +8,14 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Car extends BaseEntity{
+public class Car extends BaseEntity implements Comparable<Car>{
 
     private String brand;
     private String model;
@@ -27,8 +28,19 @@ public class Car extends BaseEntity{
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "carRented")
     private final Set<Availability> rentDates = new HashSet<>();
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "car")
+    private final Set<Prices> prices = new TreeSet<>();
+
     private int powerKw;
     private double volume;
+    private String pickUpCity;
+    private String uriImages;
+    private int seats;
+    private AirCondition airCondition;
+    //vybava auta
+    private String pack;
+    private Category category;
+    private String notes;
 
     @Override
     public int hashCode() {
@@ -42,6 +54,14 @@ public class Car extends BaseEntity{
 
         Car toCompareCar = (Car) obj;
         return getId().equals(toCompareCar.getId());
+    }
+
+    @Override
+    public int compareTo(Car car) {
+        if(this.brand.equals(car.brand))
+            return this.model.compareTo(car.model);
+
+        return this.brand.compareTo(car.brand);
     }
 
     @Override

@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 @Entity
 @NoArgsConstructor
@@ -25,7 +26,7 @@ public class Company extends BaseEntity {
     private String email;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
-    private final Set<Car> listOfCars = new HashSet<>();
+    private final Set<Car> listOfCars = new TreeSet<>();
 
     @Override
     public String toString() {

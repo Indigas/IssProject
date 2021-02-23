@@ -30,12 +30,14 @@ class CarServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        listTest = new HashSet<>();
+        listTest = new TreeSet<>();
         Car a = new Car();
         a.setBrand("Audi");
+        a.setModel("A4");
         a.setId(1L);
         Car b = new Car();
         b.setBrand("BMW");
+        b.setModel("320d");
         b.setId(2L);
 
         listTest.add(a);

@@ -7,6 +7,7 @@ import sk.durovic.services.CarService;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 @Service
 public class CarServiceImpl implements CarService {
@@ -19,7 +20,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public Set<Car> findAll() {
-        Set<Car> list = new HashSet<>();
+        Set<Car> list = new TreeSet<>();
         carRepository.findAll().forEach(list::add);
         return list;
     }
