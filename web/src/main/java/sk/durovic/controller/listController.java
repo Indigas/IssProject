@@ -35,6 +35,12 @@ public class listController {
         this.availabilityService = availabilityService;
     }
 
+    @RequestMapping("/car-grid")
+    public String getListGridView(Model model){
+        getAllListings(model);
+        return "car-list-grid";
+    }
+
     @GetMapping
     private String getAllListings(Model model){
         model.addAttribute("cars", carService.findAll());
@@ -52,7 +58,6 @@ public class listController {
     }
 
     private LocalDateTime getLocalDateTime(String date, String time){
-        System.out.println(date);
         String[] dayAndMonth = date.split("\\.");
         String[] hourAndMinute = time.split(":");
         LocalDate stDate = LocalDate.of(Integer.parseInt(dayAndMonth[2].trim()),

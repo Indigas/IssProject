@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <div th:replace="fragments/headFragment"></div>
+    <title>Title</title>
+</head>
+<body>
+    <div th:replace="fragments/headMenuFragment"></div>
+
+    <div class="wheel-start3">
+        <img th:src="@{/images/bg7.jpg}" alt="" class="wheel-img">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 padd-lr0">
+                    <div class="wheel-start3-body clearfix marg-lg-t255 marg-lg-b75 marg-sm-t190 marg-xs-b30">
+                        <h3>Add new car</h3>
+                        <ol class="breadcrumb">
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#"> pages </a></li>
+                            <li class="active">About</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container padd-lr0">
+        <div class="row">
+            <div class="col-md-6 "><span>
+                Brand: <input type="text"> <br>
+                Model: <input type="text"><br>
+                Fuel: <select name="fuel" id="fuelId">
+                <option  th:each="oneFuel : ${fuelEnum}" value="${oneFuel}" th:text="${oneFuel}"></option>
+                </select><br>
+                Gear: <select name="gear" id="gearId">
+                <option  th:each="oneGear : ${gearEnum}" value="${oneGear}" th:text="${oneGear}"></option>
+                </select><br>
+                Power kW: <input type="text"><br>
+                Volume: <input type="text"><br>
+                Pick up city: <input type="text"><br>
+                Seats: <input type="text"><br>
+                Air condition: <input type="text"><br>
+                Package: <input type="text"><br>
+                Category: <select name="category" id="categoryId">
+                <option  th:each="oneCat : ${categoryEnum}" value="${oneCat}" th:text="${oneCat}"></option>
+                </select><br>
+                Notes: <input type="text"><br>
+                Images: <br>
+            </span>
+            </div>
+
+        </div>
+    </div>
+
+    <div th:replace="fragments/scriptsFragment"></div>
+</body>
+
+</html>
