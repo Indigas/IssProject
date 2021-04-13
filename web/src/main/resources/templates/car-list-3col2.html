@@ -99,7 +99,7 @@
                             <div class="product-elem-style2 product-elem-style  wheel-bg1 clearfix">
                                 <div class="product-table2">
                                     <div class="img-wrap img-wrap2 product-cell">
-                                        <img th:src="@{${car.uriImages}}" alt="img" class="img-responsive">
+                                        <img th:src="${car.mainImage}" alt="img" class="img-responsive">
                                     </div>
                                 </div>
                                 <div class="product-table3  ">
@@ -117,12 +117,12 @@
                                     </div>
                                     <div class="img-wrap img-wrap3 product-cell"
                                     style="margin-top:5px">
-                                        <img th:src="@{${car.uriImages}}" alt="img" class="img-responsive">
+                                        <img th:src="${car.mainImage}" alt="img" class="img-responsive">
                                     </div>
                                     <div class="text-wrap  text-wrap3 product-cell">
                                         <ul class="metadata metadata2">
                                             <li th:text="${car.fuel}">2 seats</li>
-                                            <li th:text="${#strings.append(car.gear.value, ' prevodovka')}">2 bags</li>
+                                            <li th:text="${#strings.append(car.gear, ' prevodovka')}">2 bags</li>
                                             <li th:text="${#strings.append(car.powerKw, ' kW')}">150 mpg</li>
                                             <li th:text="${#strings.append(car.seats, ' sedadiel')}">airbags</li>
                                             <li th:text="${#strings.append(car.airCondition.value, ' klimaticácia')}">manual/auto</li>

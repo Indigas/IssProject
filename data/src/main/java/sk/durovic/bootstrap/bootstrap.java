@@ -30,7 +30,17 @@ public class bootstrap implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Car mod = new Car("Audi", "A4", Fuel.Diesel, Gear.Manual,
+        if(companyService.findById(1L)==null) {
+            Company company;
+            company = new Company();
+            company.setName("AAA auto");
+            company.setAddress("Kohárova 5");
+            company.setCity("Levice");
+            company.setEmail("marek@marek.sk");
+            company.setPhone("0915225363");
+            companyService.save(company);
+        }
+        /*Car mod = new Car("Audi", "A4", Fuel.Diesel, Gear.Manual,
                 null,76, 2.2d, "Banská Bystrica",
                 "AAA auto/skoda_fabia.png", 5, AirCondition.AUTOMATIC,
                 "Style", Category.SEDAN, "");
@@ -41,7 +51,7 @@ public class bootstrap implements CommandLineRunner {
         mod.getPrices().add(new Prices(mod, 2, 8));
         Company cm = new Company();
         cm.setName("AAA auto");
-        mod.setCompany(cm);
+
 
         Car mod2 = new Car("BMW", "320d", Fuel.Diesel, Gear.Manual,
                 cm, 126, 2.5d, "Prešov",
@@ -74,7 +84,7 @@ public class bootstrap implements CommandLineRunner {
 
 
         System.out.println("Loaded in bootstrap: " + carService.findAll().size());
-        System.out.println();
+        System.out.println();*/
 
     }
 }

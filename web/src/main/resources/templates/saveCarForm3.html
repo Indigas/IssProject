@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <div th:replace="fragments/headFragment"></div>
+    <title>Title</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js">
+    </script>
+    <script th:src="@{~/assets/js/masonry.pkgd.min.js}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <link th:href="@{/dist/image-picker.css}" rel="stylesheet" type="text/css">
+
+
+    <script>
+    $(document).ready(function () {
+
+      // Denotes total number of rows
+      var rowIdx = 0;
+
+      // jQuery button click event to add a row
+      $('#addBtn').on('click', function () {
+
+        // Adding a row inside the tbody.
+        $('#tbody').append(`<tr id="R${++rowIdx}">
+             <td class="row-index text-center">
+             <input type="number" name="dayFrom${rowIdx}">
+             </td>
+             <td class="text-center">
+             <input type="number" name="dayPrice${rowIdx}">
+             </td>
+              <td class="text-center">
+                <button class="btn btn-danger remove"
+                  type="button">Remove</button>
+                </td>
+              </tr>`);
+      });
+
+      // jQuery button click event to remove a row.
+      $('#tbody').on('click', '.remove', function () {
+
+        // Getting all the rows next to the row
+        // containing the clicked button
+        var child = $(this).closest('tr').nextAll();
+
+        // Iterating across all the rows
+        // obtained to change the index
+        child.each(function () {
+
+          // Getting <tr> id.
+          var id = $(this).attr('id');
+
+          // Getting the <p> inside the .row-index class.
+          var idx = $(this).children('.row-index').children('p');
+
+          // Gets the row number from <tr> id.
+          var dig = parseInt(id.substring(1));
+
+          // Modifying row index.
+          idx.html(`Row ${dig - 1}`);
+
+          // Modifying row id.
+          $(this).attr('id', `R${dig - 1}`);
+        });
+
+        // Removing the current row.
+        $(this).closest('tr').remove();
+
+        // Decreasing total number of rows by 1.
+        rowIdx--;
+      });
+    });
+  </script>
+
+</head>
+<body class="">
+<div th:replace="fragments/headMenuFragment"></div>
+
+<div class="wheel-start3">
+    <img th:src="@{/images/bg7.jpg}" alt="" class="wheel-img">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 padd-lr0">
+                <div class="wheel-start3-body clearfix marg-lg-t255 marg-lg-b75 marg-sm-t190 marg-xs-b30">
+                    <h3>Add new car</h3>
+                    <ol class="breadcrumb">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#"> pages </a></li>
+                        <li class="active">About</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="step-wrap">
+    <!-- ////////////////////////////////////////// -->
+    <div class="container padd-lr0">
+        <div class="row">
+            <div class="col-xs-12 padd-lr0">
+                <ul class="steps">
+                    <li class="title-wrap ">
+                        <div class="title">
+                            <span>1.</span>Insert info about car
+                        </div>
+                    </li>
+                    <li class="title-wrap ">
+                        <div class="title">
+                            <span>2.</span>Upload your images
+                        </div>
+                    </li>
+                    <li class="title-wrap active">
+                        <div class="title">
+                            <span>3.</span>Choose your options
+                        </div>
+                    </li>
+                    <li class="title-wrap ">
+                        <div class="title">
+                            <span>4.</span>Check your information
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- ////////////////////////////////////////// -->
+</div>
+
+
+<div class="container padd-lr0">
+    <div class="row">
+        <div class="col-md-6 "><span>
+            <h2>Choose your primary image</h2>
+            <form th:action="@{/car/new/summary}" method="post">
+
+                <select class="image-picker" name="mainImage">
+                    <option th:each="image : ${images}" th:data-img-src="${image.toString()}"
+                            th:value="${image.toString()}"></option>
+  <!--<optgroup label="PlaceIMG">
+
+
+  </optgroup>-->
+</select>
+
+<script th:src="@{/dist/image-picker.js}"></script>
+<script>
+$(".image-picker").imagepicker({
+          hide_select : true
+        })
+</script>
+
+
+
+
+                <br><h2>Set prices</h2>
+                <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th class="text-center">From day</th>
+              <th class="text-center">Price for day</th>
+            <th class="text-center">Remove Row</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+        <tr>
+
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <button class="btn btn-md btn-primary"
+            id="addBtn" type="button">
+        Add new price
+    </button>
+
+                <input type="submit" value="continue">
+            </form>
+            </span>
+
+        </div>
+
+    </div>
+</div>
+
+
+<div th:replace="fragments/scriptsFragment"></div>
+</body>
+
+
+</html>

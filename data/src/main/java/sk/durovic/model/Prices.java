@@ -16,6 +16,36 @@ import java.util.Map;
 @Getter
 public class Prices extends BaseEntity implements Comparable<Prices> {
 
+    public static class Builder {
+        private int day;
+        private int price;
+        private Car car;
+
+        public Builder(Car car) {
+            day=0;
+            price = 0;
+            this.car = car;
+        }
+
+        public Builder addDay(int fromDay){
+            day=fromDay;
+            return this;
+        }
+
+        public Builder addPrice(int price){
+            this.price = price;
+            return this;
+        }
+
+        public Prices build(){
+            Prices price = new Prices();
+            price.setDays(this.day);
+            price.setPrice(this.price);
+            price.setCar(car);
+            return price;
+        }
+    }
+
     @ManyToOne
     private Car car;
 

@@ -35,6 +35,7 @@ public class Car extends BaseEntity implements Comparable<Car>{
     private double volume;
     private String pickUpCity;
     private String uriImages;
+    private String mainImage;
     private int seats;
     private AirCondition airCondition;
     //vybava auta
@@ -58,6 +59,9 @@ public class Car extends BaseEntity implements Comparable<Car>{
 
     @Override
     public int compareTo(Car car) {
+        if(car == null)
+            return 0;
+
         if(this.brand.equals(car.brand))
             return this.model.compareTo(car.model);
 

@@ -4,7 +4,7 @@
     <div th:replace="fragments/headFragment"></div>
     <title>Title</title>
 </head>
-<body>
+<body class="">
     <div th:replace="fragments/headMenuFragment"></div>
 
     <div class="wheel-start3">
@@ -24,34 +24,73 @@
             </div>
         </div>
     </div>
+    <div class="step-wrap">
+        <!-- ////////////////////////////////////////// -->
+        <div class="container padd-lr0">
+            <div class="row">
+                <div class="col-xs-12 padd-lr0">
+                    <ul class="steps">
+                        <li class="title-wrap active">
+                            <div class="title">
+                                <span>1.</span>Insert info about car
+                            </div>
+                        </li>
+                        <li class="title-wrap ">
+                            <div class="title">
+                                <span>2.</span>Upload your images
+                            </div>
+                        </li>
+                        <li class="title-wrap ">
+                            <div class="title">
+                                <span>3.</span>Choose your options
+                            </div>
+                        </li>
+                        <li class="title-wrap ">
+                            <div class="title">
+                                <span>4.</span>Check your information
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- ////////////////////////////////////////// -->
+    </div>
+
 
     <div class="container padd-lr0">
         <div class="row">
             <div class="col-md-6 "><span>
-                Brand: <input type="text"> <br>
-                Model: <input type="text"><br>
-                Fuel: <select name="fuel" id="fuelId">
-                <option  th:each="oneFuel : ${fuelEnum}" value="${oneFuel}" th:text="${oneFuel}"></option>
+                <form method="post" th:action="@{/car/new/step-2}" th:object="${carCommand}">
+                Brand: <input type="text" th:field="*{brand}"> <br>
+                Model: <input type="text" th:field="*{model}"><br>
+                Fuel: <select name="fuel" id="fuelId" th:field="*{fuel}">
+                <option th:each="oneFuel : ${T(sk.durovic.model.Fuel).values()}" th:value="${oneFuel}" th:text="${oneFuel}"></option>
                 </select><br>
-                Gear: <select name="gear" id="gearId">
-                <option  th:each="oneGear : ${gearEnum}" value="${oneGear}" th:text="${oneGear}"></option>
+                Gear: <select name="gear" id="gearId" th:field="*{gear}">
+                <option th:each="oneGear : ${T(sk.durovic.model.Gear).values()}" th:value="${oneGear}" th:text="${oneGear}"></option>
                 </select><br>
-                Power kW: <input type="text"><br>
-                Volume: <input type="text"><br>
-                Pick up city: <input type="text"><br>
-                Seats: <input type="text"><br>
-                Air condition: <input type="text"><br>
-                Package: <input type="text"><br>
-                Category: <select name="category" id="categoryId">
-                <option  th:each="oneCat : ${categoryEnum}" value="${oneCat}" th:text="${oneCat}"></option>
+                Power kW: <input type="number" th:field="*{powerKw}"><br>
+                Volume: <input type="number" th:field="*{volume}" step="0.01"><br>
+                Pick up city: <input type="text" th:field="*{pickUpCity}"><br>
+                Seats: <input type="number" th:field="*{seats}"><br>
+                Air condition: <select name="airCond" th:field="*{airCondition}">
+                    <option th:each="airCond : ${T(sk.durovic.model.AirCondition).values()}" th:value="${airCond}" th:text="${airCond}"></option>
+                    </select>
+                Package: <input type="text" th:field="*{pack}"><br>
+                Category: <select name="category" id="categoryId" th:field="*{category}">
+                <option th:each="oneCat : ${T(sk.durovic.model.Category).values()}" th:value="${oneCat}" th:text="${oneCat}"></option>
                 </select><br>
-                Notes: <input type="text"><br>
-                Images: <br>
+                Notes: <input type="text" th:field="*{notes}"><br>
+                    <input type="submit" value="continue">
+                </form>
+                <br>
             </span>
             </div>
 
         </div>
     </div>
+
 
     <div th:replace="fragments/scriptsFragment"></div>
 </body>

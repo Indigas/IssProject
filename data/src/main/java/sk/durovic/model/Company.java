@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import sk.durovic.set.CarTreeSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -26,7 +27,7 @@ public class Company extends BaseEntity {
     private String email;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
-    private final Set<Car> listOfCars = new TreeSet<>();
+    private final Set<Car> listOfCars = new CarTreeSet(this);
 
     @Override
     public String toString() {
