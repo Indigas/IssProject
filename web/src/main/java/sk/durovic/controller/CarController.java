@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 
 @Controller
+@RequestMapping("/car")
 public class CarController {
 
     private final CarService carService;
@@ -33,20 +34,20 @@ public class CarController {
         this.carService = carService;
     }
 
-    @RequestMapping("/car/detail/{id}")
+    @GetMapping("/detail/{id}")
     public String getCarById(@PathVariable Long id, Model model){
         model.addAttribute("car", carService.findById(id));
 
         return "car-listing-details";
     }
 
-    @RequestMapping("/car/new")
+    @GetMapping("/new")
     public String saveCarForm(Model model){
         model.addAttribute("carCommand", new CarCommand());
         return "saveCarForm";
     }
 
-    @RequestMapping("/car/new/step-2")
+    @PostMapping("/new/step-2")
     public String saveImageForm(Model model, @ModelAttribute("carCommand") CarCommand carCommand){
         company = new Company();
         company.setId(1L);
@@ -59,7 +60,7 @@ public class CarController {
         return "saveCarForm2";
     }
 
-    @PostMapping("/car/new/step-3")
+    @PostMapping("/new/step-3")
     public String saveImagesToCar(Model model, @RequestParam("imageFiles") MultipartFile... multipartFiles){
 
         FileStorageService fileStorageService = new FileStorageServiceImpl(company);
@@ -82,11 +83,9 @@ public class CarController {
         return "saveCarForm3";
     }
 
-    @PostMapping("/car/new/summary")
+    @PostMapping("/new/summary")
     public String carSummary(HttpServletRequest request, Model model){
         Iterator<String> requestItems = request.getParameterNames().asIterator();
-        Map<Integer, Double> prices = new TreeMap<>();
-
 
         while(requestItems.hasNext()){
             String item = requestItems.next();
@@ -105,7 +104,7 @@ public class CarController {
                     continue;
 
 
-                car.getPrices().add(new Prices.Builder(car).addDay(Integer.parseInt(number))
+                car.getPrices().add(Prices.builder(car).addDay(Integer.parseInt(number))
                 .addPrice(Integer.parseInt(price)).build());
             }
         }

@@ -21,7 +21,7 @@ public class Prices extends BaseEntity implements Comparable<Prices> {
         private int price;
         private Car car;
 
-        public Builder(Car car) {
+        private Builder(Car car) {
             day=0;
             price = 0;
             this.car = car;
@@ -55,5 +55,9 @@ public class Prices extends BaseEntity implements Comparable<Prices> {
     @Override
     public int compareTo(Prices prices) {
         return this.days.compareTo(prices.days);
+    }
+
+    public static Builder builder(Car car){
+        return new Builder(car);
     }
 }
