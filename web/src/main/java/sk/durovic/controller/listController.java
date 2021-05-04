@@ -16,9 +16,7 @@ import sk.durovic.services.CompanyService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Iterator;
 import java.util.Set;
-import java.util.TreeSet;
 
 @RequestMapping("/list")
 @Controller
