@@ -16,16 +16,12 @@ public class UserDetailServiceImpl implements UserDetailsService {
     @Autowired
     CompanyCredentialsService companyCredentialsService;
 
-    @Autowired
-    CompanyService companyService;
-
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        Optional<Company> company = companyService.findByEmail(s);
 
-        company.orElseThrow(()-> new UsernameNotFoundException("Not found"));
+        Optional<CompanyCredentials> companyCredentials = companyCredentialsService.findByIdCompany(s);
 
-        Optional<CompanyCredentials> companyCredentials = companyCredentialsService.findByIdCompany(company.get().getEmail());
+        companyCredentials.orElseThrow(() -> new UsernameNotFoundException("Not found"));
 
         return companyCredentials.map(UserDetailImpl::new).get();
     }
