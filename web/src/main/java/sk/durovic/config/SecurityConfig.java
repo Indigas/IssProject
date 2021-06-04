@@ -6,7 +6,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 
 @Configuration
@@ -26,10 +27,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             .antMatchers("/about", "/register", "/reservation"
                                     , "/contact", "/checkout", "/shopping", "/news", "/news-details").permitAll();
                 })*/
+               // .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+                .csrf(csrf -> csrf.csrfTokenRepository(new HttpSessionCsrfTokenRepository()))
                 .authorizeRequests(authorize -> {
                     authorize.antMatchers("/*", "/assets/**", "/dist/**", "/images/**").permitAll();
                 })
-                .csrf().disable()
                 .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()

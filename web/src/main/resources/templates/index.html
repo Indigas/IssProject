@@ -25,6 +25,7 @@
                 <div class="col-lg-6 col-lg-pull-6  padd-lr0">
                     <div class="wheel-start-form">
                         <form th:action="@{/list}" th:object="${indexSearch}" method="post">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                             <label for="input-val11"><span>Dropping Off</span>
                             <input th:field="*{dropOff}" type="text" id='input-val11' placeholder="ZIP, City, Airport or Address" required>
                             </label>
