@@ -6,6 +6,7 @@ import sk.durovic.repositories.CompanyRepository;
 import sk.durovic.services.CompanyService;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -42,5 +43,10 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public void deleteById(Long aLong) {
         companyRepository.deleteById(aLong);
+    }
+
+    @Override
+    public Optional<Company> findByEmail(String email) {
+        return companyRepository.findByEmail(email);
     }
 }

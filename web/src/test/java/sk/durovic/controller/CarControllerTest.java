@@ -1,5 +1,6 @@
 package sk.durovic.controller;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
@@ -15,6 +16,7 @@ class CarControllerTest extends BaseIT {
     void getCarById() {
     }
 
+    @Disabled
     @Test
     void saveCarForm() throws Exception {
         mockMvc.perform(get("/car/new").with(httpBasic("marek", "spring")))

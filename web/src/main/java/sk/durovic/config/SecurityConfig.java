@@ -1,5 +1,7 @@
 package sk.durovic.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -7,6 +9,9 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 
@@ -14,20 +19,12 @@ import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    UserDetailsService userDetailService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-               /* .authorizeRequests(authorize -> {
-                    authorize.antMatchers("/").permitAll()
-                            .antMatchers("/assets/**", "/dist/**", "/images/**").permitAll()
-                            .antMatchers("/index", "/login").permitAll()
-                            .antMatchers("/companies/**").permitAll()
-                            .antMatchers("/list", "/list/car-grid").permitAll()
-                            .antMatchers("/about", "/register", "/reservation"
-                                    , "/contact", "/checkout", "/shopping", "/news", "/news-details").permitAll();
-                })*/
-               // .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .csrf(csrf -> csrf.csrfTokenRepository(new HttpSessionCsrfTokenRepository()))
                 .authorizeRequests(authorize -> {
                     authorize.antMatchers("/*", "/assets/**", "/dist/**", "/images/**").permitAll();
@@ -35,25 +32,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().and()
-                .httpBasic();
-    }
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        //web.ignoring().antMatchers("/*", "/assets/**", "/dist/**", "/images/**");
+                .formLogin();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("marek")
-                .password("{noop}spring")
-                .roles("USER");
+        auth.userDetailsService(userDetailService);
 
     }
 
-
-
-
+    @Bean
+    public PasswordEncoder getPasswordEncoder(){
+        return new BCryptPasswordEncoder(10);
+    }
 }
