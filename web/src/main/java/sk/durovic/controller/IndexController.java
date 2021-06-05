@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import sk.durovic.commands.CompanyCommand;
 import sk.durovic.commands.IndexSearch;
 import sk.durovic.model.Company;
 import sk.durovic.services.CompanyService;
@@ -29,7 +30,8 @@ public class IndexController {
     }
 
     @RequestMapping("/register")
-    public String getRegister(){
+    public String getRegister(Model model){
+        model.addAttribute("companyCommand", new CompanyCommand());
         return "register";
     }
 
