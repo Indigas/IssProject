@@ -1,6 +1,7 @@
 package sk.durovic.controller;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Set;
 
+@Slf4j
 @RequestMapping("/list")
 @Controller
 public class listController {
@@ -47,9 +49,11 @@ public class listController {
 
     @PostMapping
     private String getListingByDate(@ModelAttribute IndexSearch indexSearch, Model model){
+        log.debug("Start date"+ indexSearch.getStartDate());
         Set<Car> listCars = availabilityService.listOfAvailableCars(carService.findAll(),
                 getLocalDateTime(indexSearch.getStartDate(), indexSearch.getStartTime()),
                 getLocalDateTime(indexSearch.getEndDate(), indexSearch.getEndTime()));
+
 
         model.addAttribute("cars", listCars);
         return "car-list-3col2";
@@ -57,12 +61,19 @@ public class listController {
 
     private LocalDateTime getLocalDateTime(String date, String time){
         String[] dayAndMonth = date.split("\\.");
-        String[] hourAndMinute = time.split(":");
-        LocalDate stDate = LocalDate.of(Integer.parseInt(dayAndMonth[2].trim()),
+        String[] hourAndMinute;
+
+        if(!time.equals(""))
+            hourAndMinute = time.split(":");
+        else
+            hourAndMinute = new String[]{"0","0"};
+
+        LocalDate stDate = LocalDate.of(Integer.parseInt("20"+dayAndMonth[2].trim()),
                 Integer.parseInt(dayAndMonth[1].trim()), Integer.parseInt(dayAndMonth[0].trim()));
         LocalTime stTime = LocalTime.of(Integer.parseInt(hourAndMinute[0]),
                 Integer.parseInt(hourAndMinute[1]));
 
+        log.debug("Finding available cars at: " + stDate.toString() + " / " + stTime.toString());
         return LocalDateTime.of(stDate, stTime);
     }
 }
