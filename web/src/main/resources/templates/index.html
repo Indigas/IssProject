@@ -36,27 +36,27 @@
                                 <div class="wheel-date">
                                     <span>Pickup Date</span>
                                     <label for="input-val13" class="fa fa-calendar">
-                                    <input th:field="*{startDate}" class="datetimepicker" id='input-val13' type="text" value="29 Apr">
+                                    <input th:field="*{startDate}" class="datetimepicker" id='input-val13' type="text">
                                     </label>
                                     <!--<input th:field="*{startDate}" type="text" id="my-input">-->
                                 </div>
                                 <div class="wheel-date ">
                                     <span>Pickup time</span>
                                     <label for="input-val14" class="fa fa-clock-o">
-                                    <input th:field="*{startTime}" class="timepicker" id='input-val14' type="text" value="18:00">
+                                    <input th:field="*{startTime}" class="timepicker" id='input-val14' type="text">
                                     </label>
                                 </div>
                                 <div class="wheel-date">
                                     <span>Return Date</span>
                                     <label for="input-val15" class="fa fa-calendar">
-                                    <input th:field="*{endDate}" class="datetimepicker" id='input-val15' type="text" value="29 Apr">
+                                    <input th:field="*{endDate}" class="datetimepicker" id='input-val15' type="text">
                                     </label>
                                     <!--<input th:field="*{endDate}" type="text" id="my-input2">-->
                                 </div>
                                 <div class="wheel-date">
                                     <span>Return Time</span>
                                     <label for="input-val16" class="fa fa-clock-o">
-                                    <input th:field="*{endTime}" class="timepicker" id='input-val16' type="text" value="18:00">
+                                    <input th:field="*{endTime}" class="timepicker" id='input-val16' type="text">
                                     </label>
                                 </div>
                                 <div class="wheel-date">
@@ -547,6 +547,7 @@
         <div th:replace="fragments/scriptsFragment"></div>
 
     </body>
+<!--
 <script>
         (function () {
             const input = document.getElementById('my-input');
@@ -561,4 +562,5 @@
         })();
 
     </script>
+    -->
 </html>
