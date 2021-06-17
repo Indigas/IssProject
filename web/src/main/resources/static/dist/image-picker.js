@@ -111,7 +111,7 @@
     };
 
     ImagePicker.prototype.create_picker = function() {
-      this.picker = jQuery("<ul class='thumbnails image_picker_selector'></ul>");
+      this.picker = jQuery("<ul class='thumbnails image_picker_selector grid'></ul>");
       this.picker_options = [];
       this.recursively_parse_option_groups(this.select, this.picker);
       return this.picker;
@@ -125,7 +125,7 @@
         option_group = jQuery(option_group);
         container = jQuery("<ul></ul>");
         container.append(jQuery("<li class='group_title'>" + (option_group.attr("label")) + "</li>"));
-        target_container.append(jQuery("<li class='group'>").append(container));
+        target_container.append(jQuery("<li class='group '>").append(container));
         this.recursively_parse_option_groups(option_group, container);
       }
       ref1 = (function() {

@@ -61,9 +61,14 @@
 <div class="container padd-lr0">
     <div class="row">
         <div class="col-md-6 "><span>
-                Images: <form method="post" enctype="multipart/form-data" th:action="@{/car/new/step-3}">
-                <input id="imageFiles" name="imageFiles" type="file" class="file" multiple/>
-                <input type="submit" value="upload"/>
+                <form method="post" enctype="multipart/form-data" th:action="@{/car/new/step-3}">
+                <div class="form-group">
+                    <label for="imageFiles"><h2>Images:</h2></label>
+                    <input class="form-control" id="imageFiles" name="imageFiles" type="file" multiple/>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default">Upload</button>
+                </div>
                 </form>
                 <br>
             </span>
