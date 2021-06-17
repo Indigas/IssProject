@@ -16,6 +16,9 @@ public class UserDetailServiceImpl implements UserDetailsService {
     @Autowired
     CompanyCredentialsService companyCredentialsService;
 
+    @Autowired
+    CompanyService companyService;
+
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
 
@@ -23,6 +26,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
         companyCredentials.orElseThrow(() -> new UsernameNotFoundException("Not found"));
 
-        return companyCredentials.map(UserDetailImpl::new).get();
+        return new UserDetailImpl(companyCredentials.get(), companyService);
     }
 }

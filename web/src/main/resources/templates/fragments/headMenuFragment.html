@@ -117,7 +117,8 @@
                             </ul>
                             <div class="nav-menu-icon"><i></i></div>
                         </nav>
-                        <a href="http://goo.gl/rUdkZt" class="wheel-cheader-but" target="_blank">Buy Now</a>
+                        <a sec:authorize="isAnonymous()" th:href="@{/register}" class="wheel-cheader-but">Login</a>
+                        <a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="wheel-cheader-but">Logout</a>
                     </div>
                 </div>
             </div>

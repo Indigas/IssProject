@@ -1,5 +1,6 @@
 package sk.durovic.controller;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,6 @@ import java.util.stream.Collectors;
 public class CarController {
 
     private final CarService carService;
-    private Company company;
     private Car car;
 
     public CarController(CarService carService) {
@@ -48,11 +48,10 @@ public class CarController {
     }
 
     @PostMapping("/new/step-2")
-    public String saveImageForm(Model model, @ModelAttribute("carCommand") CarCommand carCommand){
-        company = new Company();
-        company.setId(1L);
-        company.setName("AAA auto");
+    public String saveImageForm(Model model, @ModelAttribute("carCommand") CarCommand carCommand,
+                                @AuthenticationPrincipal UserDetailImpl userDetail){
 
+        Company company = userDetail.getCompany();
         // treba carcommand to car
         car = new CarCommandToCar().convert(carCommand);
         car.setCompany(company);
@@ -61,7 +60,9 @@ public class CarController {
     }
 
     @PostMapping("/new/step-3")
-    public String saveImagesToCar(Model model, @RequestParam("imageFiles") MultipartFile... multipartFiles){
+    public String saveImagesToCar(@AuthenticationPrincipal UserDetailImpl userDetail, Model model,
+                                  @RequestParam("imageFiles") MultipartFile... multipartFiles){
+        Company company = userDetail.getCompany();
 
         FileStorageService fileStorageService = new FileStorageServiceImpl(company);
         car.setUriImages(fileStorageService.getImagesPath().toString());

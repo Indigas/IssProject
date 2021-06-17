@@ -61,28 +61,98 @@
     <div class="container padd-lr0">
         <div class="row">
             <div class="col-md-6 "><span>
-                <form method="post" th:action="@{/car/new/step-2}" th:object="${carCommand}">
-                Brand: <input type="text" th:field="*{brand}"> <br>
-                Model: <input type="text" th:field="*{model}"><br>
-                Fuel: <select name="fuel" id="fuelId" th:field="*{fuel}">
-                <option th:each="oneFuel : ${T(sk.durovic.model.Fuel).values()}" th:value="${oneFuel}" th:text="${oneFuel}"></option>
-                </select><br>
-                Gear: <select name="gear" id="gearId" th:field="*{gear}">
-                <option th:each="oneGear : ${T(sk.durovic.model.Gear).values()}" th:value="${oneGear}" th:text="${oneGear}"></option>
-                </select><br>
-                Power kW: <input type="number" th:field="*{powerKw}"><br>
-                Volume: <input type="number" th:field="*{volume}" step="0.01"><br>
-                Pick up city: <input type="text" th:field="*{pickUpCity}"><br>
-                Seats: <input type="number" th:field="*{seats}"><br>
-                Air condition: <select name="airCond" th:field="*{airCondition}">
-                    <option th:each="airCond : ${T(sk.durovic.model.AirCondition).values()}" th:value="${airCond}" th:text="${airCond}"></option>
-                    </select>
-                Package: <input type="text" th:field="*{pack}"><br>
-                Category: <select name="category" id="categoryId" th:field="*{category}">
-                <option th:each="oneCat : ${T(sk.durovic.model.Category).values()}" th:value="${oneCat}" th:text="${oneCat}"></option>
-                </select><br>
-                Notes: <input type="text" th:field="*{notes}"><br>
-                    <input type="submit" value="continue">
+
+                <form class="form-horizontal" method="post" th:action="@{/car/new/step-2}" th:object="${carCommand}">
+                    <div class="form-group">
+                        <label for="brand" class="col-sm-2 control-label">Brand:</label>
+                        <div class="col-sm-5">
+                        <input class="form-control" placeholder="Brand" type="text" th:field="*{brand}"
+                           id="brand">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="model" class="col-sm-2 control-label">Model:</label>
+                        <div class="col-sm-5">
+                        <input class="form-control" type="text" th:field="*{model}" id="model">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="fuelId" class="col-sm-2 control-label">Fuel:</label>
+                        <div class="col-sm-5">
+                        <select class="form-control" name="fuel" id="fuelId" th:field="*{fuel}">
+                        <option th:each="oneFuel : ${T(sk.durovic.model.Fuel).values()}" th:value="${oneFuel}"
+                                th:text="${oneFuel}"></option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="gearId" class="col-sm-2 control-label">Gear:</label>
+                        <div class="col-sm-5">
+                        <select class="form-control" name="gear" id="gearId" th:field="*{gear}">
+                        <option th:each="oneGear : ${T(sk.durovic.model.Gear).values()}" th:value="${oneGear}"
+                            th:text="${oneGear}"></option>
+                        </select>
+                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="powerKw" class="col-sm-2 control-label">Power kW:</label>
+                        <div class="col-sm-5">
+                        <input class="form-control" type="number" th:field="*{powerKw}" id="powerKw">
+                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="volume" class="col-sm-2 control-label">Volume</label>
+                        <div class="col-sm-5">
+                        <input class="form-control" type="number" th:field="*{volume}" step="0.01" id="volume">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pickUpCity" class="col-sm-2 control-label">Pick up city:</label>
+                        <div class="col-sm-5">
+                        <input class="form-control" type="text" th:field="*{pickUpCity}" id="pickUpCity">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="seats" class="col-sm-2 control-label">Seats:</label>
+                        <div class="col-sm-5">
+                        <input class="form-control" type="number" th:field="*{seats}" id="seats">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="airCond" class="col-sm-2 control-label">Air Condition:</label>
+                        <div class="col-sm-5">
+                        <select class="form-control" name="airCond" id="airCond" th:field="*{airCondition}">
+                            <option th:each="airCond : ${T(sk.durovic.model.AirCondition).values()}" th:value="${airCond}" th:text="${airCond}"></option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="package" class="col-sm-2 control-label">Package:</label>
+                        <div class="col-sm-5">
+                        <input class="form-control" type="text" th:field="*{pack}" id="package">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="categoryId" class="col-sm-2 control-label">Category:</label>
+                        <div class="col-sm-5">
+                        <select class="form-control" name="category" id="categoryId" th:field="*{category}">
+                            <option th:each="oneCat : ${T(sk.durovic.model.Category).values()}" th:value="${oneCat}" th:text="${oneCat}"></option>
+                        </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="notes" class="col-sm-2 control-label">Notes:</label>
+                        <div class="col-sm-5">
+                        <textarea class="form-control" rows="3" type="text" th:field="*{notes}" id="notes">
+                        </textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-5">
+                            <button type="submit" class="btn btn-default">Continue</button>
+                        </div>
+                    </div>
+
                 </form>
                 <br>
             </span>
