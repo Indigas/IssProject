@@ -42,6 +42,7 @@ public class Car extends BaseEntity implements Comparable<Car>{
     private String pack;
     private Category category;
     private String notes;
+    private boolean isEnabled = false;
 
     @Override
     public int hashCode() {

@@ -6,7 +6,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js">
     </script>
-    <script th:src="@{~/assets/js/masonry.pkgd.min.js}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <link th:href="@{/dist/image-picker.css}" rel="stylesheet" type="text/css">
@@ -41,33 +40,33 @@
 
         // Getting all the rows next to the row
         // containing the clicked button
-        var child = $(this).closest('tr').nextAll();
+        //var child = $(this).closest('tr').nextAll();
 
         // Iterating across all the rows
         // obtained to change the index
-        child.each(function () {
+        //child.each(function () {
 
           // Getting <tr> id.
-          var id = $(this).attr('id');
+         // var id = $(this).attr('id');
 
           // Getting the <p> inside the .row-index class.
-          var idx = $(this).children('.row-index').children('p');
+         // var idx = $(this).children('.row-index').children('p');
 
           // Gets the row number from <tr> id.
-          var dig = parseInt(id.substring(1));
+        //  var dig = parseInt(id.substring(1));
 
           // Modifying row index.
-          idx.html(`Row ${dig - 1}`);
+         // idx.html(`Row ${dig - 1}`);
 
           // Modifying row id.
-          $(this).attr('id', `R${dig - 1}`);
-        });
+         // $(this).attr('id', `R${dig - 1}`);
+        //});
 
         // Removing the current row.
         $(this).closest('tr').remove();
 
         // Decreasing total number of rows by 1.
-        rowIdx--;
+        //rowIdx--;
       });
     });
   </script>
@@ -136,11 +135,8 @@
                 <select class="image-picker" name="mainImage">
                     <option th:each="image : ${images}" th:data-img-src="${image.toString()}"
                             th:value="${image.toString()}"></option>
-  <!--<optgroup label="PlaceIMG">
 
-
-  </optgroup>-->
-</select>
+                </select>
 
 <script th:src="@{/dist/image-picker.js}"></script>
 <script>
@@ -152,7 +148,8 @@ $(".image-picker").imagepicker({
 
 
 
-                <br><h2>Set prices</h2>
+                <br><h2>Set prices</h2><br>
+                <div class="col-md-8">
                 <div class="table-responsive">
       <table class="table table-bordered">
         <thead>
@@ -164,7 +161,17 @@ $(".image-picker").imagepicker({
         </thead>
         <tbody id="tbody">
         <tr>
-
+        </tr>
+        <tr th:each="price : ${prices}" class="thymeleafData">
+            <td class="row-index text-center">
+                <input class="thymeleafInputDays" type="number" th:value="${price.days}">
+            </td>
+            <td class="text-center">
+                <input class="thymeleafInputPrice" type="number" th:value="${price.price}">
+            </td>
+            <td class="text-center">
+                <button class="btn btn-danger remove" type="button">Remove</button>
+            </td>
         </tr>
         </tbody>
       </table>
@@ -175,6 +182,7 @@ $(".image-picker").imagepicker({
     </button>
 
                 <button type="submit" class="btn btn-default">Continue</button>
+                </div>
             </form>
 
 
@@ -197,6 +205,28 @@ $(".image-picker").imagepicker({
         columnWidth: 200
         })
     });
+
+    let tableTh = document.querySelectorAll(".thymeleafData");
+    let numberOfRows=12345;
+    tableTh.forEach((trP) => {
+        trP.setAttribute("id", "R"+numberOfRows);
+        numberOfRows++;
+    });
+
+    let inPut = document.querySelectorAll(".thymeleafInputDays");
+    let nmb=12345;
+    inPut.forEach((inG) => {
+        inG.setAttribute("name", "dayFrom"+nmb);
+        nmb++;
+    });
+
+    let inPut2 = document.querySelectorAll(".thymeleafInputPrice");
+    let nmb2=12345;
+    inPut2.forEach((inG) => {
+        inG.setAttribute("name", "dayPrice"+nmb2);
+        nmb2++;
+    });
+
 </script>
 
 

@@ -5,69 +5,69 @@
     <title>Title</title>
 </head>
 <body class="">
-    <div th:replace="fragments/headMenuFragment"></div>
+<div th:replace="fragments/headMenuFragment"></div>
 
-    <div class="wheel-start3">
-        <img th:src="@{/images/bg7.jpg}" alt="" class="wheel-img">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12 padd-lr0">
-                    <div class="wheel-start3-body clearfix marg-lg-t255 marg-lg-b75 marg-sm-t190 marg-xs-b30">
-                        <h3>Add new car</h3>
-                        <ol class="breadcrumb">
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#"> pages </a></li>
-                            <li class="active">About</li>
-                        </ol>
-                    </div>
+<div class="wheel-start3">
+    <img th:src="@{/images/bg7.jpg}" alt="" class="wheel-img">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 padd-lr0">
+                <div class="wheel-start3-body clearfix marg-lg-t255 marg-lg-b75 marg-sm-t190 marg-xs-b30">
+                    <h3>Add new car</h3>
+                    <ol class="breadcrumb">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#"> pages </a></li>
+                        <li class="active">About</li>
+                    </ol>
                 </div>
             </div>
         </div>
     </div>
-    <div class="step-wrap">
-        <!-- ////////////////////////////////////////// -->
-        <div class="container padd-lr0">
-            <div class="row">
-                <div class="col-xs-12 padd-lr0">
-                    <ul class="steps">
-                        <li class="title-wrap active">
-                            <div class="title">
-                                <span>1.</span>Insert info about car
-                            </div>
-                        </li>
-                        <li class="title-wrap ">
-                            <div class="title">
-                                <span>2.</span>Upload your images
-                            </div>
-                        </li>
-                        <li class="title-wrap ">
-                            <div class="title">
-                                <span>3.</span>Choose your options
-                            </div>
-                        </li>
-                        <li class="title-wrap ">
-                            <div class="title">
-                                <span>4.</span>Check your information
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!-- ////////////////////////////////////////// -->
-    </div>
-
-
+</div>
+<div class="step-wrap">
+    <!-- ////////////////////////////////////////// -->
     <div class="container padd-lr0">
         <div class="row">
-            <div class="col-md-10 "><span>
+            <div class="col-xs-12 padd-lr0">
+                <ul class="steps">
+                    <li class="title-wrap active">
+                        <div class="title">
+                            <span>1.</span>Insert info about car
+                        </div>
+                    </li>
+                    <li class="title-wrap ">
+                        <div class="title">
+                            <span>2.</span>Upload your images
+                        </div>
+                    </li>
+                    <li class="title-wrap ">
+                        <div class="title">
+                            <span>3.</span>Choose your options
+                        </div>
+                    </li>
+                    <li class="title-wrap ">
+                        <div class="title">
+                            <span>4.</span>Check your information
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- ////////////////////////////////////////// -->
+</div>
 
-                <form class="form-horizontal" method="post" th:action="@{/car/new/step-2}" th:object="${carCommand}">
+
+<div class="container padd-lr0">
+    <div class="row">
+        <div class="col-md-10 "><span>
+
+                <form class="form-horizontal" method="post" th:action="@{${#strings.concat('/car/new/step-2/', #strings.toString(car.id))}}" th:object="${carCommand}">
                     <div class="form-group">
                         <label for="brand" class="col-sm-2 control-label">Brand:</label>
                         <div class="col-sm-5">
-                        <input class="form-control" placeholder="Brand" type="text" th:field="*{brand}"
-                           id="brand">
+                        <input class="form-control" type="text" th:field="*{brand}"
+                               id="brand" >
                         </div>
                     </div>
                     <div class="form-group">
@@ -90,7 +90,7 @@
                         <div class="col-sm-5">
                         <select class="form-control" name="gear" id="gearId" th:field="*{gear}">
                         <option th:each="oneGear : ${T(sk.durovic.model.Gear).values()}" th:value="${oneGear}"
-                            th:text="${oneGear}"></option>
+                                th:text="${oneGear}"></option>
                         </select>
                             </div>
                     </div>
@@ -103,7 +103,8 @@
                     <div class="form-group">
                         <label for="volume" class="col-sm-2 control-label">Volume</label>
                         <div class="col-sm-5">
-                        <input class="form-control" type="number" th:field="*{volume}" step="0.01" id="volume">
+                        <input class="form-control" type="number" th:field="*{volume}" step="0.01"
+                               id="volume" >
                         </div>
                     </div>
                     <div class="form-group">
@@ -136,14 +137,16 @@
                         <label for="categoryId" class="col-sm-2 control-label">Category:</label>
                         <div class="col-sm-5">
                         <select class="form-control" name="category" id="categoryId" th:field="*{category}">
-                            <option th:each="oneCat : ${T(sk.durovic.model.Category).values()}" th:value="${oneCat}" th:text="${oneCat}"></option>
+                            <option th:each="oneCat : ${T(sk.durovic.model.Category).values()}"
+                                    th:value="${oneCat}" th:text="${oneCat}"></option>
                         </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="notes" class="col-sm-2 control-label">Notes:</label>
                         <div class="col-md-10">
-                        <textarea class="form-control" rows="5" type="text" th:field="*{notes}" id="notes">
+                        <textarea class="form-control" rows="5" type="text" th:field="*{notes}"
+                                  id="notes">
                         </textarea>
                         </div>
                     </div>
@@ -156,13 +159,14 @@
                 </form>
                 <br>
             </span>
-            </div>
-
         </div>
+
+
     </div>
+</div>
 
 
-    <div th:replace="fragments/scriptsFragment"></div>
+<div th:replace="fragments/scriptsFragment"></div>
 </body>
 
 </html>

@@ -5,6 +5,8 @@ import sk.durovic.model.Prices;
 import sk.durovic.repositories.PricesRepository;
 import sk.durovic.services.PricesService;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -42,5 +44,10 @@ public class PricesServiceImpl implements PricesService {
     @Override
     public void deleteById(Long aLong) {
         pricesRepository.deleteById(aLong);
+    }
+
+    @Override
+    public Optional<List<Prices>> findByCarId(Long id) {
+        return pricesRepository.findByCarId(id);
     }
 }

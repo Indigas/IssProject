@@ -18,5 +18,5 @@ public interface FileStorageService {
 
     void deleteAll(Car car) throws IOException;
 
-    public Path getImagesPath();
+    Path getImagesPath();
 }

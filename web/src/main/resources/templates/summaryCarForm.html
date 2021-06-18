@@ -17,9 +17,10 @@
         <div class="wheel-start3-body clearfix marg-lg-t255 marg-lg-b75 marg-sm-t190 marg-xs-b30">
           <h3>Listing Details</h3>
           <ol class="breadcrumb">
-            <li><a href="#">Home</a></li>
-            <li><a href="#"> Listing </a></li>
-            <li class="active">Listing details</li>
+            <li th:if="${car.isEnabled == false}"><a th:href="@{${#strings.concat('/car/publish/', #strings.toString(car.id))}}" role="button" class="btn btn-success">Publish</a></li>
+            <li th:if="${car.isEnabled == true}"><a th:href="@{${#strings.concat('/car/unpublish/', #strings.toString(car.id))}}" role="button" class="btn btn-primary">Unpublish</a></li>
+            <li><a th:href="@{${#strings.concat('/car/update/', #strings.toString(car.id))}}" role="button" class="btn btn-warning">Edit</a></li>
+            <li class="active"><a href="@{${#strings.concat('/car/delete/', #strings.toString(car.id))}}" role="button" class="btn btn-danger">Delete</a></li>
           </ol>
         </div>
       </div>
@@ -29,6 +30,7 @@
     <img th:src="${car.mainImage}" alt="" class="imgOnBanner img-responsive">
   </div>
 </div>
+
 <div class="container-fluid padd-lr0">
   <div class="row padd-lr0">
     <div class="col-xs-12 padd-lr0">
@@ -49,9 +51,9 @@
 
                 <div class="tabs-header">
                   <ul>
-                    <li class="active"><a href="#">Features</a></li>
-                    <li><a href="#">Description</a></li>
-                    <li><a href="#">Company</a></li>
+                    <li class="active"><a href="#" data-toggle="tab">Features</a></li>
+                    <li><a href="#" data-toggle="tab">Description</a></li>
+                    <li><a href="#" id="photos" data-toggle="tab">Photos</a></li>
                   </ul>
                 </div>
                 <div class="tabs-content marg-lg-b30">
@@ -77,87 +79,15 @@
                   </div>
 
                   <div class="tabs-item text-item">
-                    <div >o spoločnosti</div>
+                    <div class="col-md-12">
+                      <div class="grid">
+                        <div class="grid-item" style="margin: 0px, padding: 0px" th:each="image : ${images}">
+                          <img th:src="${image.toString()}" />
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
-                  <!--<div class="tabs-item text-item">
-                    <div class="wheel-comments-area wheel-bg1">
-                      <div class="wheel-comments-list">
-                        <ul>
-                          <li>
-                            <div class="wheel-comment-body">
-                              <div class="clearfix">
-                                <div class="comment-author">
-                                  <img src="images/l3.png" alt="">
-                                  <a href="#">Anthony Martial</a>
-                                  <div class="ratings">
-                                    <img src="images/stars.png" alt="">
-                                  </div>
-                                </div>
-                                <div class="comment-metadata">
-                                  <time datetime="2015-01-10T20:15:40+00:00">  13:05, May 27</time>
-                                </div>
-                              </div>
-                              <div class="comment-content">
-                                <p>Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio. Sed non  mauris vitae erat consequat auctor eu in elit. Class aptent taciti sociosqu.</p>
-                              </div>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="wheel-sub-comment">
-                              <div class="wheel-comment-body">
-                                <div class="clearfix">
-                                  <div class="comment-author">
-                                    <img src="images/l4.png" alt=""><a href="#">Katherine Sanders</a>
-                                    <div class="ratings">
-                                      <img src="images/stars.png" alt="">
-                                    </div>
-                                  </div>
-                                  <div class="comment-metadata">
-                                    <time datetime="2015-01-10T20:15:40+00:00">  13:05, May 27</time>
-                                  </div>
-                                </div>
-                                <div class="comment-content">
-                                  <p>Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio. Sed non  mauris vitae erat consequat auctor eu in elit. Class aptent taciti sociosqu.</p>
-                                </div>
-                              </div>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="wheel-comment-body">
-                              <div class="clearfix">
-                                <div class="comment-author">
-                                  <img th:src="@{/images/l5.png}" alt=""><a href="#">Vicki Rogers</a>
-                                  <div class="ratings">
-                                    <img th:src="@{/images/stars.png}" alt="">
-                                  </div>
-                                </div>
-                                <div class="comment-metadata">
-                                  <time datetime="2015-01-10T20:15:40+00:00">  13:05, May 27</time>
-                                </div>
-                              </div>
-                              <div class="comment-content">
-                                <p>Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio. Sed non  mauris vitae erat consequat auctor eu in elit. Class aptent taciti sociosqu.</p>
-                              </div>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>-->
-                    <!--
-                    <section class="wheel-reply-form wheel-bg1">
-                      <header>
-                        <h3>Add Your Review</h3>
-                      </header>
-                      <form action="#">
-                        <input type="text" placeholder="Your Name *">
-                        <input type="text" placeholder="Your Email *">
-                        <textarea placeholder="Your Message *"></textarea>
-                        <button>Submit Now</button>
-                      </form>
-                    </section>
-
-                  </div>-->
 
                 </div>
               </div>
@@ -173,114 +103,15 @@
     </div>
   </div>
 </div>
-  <!-- /////////////////////////////////// -->
-
-<!-- /////////////////////////////// -->
 
 <!-- FOOTER -->
 <!-- ///////////////// -->
-<footer class="wheel-footer">
-  <img th:src="@{/images/bg4.jpg}" alt="" class="wheel-img">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-3  col-sm-6  padd-lr0">
-        <div class="wheel-address">
-          <div class="wheel-footer-logo"><a href="#"><img th:src="@{/images/logo2.png}" alt=""></a></div>
-          <ul>
-            <li><span><i class="fa fa-map-marker"></i>121 King Street, Melbourne <br>
-                                    VIC 3000, Australia  </span>
-            </li>
-            <li><a href="#"><span><i class="fa fa-phone"></i> +61 3 8376 6284</span></a></li>
-            <li><a href="#"><span><i class="fa fa-envelope"></i>contact@wheel-rental.com</span></a></li>
-          </ul>
-          <div class="wheel-soc">
-            <a href="#" class="fa fa-twitter"></a>
-            <a href="#" class="fa fa-facebook"></a>
-            <a href="#" class="fa fa-linkedin"></a>
-            <a href="#" class="fa fa-instagram"></a>
-            <a href="#" class="fa fa-share-alt"></a>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-3 col-sm-6  padd-lr0">
-        <div class="wheel-footer-item">
-          <h3>Useful Links</h3>
-          <ul>
-            <li><a href="#" class="">About us</a></li>
-            <li><a href="#" class="">Customer Service</a></li>
-            <li><a href="#" class="">Contact Us</a></li>
-            <li><a href="#" class="">Safety Recall</a></li>
-            <li><a href="#" class="">Privacy policy</a></li>
-            <li><a href="#" class="">Site Map</a></li>
-            <li><a href="#" class="">Terms & condition</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-md-2 col-sm-6  padd-lr0">
-        <div class="wheel-footer-item ">
-          <h3>Vehicles</h3>
-          <ul>
-            <li><a href="#" class="">Exotic Cars</a></li>
-            <li><a href="#" class="">SUVs</a></li>
-            <li><a href="#" class="">Trucks</a></li>
-            <li><a href="#" class="">Mini Vans</a></li>
-            <li><a href="#" class="">Moving Trucks</a></li>
-            <li><a href="#" class="">Vans</a></li>
-            <li><a href="#" class="">RVs</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-md-4 col-sm-6 padd-lr0">
-        <div class="wheel-footer-gallery">
-          <h3>Photo Gallery</h3>
-          <div class="  clearfix">
-            <div class="wheel-footer-galery-item"><a href="#"><img src="images/i11.jpg" alt=""></a></div>
-            <div class="wheel-footer-galery-item"><a href="#"><img src="images/i12.jpg" alt=""></a></div>
-            <div class="wheel-footer-galery-item"><a href="#"><img src="images/i13.jpg" alt=""></a></div>
-            <div class="wheel-footer-galery-item"><a href="#"><img src="images/i14.jpg" alt=""></a></div>
-            <div class="wheel-footer-galery-item"><a href="#"><img src="images/i15.jpg" alt=""></a></div>
-            <div class="wheel-footer-galery-item"><a href="#"><img src="images/i16.jpg" alt=""></a></div>
-            <div class="wheel-footer-galery-item"><a href="#"><img src="images/i17.jpg" alt=""></a></div>
-            <div class="wheel-footer-galery-item"><a href="#"><img src="images/i18.jpg" alt=""></a></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</footer>
-<div class="wheel-footer-info wheel-bg6">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-sm-6  padd-lr0"><span>&#169; WHEEL 2016 | <a target="_blank" href="https://www.templateshub.net">Templates Hub</a> </span></div>
-      <div class="col-lg-4 col-sm-6 padd-lr0">
-        <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#"> Pages</a></li>
-          <li><a href="#"> Listings</a></li>
-          <li><a href="#"> Reservation</a></li>
-          <li><a href="#">Location</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
+
+<div th:replace="fragments/footerFragment"></div>
 
 <div th:replace="fragments/scriptsFragment"></div>
 
-<script>
-        (function () {
-            const input = document.getElementById('my-input');
-            const datepicker = new TheDatepicker.Datepicker(input);
-            datepicker.render();
-        })();
-
-        (function () {
-            const input2 = document.getElementById('my-input2');
-            const datepicker2 = new TheDatepicker.Datepicker(input2);
-            datepicker2.render();
-        })();
-
-    </script>
 </body>
+
 
 </html>

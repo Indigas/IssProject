@@ -5,9 +5,7 @@ import sk.durovic.model.Car;
 import sk.durovic.repositories.CarRepository;
 import sk.durovic.services.CarService;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 @Service
 public class CarServiceImpl implements CarService {
@@ -45,5 +43,8 @@ public class CarServiceImpl implements CarService {
         carRepository.deleteById(aLong);
     }
 
-
+    @Override
+    public Optional<List<Car>> findByIsEnabled() {
+        return carRepository.findByIsEnabledTrue();
+    }
 }

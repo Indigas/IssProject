@@ -1,0 +1,15 @@
+.grid:after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+.grid-item {
+    width: 200px;
+    float: left;
+}
+
+.grid-item img {
+    display: block;
+    max-width: 100%;
+}
