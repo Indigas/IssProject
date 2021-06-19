@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import sk.durovic.commands.IndexSearch;
 import sk.durovic.data.ImagesHandler;
 import sk.durovic.model.Car;
+import sk.durovic.model.Prices;
 import sk.durovic.services.AvailabilityService;
 import sk.durovic.services.CarService;
 import sk.durovic.services.CompanyService;
@@ -55,6 +56,13 @@ public class listController {
             return "redirect:/error?CarNotFound";
 
         model.addAttribute("car", car1);
+        List<Prices> listOfprices = new ArrayList<>(car1.getPrices());
+
+        listOfprices.sort(Comparator.comparing(Prices::getDays));
+
+        model.addAttribute("prices", listOfprices);
+        car1.getPrices().forEach(t -> log.debug("Prices of car:: " + t.getDays() + ":: " + t.getPrice()));
+
 
         try {
             model.addAttribute("images", ImagesHandler.getImages(car1).collect(Collectors.toList()));

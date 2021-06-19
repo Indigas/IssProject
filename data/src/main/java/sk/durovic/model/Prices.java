@@ -54,7 +54,7 @@ public class Prices extends BaseEntity implements Comparable<Prices> {
 
     @Override
     public int compareTo(Prices prices) {
-        return this.days.compareTo(prices.days);
+        return this.days.compareTo(prices.getDays());
     }
 
     public static Builder builder(Car car){

@@ -70,6 +70,27 @@
                                                     <li class="item" th:text="${#strings.concat('Package: ', car.pack)}">pack</li>
                                                     <li></li>
                                                 </ul>
+
+                                                <div class="row">
+                                                    <div class="col-md-4 col-md-offset-4"><br>
+                                                        <h2>Prices</h2><br>
+                                                <table class="table table-hover table-bordered">
+                                                    <thead>
+                                                        <tr >
+                                                            <th class="text-center">From day</th>
+                                                            <th class="text-center">Price</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr th:each="price : ${prices}">
+                                                        <td th:text="${price.days}"></td>
+                                                        <td th:text="${#strings.concat(price.price, ' EUR')}"></td>
+                                                    </tr>
+                                                    </tbody>
+
+                                                </table>
+                                                        </div>
+                                                </div>
                                             </div>
 
 

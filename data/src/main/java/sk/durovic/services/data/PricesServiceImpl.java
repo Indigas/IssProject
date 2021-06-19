@@ -48,6 +48,6 @@ public class PricesServiceImpl implements PricesService {
 
     @Override
     public Optional<List<Prices>> findByCarId(Long id) {
-        return pricesRepository.findByCarId(id);
+        return pricesRepository.findByCarIdOrderByDaysAsc(id);
     }
 }

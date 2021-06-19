@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface PricesRepository extends CrudRepository<Prices, Long> {
 
-    Optional<List<Prices>> findByCarId(Long id);
+    Optional<List<Prices>> findByCarIdOrderByDaysAsc(Long id);
 }
