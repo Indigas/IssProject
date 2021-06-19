@@ -26,7 +26,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.csrfTokenRepository(new HttpSessionCsrfTokenRepository()))
+                .csrf(csrf -> csrf.csrfTokenRepository(new HttpSessionCsrfTokenRepository())
+                                .ignoringAntMatchers("/api/**")
+                            )
                 .authorizeRequests(authorize -> {
                     authorize.antMatchers("/*", "/assets/**", "/dist/**", "/images/**").permitAll()
                             .antMatchers("/register/new").permitAll()

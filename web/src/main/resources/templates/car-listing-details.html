@@ -49,14 +49,14 @@
 
 
                                         <div class="tabs-header">
-                                            <ul>
-                                                <li class="active"><a href="#" data-toggle="tab">Features</a></li>
-                                                <li><a href="#" data-toggle="tab">Description</a></li>
-                                                <li><a href="#" id="photos" data-toggle="tab">Photos</a></li>
+                                            <ul role="tablist">
+                                                <li role="presentation" class="active"><a href="#" data-toggle="tab" role="tab">Features</a></li>
+                                                <li role="presentation"><a href="#" data-toggle="tab" role="tab">Description</a></li>
+                                                <li role="presentation"><a href="#" id="photos" data-toggle="tab" role="tab">Photos</a></li>
                                             </ul>
                                         </div>
-                                        <div class="tabs-content marg-lg-b30">
-                                            <div class="tabs-item text-item active">
+                                        <div class="tab-content marg-lg-b30">
+                                            <div role="tabpanel" class="tabs-item text-item active">
                                                 <ul class="tabslist">
                                                     <li class="item" th:text="${#strings.concat(car.fuel, ' ', car.volume, 'l')}">fuel</li>
                                                     <li class="item" th:text="${#strings.concat('Gear: ',car.gear)}">gear</li>
@@ -73,15 +73,15 @@
                                             </div>
 
 
-                                            <div class="tabs-item text-item">
+                                            <div role="tabpanel" class="tabs-item text-item">
                                                 <div th:text="${car.notes}">Description of car</div>
                                             </div>
 
-                                            <div class="tabs-item text-item">
+                                            <div role="tabpanel" class="tab-pane tabs-item text-item" id="photoTab">
                                                 <div class="col-md-12">
                                                     <div class="grid">
                                                         <div class="grid-item" style="margin: 0px, padding: 0px" th:each="image : ${images}">
-                                                            <img th:src="${image.toString()}" />
+                                                            <img th:src="${image.toString()}" class="img-thumbnail" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -111,6 +111,32 @@
     <div th:replace="fragments/scriptsFragment"></div>
 
     </body>
+
+<script>
+    let elem = document.querySelector(".grid");
+    let msnry;
+
+    imagesLoaded(elem, function() {
+    msnry = new Masonry(elem, function() {
+        itemSelector: ".grid-item";
+
+    });
+    });
+
+    let photo = document.querySelector("#photos");
+    photo.addEventListener("click", function(e) {
+        e.preventDefault();
+        setTimeout(function() {
+        msnry.layout();
+        }, 500);
+
+    });
+
+
+
+
+
+</script>
 
 
 </html>

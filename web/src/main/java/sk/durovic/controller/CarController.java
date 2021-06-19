@@ -108,7 +108,7 @@ public class CarController {
 
         setPrices(request, car);
 
-        carService.save(car);
+        car = carService.save(car);
 
         model.addAttribute("car", car);
 
@@ -166,6 +166,7 @@ public class CarController {
         return "updateCar";
     }
 
+
     private void setPrices(HttpServletRequest request, Car carPrices) {
         Iterator<String> requestItems = request.getParameterNames().asIterator();
 
@@ -221,7 +222,7 @@ public class CarController {
         return fileStorageService;
     }
 
-    private boolean isOwnerOfCar(UserDetailImpl userDetail, Car car1) {
+    public static boolean isOwnerOfCar(UserDetailImpl userDetail, Car car1) {
         if(userDetail==null || !userDetail.getCompany().getId().equals(car1.getCompany().getId())) {
             log.debug("User not authorized to change car.");
             return false;

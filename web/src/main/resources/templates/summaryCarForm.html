@@ -82,7 +82,7 @@
                     <div class="col-md-12">
                       <div class="grid">
                         <div class="grid-item" style="margin: 0px, padding: 0px" th:each="image : ${images}">
-                          <img th:src="${image.toString()}" />
+                          <img th:src="${image.toString()}" class="img-thumbnail" />
                         </div>
                       </div>
                     </div>
@@ -112,6 +112,74 @@
 <div th:replace="fragments/scriptsFragment"></div>
 
 </body>
+
+<script>
+  let elem = document.querySelector(".grid");
+    let msnry;
+
+    imagesLoaded(elem, function() {
+    msnry = new Masonry(elem, function() {
+        itemSelector: ".grid-item";
+
+    });
+    });
+
+    let photo = document.querySelector("#photos");
+    photo.addEventListener("click", function(e) {
+        e.preventDefault();
+        setTimeout(function() {
+        msnry.layout();
+        }, 500);
+
+    });
+
+    let phtArray = document.querySelectorAll(".img-thumbnail");
+    let nmr=0;
+
+    phtArray.forEach( (oneImg) => {
+
+        oneImg.setAttribute("id", nmr);
+
+        let imgPath = oneImg.getAttribute("src");
+        //console.log(imgPath);
+        let imgNameArray = imgPath.split("\\");
+        //console.log(imgNameArray);
+        let carId = imgNameArray[imgNameArray.length - 2];
+        //console.log(carId);
+        let imgName = imgNameArray[imgNameArray.length - 1];
+        //console.log(imgName);
+
+        oneImg.setAttribute("onclick", "deleteImg('"+imgName+"', '"+carId+"', '"+nmr+"')");
+
+        nmr++;
+    }
+    );
+
+    function deleteImg(imgName, carId, elemId){
+        document.querySelector("div.grid-item img[id='"+elemId+"']").remove();
+        msnry.layout();
+
+        let url = window.location.origin+"/api/image";
+        let xhr = new XMLHttpRequest();
+
+        xhr.open("DELETE", url);
+        xhr.setRequestHeader("Content-type", "application/json");
+
+        xhr.onreadystatechange = function () {
+            if(xhr.readyState === 4) {
+                console.log(xhr.status);
+                console.log(xhr.responseText);
+            }
+        };
+
+        let data = JSON.stringify({
+            "imgName": imgName,
+            "carId": carId
+        });
+
+        xhr.send(data);
+    };
+</script>
 
 
 </html>
