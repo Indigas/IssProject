@@ -19,7 +19,7 @@ import java.util.TreeSet;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Company extends BaseEntity {
+public class Company extends BaseEntity implements Comparable<Company>{
 
     private String name;
     private String address;
@@ -35,4 +35,11 @@ public class Company extends BaseEntity {
         return "Company{" +
                 "name=" + name + "}";
     }
+
+    @Override
+    public int compareTo(Company company) {
+        return this.name.compareTo(company.getName());
+    }
+
+
 }

@@ -111,7 +111,7 @@
                                                 no information
                                                 </div>
                                             <div th:unless="${#lists.isEmpty(car.prices)}">
-                                                from<span th:text="${car.prices[#lists.size(car.prices)-1].price}"></span>
+                                                from<span th:text="${#lists.sort(car.prices, priceComparator)[0].price}"></span>
                                                 <sup>EUR</sup>/Day
                                             </div>
                                             </div>
@@ -194,7 +194,7 @@
         </div>
         <!-- ////////////////////////////////////////// -->
 
-        <div class="wheel-quote text-center">
+        <!--div class="wheel-quote text-center">
             <img src="images/bg3.jpg" alt="" class="wheel-img">
             <div class="container">
                 <div class="row">
@@ -245,9 +245,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
         <!-- /////////////////////////////// -->
-        <div class="wheel-subscribe wheel-bg2">
+        <!--<div class="wheel-subscribe wheel-bg2">
             <div class="container ">
                 <div class="row">
                     <div class="col-md-6 padd-lr0">
@@ -264,7 +264,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
         <!--- FOOTER -->
         <div th:replace="fragments/footerFragment"></div>
 

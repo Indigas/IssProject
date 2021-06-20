@@ -5,7 +5,7 @@
 
 <head>
     <div th:replace="fragments/headFragment"></div>
-    <title>About</title>
+    <title>List of companies</title>
     </head>
     <body class="">
         <!-- MAIN -->
@@ -17,11 +17,11 @@
                 <div class="row">
                     <div class="col-xs-12 padd-lr0">
                         <div class="wheel-start3-body clearfix marg-lg-t255 marg-lg-b75 marg-sm-t190 marg-xs-b30">
-                            <h3>About Us</h3>
+                            <h3>Companies</h3>
                             <ol class="breadcrumb">
                                 <li><a href="#">Home</a></li>
                                 <li><a href="#"> pages </a></li>
-                                <li class="active">About</li>
+                                <li class="active">Companies</li>
                             </ol>
                         </div>
                     </div>
@@ -29,7 +29,122 @@
             </div>
         </div>
         <!-- /////////////////////////////////////////////////// -->
-        <div class="container padd-lr0">
+        <div class="prosuct-wrap">
+            <div class="container padd-lr0 xs-padd">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <header class="wheel-header marg-lg-t25 marg-lg-b65">
+                            <h3>Search company for your location -<span> Australia</span></h3>
+                        </header>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="select select-4 wheel-select-w100 marg-lg-t10 marg-lg-b65 marg-sm-b30">
+                            <span class="">Australia</span>
+                            <ul class="list">
+                                <li>Australia</li>
+                                <li>United States</li>
+                                <li>United Kingdom</li>
+                                <li>Ukraine</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-3">
+                        <div class="select select-1">
+                            <span class="">All category</span>
+                            <ul class="list">
+                                <li>All category</li>
+                                <li>Item1</li>
+                                <li>Item2</li>
+                                <li>Item3</li>
+                                <li>Item4</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-3">
+                        <div class="select select-2">
+                            <span class="">All brands</span>
+                            <ul class="list">
+                                <li>All brands</li>
+                                <li>Item1</li>
+                                <li>Item2</li>
+                                <li>Item3</li>
+                                <li>Item4</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-3">
+                        <div class="select select-3">
+                            <span class="">Any price</span>
+                            <ul class="list">
+                                <li>Any price</li>
+                                <li>Item1</li>
+                                <li>Item2</li>
+                                <li>Item3</li>
+                                <li>Item4</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-3">
+                        <div class="wheel-car-list-btn">
+                            <a href="#" class="fa fa-th-list active" data-list='product-elem-style1'></a>
+                            <a href="#" class="fa fa-th" data-list='product-elem-style2'></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <div class="container padd-lr0 xs-padd">
+            <div class="product-list product-list2 wheel-bgt clearfix">
+                <div class="row">
+        <div class="col-xs-12">
+
+            <table class="table table-bordered table-hover" style="background-color: #ffffff">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="company : ${companies}">
+                    <td th:text="${company.name}">Name</td>
+                    <td th:text="${company.address}">Address</td>
+                    <td th:text="${company.city}">City</td>
+                    <td th:text="${company.phone}">Phone</td>
+                    <td th:text="${company.email}">Email</td>
+                    <td><a th:href="@{${#strings.concat('/list/company/', company.id)}}">List of cars</a></td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+        </div>
+                </div>
+            </div>
+        </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 padd-lr0 text-center">
+                        <div class="wheel-page-pagination marg-lg-t60 marg-lg-b25  ">
+                            <a class="prev page-numbers fa fa-arrow-left" href="#"></a>
+                            <a class="page-numbers" href="#">1</a>
+                            <span class="page-numbers current">2</span>
+                            <a class="page-numbers" href="#">3</a>
+                            <a class="page-numbers" href="#">4</a>
+                            <a class="next page-numbers fa fa-arrow-right" href="#"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--<div class="container padd-lr0">
             <div class="row">
                 <div class="col-md-6 ">
                     <div class="wheel-info-img  marg-lg-t150 marg-lg-b150 marg-md-t100 marg-md-b100">
@@ -48,9 +163,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
         <!-- /////////////////////////////////////////////////////////// -->
-        <div class="wheel-bg2">
+        <!--<div class="wheel-bg2">
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12">
@@ -96,9 +211,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
         <!-- //////////////////////////////////////////// -->
-        <div class="container">
+        <!--<div class="container">
             <div class="row">
                 <div class="col-md-6 padd-lr0">
                     <div class="wheel-skills marg-lg-b150 marg-sm-b50">
@@ -156,9 +271,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
         <!-- /////////////////////////////// -->
-        <div class="wheel-bg2">
+        <!--<div class="wheel-bg2">
             <div class="container padd-lr0">
                 <div class="row">
                     <div class="col-xs-12">
@@ -227,9 +342,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
         <!-- /////////////////////////////// -->
-        <div class="container">
+        <!--<div class="container">
             <div class="row">
                 <div class="col-xs-12 padd-lr0">
                     <div class="wheel-partners text-center marg-lg-b150 marg-sm-b50 marg-lg-t150 marg-sm-t50">
@@ -242,9 +357,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
         <!-- /////////////////////////////// -->
-        <div class="wheel-subscribe wheel-bg2">
+        <!--<div class="wheel-subscribe wheel-bg2">
             <div class="container ">
                 <div class="row">
                     <div class="col-md-6 padd-lr0">
@@ -261,7 +376,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
         <!-- FOOTER -->
         <!-- ///////////////// -->
         <div th:replace="fragments/footerFragment"></div>

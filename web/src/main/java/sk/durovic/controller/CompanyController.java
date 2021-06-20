@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +20,8 @@ import sk.durovic.services.CompanyService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Slf4j
 @Controller
@@ -42,5 +45,14 @@ public class CompanyController {
         log.debug("Company registered: " + cc.getIdCompany());
 
         return "redirect:/register?successfull";
+    }
+
+    @GetMapping("/listcompanies")
+    public String getAllCompanies(Model model){
+
+        Set<Company> listCompanies = new TreeSet<>(companyService.findAll());
+
+        model.addAttribute("companies", listCompanies);
+        return "companies";
     }
 }

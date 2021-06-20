@@ -2,6 +2,7 @@ package sk.durovic.services.data;
 
 import org.springframework.stereotype.Service;
 import sk.durovic.model.Car;
+import sk.durovic.model.Company;
 import sk.durovic.repositories.CarRepository;
 import sk.durovic.services.CarService;
 
@@ -46,5 +47,10 @@ public class CarServiceImpl implements CarService {
     @Override
     public Optional<List<Car>> findByIsEnabled() {
         return carRepository.findByIsEnabledTrue();
+    }
+
+    @Override
+    public Optional<List<Car>> findByCompany(Company company) {
+        return carRepository.findByCompanyId(company.getId());
     }
 }

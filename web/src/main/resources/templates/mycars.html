@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+
+<head>
+  <div th:replace="fragments/headFragment"></div>
+  <title>My cars</title>
+</head>
+<body class=" wheel-bg2 ">
+<!-- MAIN -->
+<div th:replace="fragments/headMenuFragment"></div>
+<!-- //////////////////////////////// -->
+<div class="wheel-start3">
+  <img th:src="@{/images/bg7.jpg}" alt="" class="wheel-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 padd-lr0">
+        <div class="wheel-start3-body clearfix marg-lg-t255 marg-lg-b75 marg-sm-t190 marg-xs-b30">
+          <h3>Listing - List View</h3>
+          <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li class="active">Listing</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ////////////////////////////////////////// -->
+<div class="prosuct-wrap">
+  <div class="container padd-lr0 xs-padd">
+    <div class="row">
+      <div class="col-sm-8">
+        <header class="wheel-header marg-lg-t25 marg-lg-b65">
+          <h3>My cars at location <span>Australia</span></h3>
+        </header>
+      </div>
+      <div class="col-sm-4">
+        <div class="select select-4 wheel-select-w100 marg-lg-t10 marg-lg-b65 marg-sm-b30">
+          <span class="">Australia</span>
+          <ul class="list">
+            <li>Australia</li>
+            <li>United States</li>
+            <li>United Kingdom</li>
+            <li>Ukraine</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-6 col-md-3">
+        <div class="select select-1">
+          <span class="">All category</span>
+          <ul class="list">
+            <li>All category</li>
+            <li>Item1</li>
+            <li>Item2</li>
+            <li>Item3</li>
+            <li>Item4</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-3">
+        <div class="select select-2">
+          <span class="">All brands</span>
+          <ul class="list">
+            <li>All brands</li>
+            <li>Item1</li>
+            <li>Item2</li>
+            <li>Item3</li>
+            <li>Item4</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-3">
+        <div class="select select-3">
+          <span class="">Any price</span>
+          <ul class="list">
+            <li>Any price</li>
+            <li>Item1</li>
+            <li>Item2</li>
+            <li>Item3</li>
+            <li>Item4</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-3">
+        <div class="wheel-car-list-btn">
+          <a href="#" class="fa fa-th-list " data-list='product-elem-style1'></a>
+          <a href="#" class="fa fa-th active" data-list='product-elem-style2'></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container padd-lr0 xs-padd">
+    <div class="product-list product-list2 wheel-bgt clearfix">
+      <div class="row">
+
+        <div class="col-lg-4  col-md-6" th:each="car : ${cars}">
+          <div class="product-elem-style2 product-elem-style  wheel-bg1 clearfix">
+            <div class="product-table2">
+              <div class="img-wrap img-wrap2 product-cell">
+                <img th:src="${car.mainImage}" alt="img" class="img-responsive">
+              </div>
+            </div>
+            <div class="product-table3  ">
+              <div class="text-wrap text-wrap2 product-cell">
+                <div class="title" th:text="${#strings.append(car.brand, ' '+car.model)}"></div>
+                <div class="price-wrap product-cell">
+                  <div th:if="${#lists.isEmpty(car.prices)}">
+                    no information
+                  </div>
+                  <div th:unless="${#lists.isEmpty(car.prices)}">
+                    from<span th:text="${car.prices[#lists.size(car.prices)-1].price}"></span>
+                    <sup>EUR</sup>/Day
+                  </div>
+                </div>
+              </div>
+              <div class="img-wrap img-wrap3 product-cell"
+                   style="margin-top:5px">
+                <img th:src="${car.mainImage}" alt="img" class="img-responsive">
+              </div>
+              <div class="text-wrap  text-wrap3 product-cell">
+                <ul class="metadata metadata2">
+                  <li th:text="${car.fuel}">2 seats</li>
+                  <li th:text="${#strings.append(car.gear, ' prevodovka')}">2 bags</li>
+                  <li th:text="${#strings.append(car.powerKw, ' kW')}">150 mpg</li>
+                  <li th:text="${#strings.append(car.seats, ' sedadiel')}">airbags</li>
+                  <li th:text="${#strings.append(car.airCondition.value, ' klimaticácia')}">manual/auto</li>
+                  <li th:text="${#strings.append(car.volume, ' objem motora')}">ac</li>
+                  <li th:text="${#strings.append('Výbava: ', car.pack)}"></li>
+                </ul>
+                <div class="wheel-view-link">
+                  <a th:href="@{'/list/detail/'+${car.id}}">View Details</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- example!!! -->
+        <!-- <div class="col-lg-4  col-md-6">
+             <div class="product-elem-style2 product-elem-style  wheel-bg1 clearfix">
+                 <div class="product-table2">
+                     <div class="img-wrap img-wrap2 product-cell">
+                         <img src="images/i27.jpg" alt="img" class="img-responsive">
+                     </div>
+                 </div>
+                 <div class="product-table3  ">
+                     <div class="text-wrap text-wrap2 product-cell">
+                         <div class="title">Bugatti Veyron</div>
+                         <div class="price-wrap product-cell">
+                             <span>$79</span><sup>00</sup>/Day
+                         </div>
+                     </div>
+                     <div class="img-wrap img-wrap3 product-cell">
+                         <img src="images/i33.jpg" alt="img" class="img-responsive">
+                     </div>
+                     <div class="text-wrap  text-wrap3 product-cell">
+                         <ul class="metadata metadata2">
+                             <li>2 seats</li>
+                             <li>2 bags</li>
+                             <li>150 mpg</li>
+                             <li>airbags</li>
+                             <li>manual/auto</li>
+                             <li>ac</li>
+                         </ul>
+                         <div class="wheel-view-link">
+                             <a href="#">View Details</a>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>-->
+
+
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 padd-lr0 text-center">
+        <div class="wheel-page-pagination marg-lg-t60 marg-lg-b25  ">
+          <a class="prev page-numbers fa fa-arrow-left" href="#"></a>
+          <a class="page-numbers" href="#">1</a>
+          <span class="page-numbers current">2</span>
+          <a class="page-numbers" href="#">3</a>
+          <a class="page-numbers" href="#">4</a>
+          <a class="next page-numbers fa fa-arrow-right" href="#"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ////////////////////////////////////////// -->
+
+<!--<div class="wheel-quote text-center">
+  <img src="images/bg3.jpg" alt="" class="wheel-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="swiper-container" data-autoplay="7000" data-touch="1" data-mouse="0" data-xs-slides="1" data-sm-slides="1" data-md-slides="1" data-lg-slides="1" data-add-slides="1" data-slides-per-view="responsive" data-loop="1" data-speed="1000">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <div class="wheel-quote-item">
+                <div class="wheel-quote-logo"><img src="images/l2.png" alt=""></div>
+                <p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio.</p>
+                <div class="wheel-quote-stars"><img src="images/stars.png" alt=""></div>
+                <h6>Catrina Romero</h6>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="wheel-quote-item">
+                <div class="wheel-quote-logo"><img src="images/l2.png" alt=""></div>
+                <p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio.</p>
+                <div class="wheel-quote-stars"><img src="images/stars.png" alt=""></div>
+                <h6>Catrina Romero</h6>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="wheel-quote-item">
+                <div class="wheel-quote-logo"><img src="images/l2.png" alt=""></div>
+                <p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio.</p>
+                <div class="wheel-quote-stars"><img src="images/stars.png" alt=""></div>
+                <h6>Catrina Romero</h6>
+              </div>
+            </div>
+          </div>
+          <div class="pagination"></div>
+        </div>
+        <div class="swiper-outer-left fa fa-angle-left"></div>
+        <div class="swiper-outer-right fa fa-angle-right"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="wheel-quote-partners">
+          <a href="#"><img src="images/p1.png" alt=""></a>
+          <a href="#"><img src="images/p2.png" alt=""></a>
+          <a href="#"><img src="images/p3.png" alt=""></a>
+          <a href="#"><img src="images/p4.png" alt=""></a>
+          <a href="#"><img src="images/p5.png" alt=""></a>
+          <a href="#"><img src="images/p6.png" alt=""></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>-->
+<!-- /////////////////////////////// -->
+<!--div class="wheel-subscribe wheel-bg2">
+  <div class="container ">
+    <div class="row">
+      <div class="col-md-6 padd-lr0">
+        <div class="wheel-header">
+          <h5>Newsletter Signup </h5>
+          <h3>Subscribe & get<span> 20% </span> Off</h3>
+        </div>
+      </div>
+      <div class="col-md-6 padd-lr0">
+        <form action="#">
+          <input type="text" placeholder="Your Email Adddress">
+          <button class="wheel-btn">Subscribe</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>-->
+<!--- FOOTER -->
+<div th:replace="fragments/footerFragment"></div>
+
+
+<div th:replace="fragments/scriptsFragment"></div>
+</body>
+
+</html>

@@ -19,10 +19,7 @@ import sk.durovic.services.data.FileStorageServiceImpl;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -49,6 +46,8 @@ public class CarController {
             return "redirect:/error?NotAuthorized";
 
         model.addAttribute("car", car1);
+
+        model.addAttribute("prices", car1.getPrices());
 
         try {
             model.addAttribute("images", ImagesHandler.getImages(car1).collect(Collectors.toList()));
@@ -111,6 +110,7 @@ public class CarController {
         car = carService.save(car);
 
         model.addAttribute("car", car);
+        model.addAttribute("prices", car.getPrices());
 
         try {
             model.addAttribute("images", ImagesHandler.getImages(car).collect(Collectors.toList()));
@@ -164,6 +164,15 @@ public class CarController {
         model.addAttribute("carCommand", new CarToCarCommand().convert(car1));
 
         return "updateCar";
+    }
+
+    @GetMapping("/list")
+    public String listOfMyCars(Model model, @AuthenticationPrincipal UserDetailImpl userDetail){
+        Optional<List<Car>> listOfCars = carService.findByCompany(userDetail.getCompany());
+
+        model.addAttribute("cars", listOfCars.orElse(new ArrayList<>()));
+
+        return "mycars";
     }
 
 

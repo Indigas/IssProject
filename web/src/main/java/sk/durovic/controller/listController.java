@@ -6,8 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import sk.durovic.commands.IndexSearch;
+import sk.durovic.comparators.PricesComparatorByPrice;
 import sk.durovic.data.ImagesHandler;
 import sk.durovic.model.Car;
+import sk.durovic.model.Company;
 import sk.durovic.model.Prices;
 import sk.durovic.services.AvailabilityService;
 import sk.durovic.services.CarService;
@@ -44,7 +46,10 @@ public class listController {
 
     @GetMapping
     private String getAllListings(Model model){
+
         model.addAttribute("cars", carService.findByIsEnabled().orElse(new ArrayList<>()));
+        model.addAttribute("priceComparator", new PricesComparatorByPrice());
+
         return "car-list-3col2";
     }
 
@@ -56,11 +61,9 @@ public class listController {
             return "redirect:/error?CarNotFound";
 
         model.addAttribute("car", car1);
-        List<Prices> listOfprices = new ArrayList<>(car1.getPrices());
+        //Set<Prices> listOfprices = new TreeSet<>(car1.getPrices());
 
-        listOfprices.sort(Comparator.comparing(Prices::getDays));
-
-        model.addAttribute("prices", listOfprices);
+        model.addAttribute("prices", car1.getPrices());
         car1.getPrices().forEach(t -> log.debug("Prices of car:: " + t.getDays() + ":: " + t.getPrice()));
 
 
@@ -85,6 +88,25 @@ public class listController {
 
 
         model.addAttribute("cars", listCars);
+        return "car-list-3col2";
+    }
+
+    @GetMapping("/company/{id}")
+    public String getCarsByCompany(Model model, @PathVariable("id") Long id){
+        Company company = new Company();
+        company.setId(id);
+
+        Optional<List<Car>> listOfCars = carService.findByCompany(company);
+
+        if(listOfCars.isEmpty())
+            return "car-list-3col2";
+
+        List<Car> listOfEnabledCars = listOfCars.get().stream()
+                .filter(Car::isEnabled).collect(Collectors.toList());
+
+
+        model.addAttribute("cars", listOfEnabledCars);
+        model.addAttribute("priceComparator", new PricesComparatorByPrice());
         return "car-list-3col2";
     }
 
