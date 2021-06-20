@@ -30,10 +30,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                 .ignoringAntMatchers("/api/**")
                             )
                 .authorizeRequests(authorize -> {
-                    authorize.antMatchers("/*", "/assets/**", "/dist/**", "/images/**").permitAll()
+                    authorize.antMatchers("/account", "/account/**").authenticated()
+                            .antMatchers("/api/reservation/create").permitAll()
+                            .antMatchers("/*", "/assets/**", "/dist/**", "/images/**").permitAll()
                             .antMatchers("/register/new").permitAll()
                             .antMatchers("/list/**").permitAll()
+                            //.antMatchers("/api/**").permitAll()
+
                             .antMatchers("/companies/**").permitAll();
+
                 })
                 .authorizeRequests()
                 .anyRequest().authenticated()

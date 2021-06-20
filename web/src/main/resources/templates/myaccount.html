@@ -28,100 +28,86 @@
             </div>
         </div>
         <!-- //////////////////////////////// -->
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-3 col-xs-6">
-                    <div class="wheel-contact-info text-center marg-lg-t150 marg-lg-b50 marg-xs-t50 marg-xs-b50">
-                        <div class="wheel-contact-logo"><i class="fa fa-map-marker"></i></div>
-                        <h4>Address</h4>
-                        <span>121 King Street, Melbourne VIC 3000 Australia</span>
-                    </div>
-                </div>
-                <div class="col-sm-3 col-xs-6">
-                    <div class="wheel-contact-info text-center marg-lg-t150 marg-lg-b50 marg-xs-t50 marg-xs-b50">
-                        <div class="wheel-contact-logo"><i class="fa fa-phone"></i></div>
-                        <h4>telePhone</h4>
-                        <a href="#"><span>(+61)  3 8376 6284</span></a>
-                        <a href="#"><span>(+61)  3 8376 6284</span></a>
-                    </div>
-                </div>
-                <div class="col-sm-3 col-xs-6">
-                    <div class="wheel-contact-info text-center marg-lg-t150 marg-lg-b50 marg-xs-t50 marg-xs-b50">
-                        <div class="wheel-contact-logo"><i class="fa fa-mobile"></i></div>
-                        <h4>Fax</h4>
-                        <a href="#"><span>(+61)  3 8376 6284 </span></a>
-                        <a href="#"><span>(+61)  3 8376 6284 </span></a>
-                    </div>
-                </div>
-                <div class="col-sm-3 col-xs-6">
-                    <div class="wheel-contact-info text-center marg-lg-t150 marg-lg-b50 marg-xs-t50 marg-xs-b50">
-                        <div class="wheel-contact-logo"><i class="fa fa-envelope"></i></div>
-                        <h4>Email</h4>
-                        <a href="#"><span>info@wheelrental.com</span></a>
-                        <a href="#"><span>info@wheelrental.com</span></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- ////////////////////////////////// -->
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="wheel-header text-center marg-lg-t85 marg-lg-b90  marg-md-t50">
-                        <h5>Say Hello! </h5>
-                        <h3>Send Us a <span>Message</span></h3>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 padd-lr0">
-                    <div class="wheel-contact-form text-center marg-lg-b145">
-                        <div class="form">
-                            <input type="text" placeholder="Your Name *">
-                            <input type="text" placeholder="Your Email *">
-                            <input type="text" placeholder="Your URL (Optional)">
-                            <input type="text" placeholder="Subject*">
-                            <textarea   placeholder="Message *"></textarea>
-                            <button class="wheel-btn">Submit Message</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- ///////////////////////////////////// -->
+
         <div class="container-fluid padd-lr0">
-            <div class="row">
+            <div class="row padd-lr0">
                 <div class="col-xs-12 padd-lr0">
-                    <div 
-                        class="wheel-map" 
-                        data-lat="45.7143528" 
-                        data-lng="-74.0059731"  
-                        data-marker="images/marker.png" 
-                        data-zoom="10" 
-                        data-style="style-1"
-                        ></div>
-                </div>
-            </div>
-        </div>
-        <!-- /////////////////////////////// -->
-        <div class="wheel-subscribe wheel-bg2">
-            <div class="container ">
-                <div class="row">
-                    <div class="col-md-6 padd-lr0">
-                        <div class="wheel-header">
-                            <h5>Newsletter Signup </h5>
-                            <h3>Subscribe & get<span> 20% </span> Off</h3>
+                    <div class="container padd-lr0 xs-padd">
+        <div class="row">
+            <div class="col-xs-12 padd-lr0 xs-padd sm-addpadd">
+                <div class="wheel-collection style-2">
+                    <div class="tabs">
+
+
+                        <div class="tabs-header">
+                            <ul role="tablist">
+                                <li role="presentation" class="active"><a href="#" data-toggle="tab" role="tab">Details</a></li>
+                                <li role="presentation"><a href="#" data-toggle="tab" role="tab">Requests</a></li>
+
+                            </ul>
+                        </div>
+                        <!---------------------------->
+                        <div role="tabpanel" class="tabs-item text-item active">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <td><div class="hidden-alerts" id="changesSuccessfull">Saved</div></td>
+                                        <td><div class="hidden-alerts" id="changesUnsuccessfull">Not saved</div></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="text" th:value="${company.name}" class="company-detail name form-control"></td>
+                                        <td><input type="text" th:value="${company.address}" class="company-detail address form-control"></td>
+
+                                    </tr>
+                                    <tr>
+
+                                        <td><input type="text" th:value="${company.city}" class="company-detail city form-control"></td>
+                                        <td><input type="text" th:value="${company.phone}" class="company-detail phone form-control"></td>
+                                    </tr>
+                                    <tr>
+
+                                        <td><input type="text" th:value="${company.email}" class="company-detail email form-control"></td>
+                                        <td><button type="button" class="btn btn-success" onclick="saveCompanyDetails()">Save changes</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!---------------------------------------------->
+                        <div role="tabpanel" class="tabs-item text-item">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <td>Car id</td>
+                                    <td>Start date</td>
+                                    <td>End date</td>
+                                    <td>Conflicts</td>
+                                    <td>Action</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="reservation : ${reservations}" th:class="${#strings.concat('TR',reservation.id)}">
+                                    <td th:text="${reservation.carId}"></td>
+                                    <td th:text="${reservation.startDate}"></td>
+                                    <td th:text="${reservation.endDate}"></td>
+                                    <td></td>
+                                    <td><input type="hidden" th:value="${reservation.id}" th:class="${#strings.concat('In',reservation.id)}"/>
+                                        <input type="hidden" th:value="${reservation.companyId}" th:class="${#strings.concat('Ip',reservation.id)}"/>
+                                        <a href="#" id="acceptClick" th:class="${reservation.id}">Accept</a>|<a href="#" th:class="${reservation.id}" id="declineClick" >Decline</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <div class="col-md-6 padd-lr0">
-                        <form action="#">
-                            <input type="text" placeholder="Your Email Adddress">
-                            <button class="wheel-btn">Subscribe</button>
-                        </form>
+                </div>
+            </div>
+        </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <!-- FOOTER -->
         <!-- ///////////////// -->
         <div th:replace="fragments/footerFragment"></div>
@@ -129,6 +115,7 @@
 
         <div th:replace="fragments/scriptsFragment"></div>
     </body>
+<script th:src="@{/assets/js/account.js}"></script>
 
 
 </html>

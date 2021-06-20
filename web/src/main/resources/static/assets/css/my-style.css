@@ -18,6 +18,12 @@
     background-color: blue;
 }
 
+.hidden-alerts {
+    width: 0;
+    height: 0;
+    visibility: hidden;
+}
+
 /* Pop-up windows on gallery click */
 .img-window {
     width: 100vw;

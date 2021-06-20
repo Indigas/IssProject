@@ -61,11 +61,8 @@ public class listController {
             return "redirect:/error?CarNotFound";
 
         model.addAttribute("car", car1);
-        //Set<Prices> listOfprices = new TreeSet<>(car1.getPrices());
-
         model.addAttribute("prices", car1.getPrices());
-        car1.getPrices().forEach(t -> log.debug("Prices of car:: " + t.getDays() + ":: " + t.getPrice()));
-
+        model.addAttribute("company", car1.getCompany());
 
         try {
             model.addAttribute("images", ImagesHandler.getImages(car1).collect(Collectors.toList()));
@@ -79,7 +76,7 @@ public class listController {
 
     @PostMapping
     private String getListingByDate(@ModelAttribute IndexSearch indexSearch, Model model){
-        log.debug("Start date"+ indexSearch.getStartDate());
+        //log.debug("Start date"+ indexSearch.getStartDate());
 
         Set<Car> listCars = availabilityService.listOfAvailableCars(carService.findByIsEnabled()
                         .map(TreeSet::new).orElseGet(TreeSet::new),
