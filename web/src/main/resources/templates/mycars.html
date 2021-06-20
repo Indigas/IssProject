@@ -111,7 +111,7 @@
                     no information
                   </div>
                   <div th:unless="${#lists.isEmpty(car.prices)}">
-                    from<span th:text="${car.prices[#lists.size(car.prices)-1].price}"></span>
+                    from<span th:text="${#lists.sort(car.prices, priceComparator)[0].price}"></span>
                     <sup>EUR</sup>/Day
                   </div>
                 </div>
@@ -131,47 +131,13 @@
                   <li th:text="${#strings.append('Výbava: ', car.pack)}"></li>
                 </ul>
                 <div class="wheel-view-link">
-                  <a th:href="@{'/list/detail/'+${car.id}}">View Details</a>
+                  <a th:href="@{'/car/detail/'+${car.id}}">View Details</a>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- example!!! -->
-        <!-- <div class="col-lg-4  col-md-6">
-             <div class="product-elem-style2 product-elem-style  wheel-bg1 clearfix">
-                 <div class="product-table2">
-                     <div class="img-wrap img-wrap2 product-cell">
-                         <img src="images/i27.jpg" alt="img" class="img-responsive">
-                     </div>
-                 </div>
-                 <div class="product-table3  ">
-                     <div class="text-wrap text-wrap2 product-cell">
-                         <div class="title">Bugatti Veyron</div>
-                         <div class="price-wrap product-cell">
-                             <span>$79</span><sup>00</sup>/Day
-                         </div>
-                     </div>
-                     <div class="img-wrap img-wrap3 product-cell">
-                         <img src="images/i33.jpg" alt="img" class="img-responsive">
-                     </div>
-                     <div class="text-wrap  text-wrap3 product-cell">
-                         <ul class="metadata metadata2">
-                             <li>2 seats</li>
-                             <li>2 bags</li>
-                             <li>150 mpg</li>
-                             <li>airbags</li>
-                             <li>manual/auto</li>
-                             <li>ac</li>
-                         </ul>
-                         <div class="wheel-view-link">
-                             <a href="#">View Details</a>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-         </div>-->
 
 
       </div>

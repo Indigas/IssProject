@@ -102,6 +102,9 @@
 
                   <div class="tabs-item text-item">
                     <div class="col-md-12">
+                        <div class="panel-body alert alert-danger">
+                          Click on image to delete it from gallery!
+                        </div>
                       <div class="grid">
                         <div class="grid-item" style="margin: 0px, padding: 0px" th:each="image : ${images}">
                           <img th:src="${image.toString()}" class="img-thumbnail" />

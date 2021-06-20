@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sk.durovic.commands.CarCommand;
+import sk.durovic.comparators.PricesComparatorByPrice;
 import sk.durovic.converters.CarCommandToCar;
 import sk.durovic.converters.CarToCarCommand;
 import sk.durovic.data.ImagesHandler;
@@ -171,6 +172,7 @@ public class CarController {
         Optional<List<Car>> listOfCars = carService.findByCompany(userDetail.getCompany());
 
         model.addAttribute("cars", listOfCars.orElse(new ArrayList<>()));
+        model.addAttribute("priceComparator", new PricesComparatorByPrice());
 
         return "mycars";
     }
