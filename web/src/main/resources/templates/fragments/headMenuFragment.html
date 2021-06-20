@@ -26,8 +26,9 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a th:href="@{/register}">Login</a></li>
-                                        <li><a th:href="@{/register}">Register</a></li>
+                                        <li sec:authorize="isAnonymous()"><a th:href="@{/register}">Login</a></li>
+                                        <li sec:authorize="isAnonymous()"><a th:href="@{/register}">Register</a></li>
+                                        <li sec:authorize="isAuthenticated()"><a th:href="@{/myaccount}">My account</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -72,8 +73,8 @@
                                     </ul>-->
                                 </li>
                                 <li class="menu-item current-menu-parent menu-item-has-children  ">
-                                    <a href="#"> Listing </a>
-                                    <!--class=" dl-submenu "-->
+                                    <a th:href="@{/list}"> Listing </a>
+                                    <!--class=" dl-submenu "
                                     <ul class="sub-menu dl-submenu">
                                         <li class="menu-item current-menu-item">
                                             <a th:href="@{/list/car-grid}">Car Listing - Grid View</a>
@@ -81,14 +82,14 @@
                                         <li class="menu-item current-menu-item">
                                             <a th:href="@{/list}">Car Listing - List View</a>
                                         </li>
-                                    </ul>
+                                    </ul>-->
                                 </li>
                                 <li class="menu-item   ">
                                     <a th:href="@{/reservation}">Reservation</a>
                                 </li>
                                 <li class="menu-item menu-item-has-children  ">
-                                    <a href="#">Pages</a>
-                                    <ul class="sub-menu">
+                                    <a th:href="@{/listcompanies}">Companies</a>
+                                    <!--<ul class="sub-menu">
                                         <li class="menu-item "><a th:href="@{/contact}">contact</a></li>
                                         <li class="menu-item "><a th:href="@{/register}">Register</a></li>
                                         <li class="menu-item "><a th:href="@{/checkout}">Ceckout</a></li>
@@ -102,18 +103,18 @@
                                                 <li class="menu-item"><a href="#">Level 3</a></li>
                                             </ul>
                                         </li>
-                                    </ul>
+                                    </ul>-->
                                 </li>
-                                <li class="menu-item menu-item-has-children  ">
-                                    <a href="#">News</a>
-                                    <ul class="sub-menu">
+                                <li sec:authorize="isAuthenticated()" class="menu-item menu-item-has-children  ">
+                                    <a th:href="@{/car/list}">My cars</a>
+                                    <!--<ul class="sub-menu">
                                         <li class="menu-item"><a th:href="@{/news}">News</a></li>
                                         <li class="menu-item"><a th:href="@{/news-details}">News details</a></li>
-                                    </ul>
+                                    </ul>-->
                                 </li>
-                                <li class="menu-item ">
+                                <!--<li class="menu-item ">
                                     <a href="#">Features</a>
-                                </li>
+                                </li>-->
                             </ul>
                             <div class="nav-menu-icon"><i></i></div>
                         </nav>
