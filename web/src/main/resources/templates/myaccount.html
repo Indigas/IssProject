@@ -82,7 +82,8 @@
                                     <td>Car id</td>
                                     <td>Start date</td>
                                     <td>End date</td>
-                                    <td>Conflicts</td>
+                                    <td>Email</td>
+                                    <td>Phone</td>
                                     <td>Action</td>
                                 </tr>
                                 </thead>
@@ -91,7 +92,8 @@
                                     <td th:text="${reservation.carId}"></td>
                                     <td th:text="${reservation.startDate}"></td>
                                     <td th:text="${reservation.endDate}"></td>
-                                    <td></td>
+                                    <td th:text="${reservation.email}"></td>
+                                    <td th:text="${reservation.phone}"></td>
                                     <td><input type="hidden" th:value="${reservation.id}" th:class="${#strings.concat('In',reservation.id)}"/>
                                         <input type="hidden" th:value="${reservation.companyId}" th:class="${#strings.concat('Ip',reservation.id)}"/>
                                         <a href="#" id="acceptClick" th:class="${reservation.id}">Accept</a>|<a href="#" th:class="${reservation.id}" id="declineClick" >Decline</a></td>

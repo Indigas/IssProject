@@ -15,5 +15,7 @@ public class Reservation extends BaseEntity{
     private LocalDateTime endDate;
     private Long carId;
     private Long companyId;
+    private String email;
+    private String phone;
 
 }

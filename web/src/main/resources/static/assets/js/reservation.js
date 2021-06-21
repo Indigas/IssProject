@@ -38,6 +38,8 @@ function sendPostReservation(startDate, startTime, endDate, endTime){
 
     let carId = document.querySelector("#input-valCarId").value;
     let companyId = document.querySelector("#input-valCompanyId").value;
+    let email = document.querySelector("#contact_email").value;
+    let phone = document.querySelector("#contact_phone").value;
 
     let data = JSON.stringify({
         "startDate": startDate,
@@ -45,7 +47,9 @@ function sendPostReservation(startDate, startTime, endDate, endTime){
         "endDate": endDate,
         "endTime": endTime,
         "carId": parseInt(carId),
-        "companyId": parseInt(companyId)
+        "companyId": parseInt(companyId),
+        "email": email,
+        "phone": phone
     });
 
     xhr.send(data);

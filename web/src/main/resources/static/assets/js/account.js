@@ -65,7 +65,7 @@ t.addEventListener("click", function(e) {
 
 e.preventDefault();
 //console.log(this.classList.item(0))
-acceptReservation(this.classList.item(0));
+declineReservation(this.classList.item(0));
 })
 });
 
@@ -76,6 +76,9 @@ function acceptReservation(nd){
     xhr.open("PATCH", url, true);
     xhr.setRequestHeader("Content-type", "application/json");
 
+
+    document.querySelector(".TR"+nd).classList.add("success");
+
     sendReservationDecision(xhr,nd);
 };
 
@@ -85,6 +88,9 @@ function declineReservation(nd){
 
     xhr.open("DELETE", url, true);
     xhr.setRequestHeader("Content-type", "application/json");
+
+
+    document.querySelector(".TR"+nd).classList.add("danger");
 
     sendReservationDecision(xhr, nd);
 };
@@ -107,7 +113,10 @@ function sendReservationDecision(xhr,nd){
         //console.log("reservId: " + reservationId);
         //console.log("reservCompId: "+reservationCompanyId);
 
-        document.querySelector(".TR"+nd).remove();
+        setTimeout(function() {
+            document.querySelector(".TR"+nd).remove();
+        }, 750);
+
 
 
         let data = JSON.stringify({

@@ -12,4 +12,6 @@ public class ReservationRestApi {
     private String endTime;
     private Long carId;
     private Long companyId;
+    private String email;
+    private String phone;
 }

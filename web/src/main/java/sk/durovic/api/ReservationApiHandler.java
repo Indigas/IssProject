@@ -37,6 +37,8 @@ public class ReservationApiHandler {
 
         reservation.setCarId(reservationRestApi.getCarId());
         reservation.setCompanyId(reservationRestApi.getCompanyId());
+        reservation.setEmail(reservationRestApi.getEmail());
+        reservation.setPhone(reservationRestApi.getPhone());
 
         reservationService.save(reservation);
 
