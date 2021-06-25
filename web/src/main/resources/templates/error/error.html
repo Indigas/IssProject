@@ -16,12 +16,12 @@
 <!-- //////////////////////////////// -->
 
 <div class="wheel-start3">
-  <img src="images/bg7.jpg" alt="" class="wheel-img">
+  <img th:src="@{/images/bg7.jpg}" alt="" class="wheel-img">
   <div class="container">
     <div class="row">
       <div class="col-xs-12 padd-lr0">
         <div class="wheel-start3-body clearfix marg-lg-t255 marg-lg-b75 marg-sm-t190 marg-xs-b30">
-          <h3>Get in touch</h3>
+          <h3 th:text = "${#strings.concat(statusCode,' ', errorMessage)}">Unexpected error</h3>
           <ol class="breadcrumb">
             <li><a href="#">Home</a></li>
             <li><a href="#"> pages </a></li>
@@ -37,8 +37,6 @@
     <div class="row">
       <div class="col-sm-8">
 
-<div th:text = "${statusCode}">Unexpected error</div>
-<div th:text = "${errorMessage}"></div>
 
       </div></div></div></div>
 

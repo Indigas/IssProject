@@ -11,6 +11,7 @@ import sk.durovic.comparators.PricesComparatorByPrice;
 import sk.durovic.converters.CarCommandToCar;
 import sk.durovic.converters.CarToCarCommand;
 import sk.durovic.data.ImagesHandler;
+import sk.durovic.httpError.NotAuthorized;
 import sk.durovic.model.*;
 import sk.durovic.services.CarService;
 import sk.durovic.services.FileStorageService;
@@ -43,8 +44,8 @@ public class CarController {
                              @AuthenticationPrincipal UserDetailImpl userDetail) {
         Car car1 = carService.findById(id);
 
-        if(!isOwnerOfCar(userDetail, car1))
-            return "redirect:/error?NotAuthorized";
+        if(car1==null || !isOwnerOfCar(userDetail, car1))
+            throw new NotAuthorized();
 
         model.addAttribute("car", car1);
 
@@ -75,8 +76,13 @@ public class CarController {
 
         Company company = userDetail.getCompany();
 
-        if(id!=null && isOwnerOfCar(userDetail, carService.findById(id)))
-            car.setId(id);
+        if(id!=null) {
+            if (!isOwnerOfCar(userDetail, carService.findById(id)))
+                car.setId(id);
+            else
+                throw new NotAuthorized();
+        }
+
 
         car.setCompany(company);
         carService.save(car);
@@ -133,7 +139,7 @@ public class CarController {
             car1.setEnabled(!car1.isEnabled());
             carService.save(car1);
         } else
-            return "redirect:/error?NotAuthorized";
+            throw new NotAuthorized();
 
 
         model.addAttribute("car", car1);
@@ -146,7 +152,7 @@ public class CarController {
         Car car1 = carService.findById(id);
 
         if(!isOwnerOfCar(userDetail, car1))
-            return "redirect:/error?NotAuthorized";
+            throw new NotAuthorized();
 
         carService.deleteById(id);
 
@@ -159,7 +165,7 @@ public class CarController {
         Car car1 = carService.findById(id);
 
         if(!isOwnerOfCar(userDetail, car1))
-            return "redirect:/error?NotAuthorized";
+            throw new NotAuthorized();
 
         model.addAttribute("car", car1);
         model.addAttribute("carCommand", new CarToCarCommand().convert(car1));

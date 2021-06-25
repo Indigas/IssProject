@@ -9,17 +9,14 @@ import sk.durovic.commands.IndexSearch;
 import sk.durovic.comparators.PricesComparatorByPrice;
 import sk.durovic.data.ImagesHandler;
 import sk.durovic.helper.DateTimeHelper;
+import sk.durovic.httpError.NotFound;
 import sk.durovic.model.Car;
 import sk.durovic.model.Company;
-import sk.durovic.model.Prices;
 import sk.durovic.services.AvailabilityService;
 import sk.durovic.services.CarService;
 import sk.durovic.services.CompanyService;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -58,8 +55,8 @@ public class listController {
     private String getCarDetail(Model model, @PathVariable("id") Long id){
         Car car1 = carService.findById(id);
 
-        if(!car1.isEnabled())
-            return "redirect:/error?CarNotFound";
+        if(car1==null || !car1.isEnabled())
+            throw new NotFound();
 
         model.addAttribute("car", car1);
         model.addAttribute("prices", car1.getPrices());
@@ -97,7 +94,7 @@ public class listController {
         Optional<List<Car>> listOfCars = carService.findByCompany(company);
 
         if(listOfCars.isEmpty())
-            return "car-list-3col2";
+            throw new NotFound();
 
         List<Car> listOfEnabledCars = listOfCars.get().stream()
                 .filter(Car::isEnabled).collect(Collectors.toList());
@@ -107,5 +104,7 @@ public class listController {
         model.addAttribute("priceComparator", new PricesComparatorByPrice());
         return "car-list-3col2";
     }
+
+
 
 }
