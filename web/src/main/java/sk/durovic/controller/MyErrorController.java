@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class MyErrorController implements ErrorController {
 
-    @RequestMapping(value = "/error", method = RequestMethod.GET)
+    @RequestMapping(value = "/error")
     public ModelAndView getErrorPage(HttpServletResponse response){
         ModelAndView modelAndView = new ModelAndView("/error/error");
         Object statusCode = response.getStatus();

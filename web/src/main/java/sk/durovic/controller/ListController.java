@@ -23,13 +23,13 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequestMapping("/list")
 @Controller
-public class listController {
+public class ListController {
 
     private final CompanyService companyService;
     private final CarService carService;
     private final AvailabilityService availabilityService;
 
-    public listController(CompanyService companyService, CarService carService,
+    public ListController(CompanyService companyService, CarService carService,
                           AvailabilityService availabilityService) {
         this.companyService = companyService;
         this.carService = carService;
@@ -74,7 +74,7 @@ public class listController {
 
     @PostMapping
     private String getListingByDate(@ModelAttribute IndexSearch indexSearch, Model model){
-        //log.debug("Start date"+ indexSearch.getStartDate());
+        log.debug("ListController::getListingDate::"+indexSearch.toString());
 
         Set<Car> listCars = availabilityService.listOfAvailableCars(carService.findByIsEnabled()
                         .map(TreeSet::new).orElseGet(TreeSet::new),

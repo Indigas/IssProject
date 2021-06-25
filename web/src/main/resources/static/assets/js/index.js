@@ -664,3 +664,25 @@ $('.wheel-table-cart .fa-times').on('click', function (e) {
     });
 
 })(jQuery, window, document);
+
+
+document.querySelector("#input-val18").addEventListener("click", function(e){
+    let val13 = document.querySelector("#input-val13");
+        let val15 = document.querySelector("#input-val15");
+
+        if(val13.value==="")
+            val13.parentElement.parentElement.classList.add("has-error");
+        else
+            val13.parentElement.parentElement.classList.remove("has-error");
+
+        if(val15.value==="")
+            val15.parentElement.parentElement.classList.add("has-error");
+        else
+            val15.parentElement.parentElement.classList.remove("has-error");
+
+    if(val13.parentElement.parentElement.classList.contains("has-error") ||
+            val15.parentElement.parentElement.classList.contains("has-error"))
+        e.preventDefault();
+
+
+});
