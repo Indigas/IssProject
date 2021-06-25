@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+
+<head>
+  <div th:replace="fragments/headFragment"></div>
+  <title>Error page</title>
+
+  <script th:src="@{/dist/the-datepicker.min.js}"></script>
+  <link rel="stylesheet" th:href="@{/dist/the-datepicker.css}">
+</head>
+<body class="">
+
+<!-- MAIN -->
+<div th:replace="fragments/headMenuFragment"></div>
+<!-- //////////////////////////////// -->
+
+<div class="wheel-start3">
+  <img src="images/bg7.jpg" alt="" class="wheel-img">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 padd-lr0">
+        <div class="wheel-start3-body clearfix marg-lg-t255 marg-lg-b75 marg-sm-t190 marg-xs-b30">
+          <h3>Get in touch</h3>
+          <ol class="breadcrumb">
+            <li><a href="#">Home</a></li>
+            <li><a href="#"> pages </a></li>
+            <li class="active">Contact</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="prosuct-wrap">
+  <div class="container padd-lr0 xs-padd">
+    <div class="row">
+      <div class="col-sm-8">
+
+<div th:text = "${statusCode}">Unexpected error</div>
+<div th:text = "${errorMessage}"></div>
+
+      </div></div></div></div>
+
+
+
+<!-- FOOTER -->
+<!-- ///////////////// -->
+<div th:replace="fragments/footerFragment"></div>
+
+
+<div th:replace="fragments/scriptsFragment"></div>
+
+</body>
+<!--
+<script>
+        (function () {
+            const input = document.getElementById('my-input');
+            const datepicker = new TheDatepicker.Datepicker(input);
+            datepicker.render();
+        })();
+
+        (function () {
+            const input2 = document.getElementById('my-input2');
+            const datepicker2 = new TheDatepicker.Datepicker(input2);
+            datepicker2.render();
+        })();
+
+    </script>
+    -->
+</html>

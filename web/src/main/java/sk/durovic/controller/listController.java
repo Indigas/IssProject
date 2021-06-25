@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import sk.durovic.commands.IndexSearch;
 import sk.durovic.comparators.PricesComparatorByPrice;
 import sk.durovic.data.ImagesHandler;
+import sk.durovic.helper.DateTimeHelper;
 import sk.durovic.model.Car;
 import sk.durovic.model.Company;
 import sk.durovic.model.Prices;
@@ -80,8 +81,8 @@ public class listController {
 
         Set<Car> listCars = availabilityService.listOfAvailableCars(carService.findByIsEnabled()
                         .map(TreeSet::new).orElseGet(TreeSet::new),
-                getLocalDateTime(indexSearch.getStartDate(), indexSearch.getStartTime()),
-                getLocalDateTime(indexSearch.getEndDate(), indexSearch.getEndTime()));
+                DateTimeHelper.getLocalDateTime(indexSearch.getStartDate(), indexSearch.getStartTime()),
+                DateTimeHelper.getLocalDateTime(indexSearch.getEndDate(), indexSearch.getEndTime()));
 
 
         model.addAttribute("cars", listCars);
@@ -107,21 +108,4 @@ public class listController {
         return "car-list-3col2";
     }
 
-    private LocalDateTime getLocalDateTime(String date, String time){
-        String[] dayAndMonth = date.split("\\.");
-        String[] hourAndMinute;
-
-        if(!time.equals(""))
-            hourAndMinute = time.split(":");
-        else
-            hourAndMinute = new String[]{"0","0"};
-
-        LocalDate stDate = LocalDate.of(Integer.parseInt("20"+dayAndMonth[2].trim()),
-                Integer.parseInt(dayAndMonth[1].trim()), Integer.parseInt(dayAndMonth[0].trim()));
-        LocalTime stTime = LocalTime.of(Integer.parseInt(hourAndMinute[0]),
-                Integer.parseInt(hourAndMinute[1]));
-
-        log.debug("Finding available cars at: " + stDate.toString() + " / " + stTime.toString());
-        return LocalDateTime.of(stDate, stTime);
-    }
 }

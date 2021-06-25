@@ -1,20 +1,19 @@
 package sk.durovic.api;
 
-import javassist.tools.web.BadHttpRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import sk.durovic.helper.DateTimeHelper;
 import sk.durovic.httpError.BadRequestArguments;
 import sk.durovic.httpError.NotAuthorized;
 import sk.durovic.model.*;
 import sk.durovic.services.AvailabilityService;
 import sk.durovic.services.ReservationService;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @RestController
 @Slf4j
@@ -32,8 +31,8 @@ public class ReservationApiHandler {
     public void createReservation(@RequestBody ReservationRestApi reservationRestApi){
         Reservation reservation = new Reservation();
 
-        reservation.setStartDate(getLocalDateTime(reservationRestApi.getStartDate(), reservationRestApi.getStartTime()));
-        reservation.setEndDate(getLocalDateTime(reservationRestApi.getEndDate(), reservationRestApi.getEndTime()));
+        reservation.setStartDate(DateTimeHelper.getLocalDateTime(reservationRestApi.getStartDate(), reservationRestApi.getStartTime()));
+        reservation.setEndDate(DateTimeHelper.getLocalDateTime(reservationRestApi.getEndDate(), reservationRestApi.getEndTime()));
 
         reservation.setCarId(reservationRestApi.getCarId());
         reservation.setCompanyId(reservationRestApi.getCompanyId());
@@ -74,29 +73,10 @@ public class ReservationApiHandler {
         availabilityService.save(availability);
     }
 
-
-    private LocalDateTime getLocalDateTime(String date, String time){
-        String[] dayAndMonth = date.split("\\.");
-        String[] hourAndMinute;
-
-        time = time.trim();
-
-        if(!time.equals(""))
-            hourAndMinute = time.split(":");
-        else
-            hourAndMinute = new String[]{"0","0"};
-
-        try {
-            LocalDate stDate = LocalDate.of(Integer.parseInt("20" + dayAndMonth[2].trim()),
-                    Integer.parseInt(dayAndMonth[1].trim()), Integer.parseInt(dayAndMonth[0].trim()));
-            LocalTime stTime = LocalTime.of(Integer.parseInt(hourAndMinute[0]),
-                    Integer.parseInt(hourAndMinute[1]));
-
-
-            return LocalDateTime.of(stDate, stTime);
-        } catch(ArrayIndexOutOfBoundsException e){
-            throw new BadRequestArguments();
-        }
-
+    @ExceptionHandler({BadRequestArguments.class, NullPointerException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<String> getError(BadRequestArguments exception){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+
 }
