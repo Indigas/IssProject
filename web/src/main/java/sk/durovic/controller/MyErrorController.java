@@ -34,7 +34,7 @@ public class MyErrorController implements ErrorViewResolver {
         ModelAndView modelAndView = new ModelAndView("/error/error");
 
         modelAndView.addObject("statusCode", status.value());
-        modelAndView.addObject("errorMessage", getErrorMessage(status.value()));
+        modelAndView.addObject("errorMessage", model.get("error"));
 
         return modelAndView;
     }

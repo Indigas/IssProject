@@ -1,81 +1,92 @@
 package sk.durovic.services.data;
 
-import org.junit.jupiter.api.BeforeAll;
+import static org.hamcrest.MatcherAssert.*;
+
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import sk.durovic.model.Car;
+import sk.durovic.model.Company;
 import sk.durovic.repositories.CarRepository;
-import sk.durovic.services.CarService;
 
 import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 class CarServiceImplTest {
 
     @Mock
-    CarRepository carRepository;
+    private CarRepository carRepository;
 
     @InjectMocks
-    CarServiceImpl carService;
+    private CarServiceImpl carService;
 
-    Set<Car> listTest;
+    private Car testCar;
 
     @BeforeEach
     void setUp() {
-        listTest = new TreeSet<>();
-        Car a = new Car();
-        a.setBrand("Audi");
-        a.setModel("A4");
-        a.setId(1L);
-        Car b = new Car();
-        b.setBrand("BMW");
-        b.setModel("320d");
-        b.setId(2L);
-
-        listTest.add(a);
-        listTest.add(b);
+        //carService = new CarServiceImpl(carRepository);
+        testCar = new Car();
+        testCar.setId(1L);
+        testCar.setBrand("Audi");
     }
 
     @Test
     void findAll() {
-        Mockito.when(carRepository.findAll()).thenReturn(listTest);
+        Car b = new Car();
+        b.setId(2L);
+        Mockito.when(carRepository.findAll()).thenReturn(Arrays.asList(testCar, b));
 
-        Set<Car> fromService = carService.findAll();
+        Set<Car> listOfCars = carService.findAll();
 
-        assertEquals(2, fromService.size());
+        assertThat(listOfCars, Matchers.hasSize(2));
+
+        Mockito.verify(carRepository, Mockito.times(1)).findAll();
     }
 
     @Test
     void findById() {
-        Car a = new Car();
-        a.setId(1L);
 
-        Mockito.when(carRepository.findById(any())).thenReturn(Optional.of(a));
+        Mockito.when(carRepository.findById(Mockito.any())).thenReturn(Optional.of(testCar));
+        Car b = carService.findById(1L);
 
-        Car found = carService.findById(1L);
+        assertThat(testCar, Matchers.equalTo(b));
 
-        assertEquals(a, found);
+        Mockito.verify(carRepository, Mockito.atMostOnce()).findById(Mockito.any());
     }
 
     @Test
     void save() {
-        Car a = new Car();
-        a.setBrand("Audi");
-        a.setId(1L);
+        Mockito.when(carRepository.save(Mockito.any())).thenReturn(testCar);
 
-        Mockito.when(carRepository.save(any())).thenReturn(a);
+        Car b = carService.save(testCar);
 
-        Car fromService = carService.save(a);
-
-        assertEquals(a, fromService);
+        assertThat(testCar, Matchers.equalTo(b));
+        Mockito.verify(carRepository, Mockito.atMostOnce()).save(Mockito.any());
     }
 
+    @Test
+    void findByIsEnabled() {
+        Mockito.when(carRepository.findByIsEnabledTrue()).thenReturn(Optional.of(Collections.singletonList(testCar)));
+
+        Optional<List<Car>> b = carService.findByIsEnabled();
+
+        assertThat(b.orElse(null), Matchers.hasSize(1));
+        Mockito.verify(carRepository, Mockito.atMostOnce()).findByIsEnabledTrue();
+    }
+
+    @Test
+    void findByCompany() {
+        Mockito.when(carRepository.findByCompanyId(Mockito.any())).thenReturn(Optional.of(Collections.singletonList(testCar)));
+
+        Optional<List<Car>> b = carService.findByCompany(new Company());
+
+        assertThat(b.orElse(null), Matchers.hasSize(1));
+        Mockito.verify(carRepository, Mockito.atMostOnce()).findByCompanyId(Mockito.any());
+    }
 }

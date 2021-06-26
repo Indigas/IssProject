@@ -55,7 +55,12 @@ public class Car extends BaseEntity implements Comparable<Car>{
             throw new IllegalArgumentException();
 
         Car toCompareCar = (Car) obj;
-        return getId().equals(toCompareCar.getId());
+
+        try{
+            return getId().equals(toCompareCar.getId());
+        } catch (NullPointerException e){
+            return false;
+        }
     }
 
     @Override
@@ -63,10 +68,16 @@ public class Car extends BaseEntity implements Comparable<Car>{
         if(car == null)
             return 0;
 
-        if(this.brand.equals(car.brand))
-            return this.model.compareTo(car.model);
+        try{
+            if(this.brand.equals(car.brand))
+                return this.model.compareTo(car.model);
 
-        return this.brand.compareTo(car.brand);
+            return this.brand.compareTo(car.brand);
+        }catch (NullPointerException e){
+            //e.printStackTrace();
+            return 1;
+        }
+
     }
 
     @Override

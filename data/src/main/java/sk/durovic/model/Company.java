@@ -4,13 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import sk.durovic.set.CarTreeSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -28,7 +25,7 @@ public class Company extends BaseEntity implements Comparable<Company>{
     private String email;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
-    private final Set<Car> listOfCars = new CarTreeSet(this);
+    private final Set<Car> listOfCars = new TreeSet<>();
 
     @Override
     public String toString() {
