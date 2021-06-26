@@ -35,6 +35,7 @@ public class Company extends BaseEntity implements Comparable<Company>{
 
     @Override
     public int compareTo(Company company) {
+
         return this.name.compareTo(company.getName());
     }
 

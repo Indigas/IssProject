@@ -24,10 +24,6 @@ public class IndexController {
         return "index";
     }
 
-    @RequestMapping("/about")
-    public String getAbout(){
-        return "about";
-    }
 
     @RequestMapping("/register")
     public String getRegister(Model model){
@@ -35,34 +31,6 @@ public class IndexController {
         return "register";
     }
 
-    @RequestMapping("/reservation")
-    public String getReservation(){
-        return "reservation1";
-    }
 
-    @RequestMapping("/contact")
-    public String getContact(){
-        return "contact";
-    }
-
-    @RequestMapping("/checkout")
-    public String getCheckout(){
-        return "checkout";
-    }
-
-    @RequestMapping("/shopping")
-    public String getShopping(){
-        return "shopping";
-    }
-
-    @RequestMapping("/news")
-    public String getNews(){
-        return "news";
-    }
-
-    @RequestMapping("/news-details")
-    public String getNewsDetails(){
-        return "news-details";
-    }
 
 }

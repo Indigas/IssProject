@@ -30,7 +30,6 @@ class CarServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        //carService = new CarServiceImpl(carRepository);
         testCar = new Car();
         testCar.setId(1L);
         testCar.setBrand("Audi");

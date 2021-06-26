@@ -66,7 +66,7 @@ public class Car extends BaseEntity implements Comparable<Car>{
     @Override
     public int compareTo(Car car) {
         if(car == null)
-            return 0;
+            throw new NullPointerException();
 
         try{
             if(this.brand.equals(car.brand))
@@ -74,9 +74,9 @@ public class Car extends BaseEntity implements Comparable<Car>{
 
             return this.brand.compareTo(car.brand);
         }catch (NullPointerException e){
-            //e.printStackTrace();
-            return 1;
-        }
+        //e.printStackTrace();
+        return 1;
+    }
 
     }
 
