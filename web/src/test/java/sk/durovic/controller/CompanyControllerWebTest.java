@@ -1,6 +1,5 @@
 package sk.durovic.controller;
 
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -10,19 +9,20 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import sk.durovic.commands.CompanyCommand;
 import sk.durovic.model.Company;
+import sk.durovic.model.CompanyCredentials;
 import sk.durovic.services.CompanyCredentialsService;
 import sk.durovic.services.CompanyService;
 
-import static org.hamcrest.MatcherAssert.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 import java.util.Set;
 
 @WebMvcTest(CompanyController.class)
-class CompanyControllerIT {
+class CompanyControllerWebTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -40,7 +40,23 @@ class CompanyControllerIT {
     }
 
     @Test
-    void registerCompany() {
+    void registerCompany() throws Exception {
+
+        CompanyCredentials companyCredentials = new CompanyCredentials();
+        companyCredentials.setIdCompany("Marek");
+
+        Mockito.when(companyService.save(Mockito.any())).thenReturn(new Company());
+        Mockito.when(passwordEncoder.encode(Mockito.any())).thenReturn(Mockito.any());
+        Mockito.when(companyCredentialsService.save(companyCredentials)).thenReturn(companyCredentials);
+
+        CompanyCommand cc = new CompanyCommand();
+        cc.setName("AAA");
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/register/new")
+                .requestAttr("companyCommand", cc)
+                .with(csrf()))
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/register?successfull"));
     }
 
     @Test

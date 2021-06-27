@@ -74,7 +74,6 @@ public class Car extends BaseEntity implements Comparable<Car>{
 
             return this.brand.compareTo(car.brand);
         }catch (NullPointerException e){
-        //e.printStackTrace();
         return 1;
     }
 

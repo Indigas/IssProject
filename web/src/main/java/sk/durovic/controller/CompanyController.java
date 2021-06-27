@@ -40,7 +40,7 @@ public class CompanyController {
 
         companyService.save(company);
         cc.setPassword(passwordEncoder.encode(cc.getPassword()));
-        companyCredentialsService.save(cc);
+        cc = companyCredentialsService.save(cc);
 
         log.debug("Company registered: " + cc.getIdCompany());
 
