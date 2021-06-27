@@ -7,12 +7,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
+import sk.durovic.commands.CompanyCommand;
 import sk.durovic.model.Company;
 import sk.durovic.services.CompanyCredentialsService;
 import sk.durovic.services.CompanyService;
 
 import static org.hamcrest.MatcherAssert.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 import java.util.Set;
 
@@ -32,11 +38,14 @@ public class CompanyControllerTest {
 
     private Company company;
 
+
     @BeforeEach
     void setUp() {
         company = new Company();
         company.setId(1L);
         company.setName("Marek");
+
+
     }
 
     @Test
@@ -59,4 +68,5 @@ public class CompanyControllerTest {
         assertThat(companies, Matchers.hasSize(2));
 
     }
+
 }
