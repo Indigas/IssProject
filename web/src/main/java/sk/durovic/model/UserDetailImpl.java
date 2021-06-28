@@ -1,13 +1,15 @@
 package sk.durovic.model;
 
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import sk.durovic.services.CompanyService;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Slf4j
 public class UserDetailImpl implements UserDetails {
@@ -16,20 +18,22 @@ public class UserDetailImpl implements UserDetails {
     private String password;
     private boolean isEnabled;
     private Company company;
+    private final List<GrantedAuthority> grantedAuthorityList = new ArrayList<>();
 
     public UserDetailImpl(CompanyCredentials companyCredentials, CompanyService companyService) {
         this.userName = companyCredentials.getIdCompany();
         this.password = companyCredentials.getPassword();
         this.isEnabled = true;
 
-        log.error("chyba v hladani company: " + userName + " :: " + companyService);
         this.company = companyService.findByEmail(userName).get();
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+    public Collection<GrantedAuthority> getAuthorities() {
+        return grantedAuthorityList;
     }
+
+
 
     @Override
     public String getPassword() {

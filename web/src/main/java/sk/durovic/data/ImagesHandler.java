@@ -12,6 +12,9 @@ import java.util.stream.Stream;
 public class ImagesHandler {
 
     public static Stream<Path> getImages(Car car) throws IOException {
+        if(car.getUriImages()==null || car.getUriImages().equals(""))
+            throw new IOException("Wrong field UriImages in carId::"+car.getId());
+
         return Files.walk(Paths.get(car.getUriImages() + File.separator + car.getId() + File.separator))
                 .filter(path -> !Files.isDirectory(path));
 

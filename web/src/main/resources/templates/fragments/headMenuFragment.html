@@ -115,6 +115,9 @@
                                 <li sec:authorize="isAuthenticated()" class="menu-item ">
                                     <a th:href="@{/account}">Account</a>
                                 </li>
+                                <li sec:authorize="isAuthenticated()" class="menu-item">
+                                    <a th:href="@{/car/new}">Add Car</a>
+                                </li>
                             </ul>
                             <div class="nav-menu-icon"><i></i></div>
                         </nav>

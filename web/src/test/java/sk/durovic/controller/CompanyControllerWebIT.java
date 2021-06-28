@@ -21,7 +21,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import java.util.Set;
 
 @WebMvcTest(CompanyController.class)
-class CompanyControllerWebTest {
+class CompanyControllerWebIT {
 
     @Autowired
     private MockMvc mockMvc;
@@ -43,13 +43,12 @@ class CompanyControllerWebTest {
 
         CompanyCredentials companyCredentials = new CompanyCredentials();
         companyCredentials.setIdCompany("Marek");
+        CompanyCommand cc = new CompanyCommand();
+        cc.setName("AAA");
 
         Mockito.when(companyService.save(Mockito.any())).thenReturn(new Company());
         Mockito.when(passwordEncoder.encode(Mockito.any())).thenReturn(Mockito.any());
         Mockito.when(companyCredentialsService.save(companyCredentials)).thenReturn(companyCredentials);
-
-        CompanyCommand cc = new CompanyCommand();
-        cc.setName("AAA");
 
         mockMvc.perform(MockMvcRequestBuilders.post("/register/new")
                 .requestAttr("companyCommand", cc)

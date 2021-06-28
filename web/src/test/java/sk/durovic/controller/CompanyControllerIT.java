@@ -41,7 +41,7 @@ class CompanyControllerIT {
         companyCommand = new CompanyCommand();
         companyCommand.setName("user");
         companyCommand.setPassword("pass");
-        companyCommand.setAddress("koharyho 5");
+        companyCommand.setAddress("Poharyho 5");
         companyCommand.setCity("banska bystrica");
         companyCommand.setEmail("abc@abc.com");
         companyCommand.setPhone("555-555-555");
@@ -49,17 +49,18 @@ class CompanyControllerIT {
 
     @Test
     void registerCompany() throws Exception {
+        Company company = new CompanyCommandToCompany().convert(companyCommand);
+        CompanyCredentials companyCredentials = new CompanyCommandToCompany()
+                .convertToCredentials(companyCommand);
+
+
         mockMvc.perform(MockMvcRequestBuilders.post("/register/new")
                 .with(csrf())
                 .flashAttr("companyCommand", companyCommand))
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/register?successfull"))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection());
 
-        Company company = new CompanyCommandToCompany().convert(companyCommand);
-        CompanyCredentials companyCredentials = new CompanyCommandToCompany()
-                .convertToCredentials(companyCommand);
-
-        Company found = companyService.findAll().stream().findFirst().orElse(new Company());
+        Company found = companyService.findByEmail(companyCommand.getEmail()).orElse(new Company());
 
         assertThat(company, Matchers.notNullValue());
         assertThat(company, Matchers.samePropertyValuesAs(found, "id","listOfCars"));

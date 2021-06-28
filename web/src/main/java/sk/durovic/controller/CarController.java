@@ -1,7 +1,9 @@
 package sk.durovic.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +34,6 @@ public class CarController {
 
     private final CarService carService;
     private final PricesService pricesService;
-    private Car car;
 
     public CarController(CarService carService, PricesService pricesService) {
         this.carService = carService;
@@ -44,8 +45,10 @@ public class CarController {
                              @AuthenticationPrincipal UserDetailImpl userDetail) {
         Car car1 = carService.findById(id);
 
-        if(car1==null || !isOwnerOfCar(userDetail, car1))
+        if(car1==null || !isOwnerOfCar(userDetail, car1)) {
+            log.error("Not authorized in Carcontroller for user::"+userDetail);
             throw new NotAuthorized();
+        }
 
         model.addAttribute("car", car1);
 
@@ -54,8 +57,7 @@ public class CarController {
         try {
             model.addAttribute("images", ImagesHandler.getImages(car1).collect(Collectors.toList()));
         } catch (IOException e){
-            log.error("Error in loading images, car ID: " + car1.getId());
-            e.printStackTrace();
+            log.error("Error in loading images, car ID: "+e.getMessage());
         }
 
         return "summaryCarForm";
@@ -69,31 +71,42 @@ public class CarController {
 
     @PostMapping({"/new/step-2", "/new/step-2/{id}"})
     public String saveImageForm(Model model, @ModelAttribute("carCommand") CarCommand carCommand,
-                                @AuthenticationPrincipal UserDetailImpl userDetail,
-                                @PathVariable("id")Long id) {
+                                @AuthenticationPrincipal UserDetails userDetail,
+                                @Nullable @PathVariable("id")Long id) {
 
-        car = new CarCommandToCar().convert(carCommand);
+        Car car = new CarCommandToCar().convert(carCommand);
 
-        Company company = userDetail.getCompany();
+
+        Company company = ((UserDetailImpl)userDetail).getCompany();
 
         if(id!=null) {
-            if (!isOwnerOfCar(userDetail, carService.findById(id)))
+            if (isOwnerOfCar(userDetail, carService.findById(id)))
                 car.setId(id);
             else
                 throw new NotAuthorized();
         }
 
 
+
         car.setCompany(company);
-        carService.save(car);
+        car = carService.save(car);
+
+        model.addAttribute("carId", car.getId());
+
         return "saveCarForm2";
     }
 
-    @PostMapping("/new/step-3")
-    public String saveImagesToCar(@AuthenticationPrincipal UserDetailImpl userDetail, Model model,
+    @PostMapping("/new/step-3/{id}")
+    public String saveImagesToCar(@AuthenticationPrincipal UserDetails userDetail, Model model,
+                                  @PathVariable("id") Long id,
                                   @RequestParam("imageFiles") MultipartFile... multipartFiles) {
 
-        FileStorageService fileStorageService = saveImages(userDetail, multipartFiles);
+        Car car = carService.findById(id);
+
+        if (!isOwnerOfCar(userDetail, car))
+            throw new NotAuthorized();
+
+        FileStorageService fileStorageService = saveImages(userDetail, car, multipartFiles);
 
         try {
             model.addAttribute("images", fileStorageService.loadAll(car).collect(Collectors.toList()));
@@ -105,12 +118,20 @@ public class CarController {
         Optional<List<Prices>> listOfPrices = pricesService.findByCarId(car.getId());
 
         model.addAttribute("prices", listOfPrices.orElse(null));
+        model.addAttribute("carId", car.getId());
 
         return "saveCarForm3";
     }
 
-    @PostMapping("/new/summary")
-    public String carSummary(HttpServletRequest request, Model model) {
+    @PostMapping("/new/summary/{id}")
+    public String carSummary(HttpServletRequest request, Model model,
+                             @PathVariable("id") Long id,
+                             @AuthenticationPrincipal UserDetails userDetail) {
+
+        Car car = carService.findById(id);
+
+        if (!isOwnerOfCar(userDetail, car))
+            throw new NotAuthorized();
 
         setPrices(request, car);
 
@@ -132,7 +153,7 @@ public class CarController {
 
     @GetMapping({"/publish/{id}", "/unpublish/{id}"})
     public String publishCar(@PathVariable("id") Long id, Model model,
-                             @AuthenticationPrincipal UserDetailImpl userDetail){
+                             @AuthenticationPrincipal UserDetails userDetail){
         Car car1 = carService.findById(id);
 
         if(isOwnerOfCar(userDetail, car1)){
@@ -148,7 +169,7 @@ public class CarController {
 
     @GetMapping("/delete/{id}")
     public String deleteCar(@PathVariable("id") Long id,
-                            @AuthenticationPrincipal UserDetailImpl userDetail){
+                            @AuthenticationPrincipal UserDetails userDetail){
         Car car1 = carService.findById(id);
 
         if(!isOwnerOfCar(userDetail, car1))
@@ -161,7 +182,7 @@ public class CarController {
 
     @GetMapping("/update/{id}")
     public String updateCar(@PathVariable("id") Long id, Model model,
-                            @AuthenticationPrincipal UserDetailImpl userDetail){
+                            @AuthenticationPrincipal UserDetails userDetail){
         Car car1 = carService.findById(id);
 
         if(!isOwnerOfCar(userDetail, car1))
@@ -174,8 +195,8 @@ public class CarController {
     }
 
     @GetMapping("/list")
-    public String listOfMyCars(Model model, @AuthenticationPrincipal UserDetailImpl userDetail){
-        Optional<List<Car>> listOfCars = carService.findByCompany(userDetail.getCompany());
+    public String listOfMyCars(Model model, @AuthenticationPrincipal UserDetails userDetail){
+        Optional<List<Car>> listOfCars = carService.findByCompany(((UserDetailImpl)userDetail).getCompany());
 
         model.addAttribute("cars", listOfCars.orElse(new ArrayList<>()));
         model.addAttribute("priceComparator", new PricesComparatorByPrice());
@@ -184,10 +205,10 @@ public class CarController {
     }
 
 
-    private void setPrices(HttpServletRequest request, Car carPrices) {
+    private void setPrices(HttpServletRequest request, Car car) {
         Iterator<String> requestItems = request.getParameterNames().asIterator();
 
-        Optional<List<Prices>> listOfPrices = pricesService.findByCarId(carPrices.getId());
+        Optional<List<Prices>> listOfPrices = pricesService.findByCarId(car.getId());
 
         listOfPrices.ifPresent(prices -> prices.forEach(price -> {
             pricesService.deleteById(price.getId());
@@ -218,8 +239,8 @@ public class CarController {
         }
     }
 
-    private FileStorageService saveImages(UserDetailImpl userDetail, MultipartFile[] multipartFiles) {
-        Company company = userDetail.getCompany();
+    private FileStorageService saveImages(UserDetails userDetail, Car car, MultipartFile[] multipartFiles) {
+        Company company = ((UserDetailImpl)userDetail).getCompany();
 
         FileStorageService fileStorageService = new FileStorageServiceImpl(company);
         car.setUriImages(fileStorageService.getImagesPath().toString());
@@ -239,9 +260,10 @@ public class CarController {
         return fileStorageService;
     }
 
-    public static boolean isOwnerOfCar(UserDetailImpl userDetail, Car car1) {
-        if(userDetail==null || !userDetail.getCompany().getId().equals(car1.getCompany().getId())) {
+    public static boolean isOwnerOfCar(UserDetails userDetail, Car car1) {
+        if(userDetail==null || !((UserDetailImpl)userDetail).getCompany().getId().equals(car1.getCompany().getId())) {
             log.debug("User not authorized to change car.");
+            log.debug("user::"+userDetail);
             return false;
         }
 

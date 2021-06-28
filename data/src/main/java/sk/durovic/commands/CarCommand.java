@@ -27,11 +27,4 @@ public class CarCommand {
     private Category category;
     private String notes;
 
-    @Override
-    public String toString() {
-        return brand + " " + model + " " + fuel.getValue() + " " + gear.getValue() +
-                " " + powerKw + " " + volume + " " + pickUpCity + " " + seats + " " +
-                airCondition.getValue() + " " + pack + " " + category.getValue() + " " +
-                notes;
-    }
 }
