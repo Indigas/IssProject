@@ -7,19 +7,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
-import sk.durovic.commands.CompanyCommand;
 import sk.durovic.model.Company;
 import sk.durovic.services.CompanyCredentialsService;
 import sk.durovic.services.CompanyService;
 
 import static org.hamcrest.MatcherAssert.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-
 import java.util.Set;
 
 @ExtendWith(MockitoExtension.class)
@@ -66,6 +59,7 @@ public class CompanyControllerTest {
                 .addAttribute(ArgumentMatchers.eq("companies"), argumentCaptor.capture());
         Set<Company> companies = argumentCaptor.getValue();
         assertThat(companies, Matchers.hasSize(2));
+        assertThat(companies, Matchers.containsInAnyOrder(company,a));
 
     }
 

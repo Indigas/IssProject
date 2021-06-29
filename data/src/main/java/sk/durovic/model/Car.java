@@ -17,8 +17,8 @@ import java.util.TreeSet;
 @Setter
 public class Car extends BaseEntity implements Comparable<Car>{
 
-    private String brand;
-    private String model;
+    private String brand="";
+    private String model="";
     private Fuel fuel;
     private Gear gear;
 
@@ -33,15 +33,15 @@ public class Car extends BaseEntity implements Comparable<Car>{
 
     private int powerKw;
     private double volume;
-    private String pickUpCity;
-    private String uriImages;
-    private String mainImage;
+    private String pickUpCity="";
+    private String uriImages="";
+    private String mainImage="";
     private int seats;
     private AirCondition airCondition;
     //vybava auta
-    private String pack;
+    private String pack="";
     private Category category;
-    private String notes;
+    private String notes="";
     private boolean isEnabled = false;
 
     @Override

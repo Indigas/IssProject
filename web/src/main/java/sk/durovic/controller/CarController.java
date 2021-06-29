@@ -106,7 +106,8 @@ public class CarController {
         if (!isOwnerOfCar(userDetail, car))
             throw new NotAuthorized();
 
-        FileStorageService fileStorageService = saveImages(userDetail, car, multipartFiles);
+        FileStorageService fileStorageService = ImagesHandler.saveImages(userDetail, car,
+                multipartFiles, carService);
 
         try {
             model.addAttribute("images", fileStorageService.loadAll(car).collect(Collectors.toList()));
@@ -178,7 +179,7 @@ public class CarController {
 
         carService.deleteById(id);
 
-        return "redirect:/";
+        return "redirect:/car/list";
     }
 
     @GetMapping("/update/{id}")
@@ -240,27 +241,6 @@ public class CarController {
                         .addPrice(Integer.parseInt(price)).build());
             }
         }
-    }
-
-    private FileStorageService saveImages(UserDetails userDetail, Car car, MultipartFile[] multipartFiles) {
-        Company company = ((UserDetailImpl)userDetail).getCompany();
-
-        FileStorageService fileStorageService = new FileStorageServiceImpl(company);
-        car.setUriImages(fileStorageService.getImagesPath().toString());
-        carService.save(car);
-        for (MultipartFile multipartFile : multipartFiles) {
-            if(multipartFile.isEmpty())
-                continue;
-
-            try {
-                Path path = fileStorageService.save(car, multipartFile.getOriginalFilename(),
-                        multipartFile.getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-                log.error("Error occured while saving image");
-            }
-        }
-        return fileStorageService;
     }
 
     public static boolean isOwnerOfCar(UserDetails userDetail, Car car1) {

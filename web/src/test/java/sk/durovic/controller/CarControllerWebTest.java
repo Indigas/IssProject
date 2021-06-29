@@ -29,6 +29,7 @@ import sk.durovic.model.Prices;
 import sk.durovic.services.CarService;
 import sk.durovic.services.PricesService;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -225,6 +226,44 @@ class CarControllerWebTest {
         assertFalse(car.isEnabled());
     }
 
+    @Test
+    @WithMockCustomUser
+    public void getListOfMyCars() throws Exception{
+        Car car2 = new CarBuilder().setCompany(car.getCompany()).setId(2L).build();
+        Mockito.when(carService.findByCompany(Mockito.any())).thenReturn(Optional.of(List.of(car, car2)));
+
+        MvcResult mvcResult = mockMvc.perform(get(("/car/list"))
+                        .with(csrf()).with(SecurityMockMvcRequestPostProcessors.user(user)))
+                        .andExpect(status().isOk()).andExpect(view().name("mycars"))
+                        .andExpect(model().attributeExists("cars"))
+                        .andExpect(model().attribute("priceComparator", Matchers.notNullValue()))
+                        .andReturn();
+
+        List<Car> cars = (List<Car>) mvcResult.getModelAndView().getModel().get("cars");
+
+        assertThat(cars, Matchers.hasSize(2));
+        assertThat(cars, Matchers.containsInAnyOrder(car, car2));
+    }
+
+    @Test
+    @WithMockCustomUser
+    public void deleteCarPage() throws Exception{
+        mockMvc.perform(get("/car/delete/"+car.getId())
+                .with(csrf()).with(SecurityMockMvcRequestPostProcessors.user(user)))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/car/list"));
+    }
+
+    @Test
+    @WithMockCustomUser
+    public void updateCarPage() throws Exception{
+        mockMvc.perform(get("/car/update/"+car.getId())
+                .with(csrf()).with(SecurityMockMvcRequestPostProcessors.user(user)))
+                .andExpect(status().isOk()).andExpect(view().name("updateCar"))
+                .andExpect(model().attribute("car", Matchers.equalTo(car)))
+                .andExpect(model().attributeExists("carCommand"));
+
+    }
 
 
 }
