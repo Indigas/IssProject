@@ -40,10 +40,8 @@ class CarControllerWebTest {
     @MockBean
     private PricesService pricesService;
 
-
     @Autowired
     private MockMvc mockMvc;
-
 
     private Car car;
     private UserDetails user;
@@ -63,10 +61,13 @@ class CarControllerWebTest {
         }
 
 
+
+
     }
 
     @Test
     @WithMockCustomUser
+    //@WithUserDetails(value = "abc@abc.com", userDetailsServiceBeanName = "getService")
     void showCarDetailPageWithId() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/car/detail/1")
