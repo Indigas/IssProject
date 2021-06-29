@@ -17,6 +17,6 @@ import javax.persistence.OneToOne;
 @AllArgsConstructor
 public class CompanyCredentials extends BaseEntity{
 
-    private String idCompany;
+    private String username;
     private String password;
 }

@@ -39,7 +39,7 @@ public class CarBuilder {
         return this;
     }
 
-    public Car setDefault(){
-        return this.setId(1L).setIdCompany(1L).setEmailCompany("abc@abc.com").build();
+    public static Car getCarForTest(){
+        return new CarBuilder().setId(1L).setIdCompany(1L).setEmailCompany("abc@abc.com").build();
     }
 }

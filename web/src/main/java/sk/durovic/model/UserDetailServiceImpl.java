@@ -14,7 +14,6 @@ import java.util.Optional;
 
 @Service
 @Slf4j
-@Primary
 public class UserDetailServiceImpl implements UserDetailsService {
 
     @Autowired

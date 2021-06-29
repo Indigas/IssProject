@@ -214,6 +214,8 @@ public class CarController {
             pricesService.deleteById(price.getId());
         }));
 
+        car.getPrices().clear();
+
         while (requestItems.hasNext()) {
             String item = requestItems.next();
             log.debug("Request parameter name:: " + item);
@@ -228,7 +230,7 @@ public class CarController {
                 String day = request.getParameter("dayFrom" + number);
                 String price = request.getParameter("dayPrice" + number);
 
-                if (day.isEmpty() || price.isEmpty())
+                if (day==null || price==null || day.isEmpty() || price.isEmpty())
                     continue;
 
                 log.debug("Prices to persist:: " + day + " day :: " + price + " price");
@@ -261,7 +263,7 @@ public class CarController {
     }
 
     public static boolean isOwnerOfCar(UserDetails userDetail, Car car1) {
-        if(userDetail==null || !((UserDetailImpl)userDetail).getCompany().getId().equals(car1.getCompany().getId())) {
+        if(userDetail==null || car1==null || !((UserDetailImpl)userDetail).getCompany().getId().equals(car1.getCompany().getId())) {
             log.debug("User not authorized to change car.");
             log.debug("user::"+userDetail);
             return false;

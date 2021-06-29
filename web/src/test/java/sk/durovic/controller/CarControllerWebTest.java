@@ -2,9 +2,12 @@ package sk.durovic.controller;
 
 import config.WithMockCustomUser;
 import helper.CarBuilder;
+import helper.PricesHelper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,17 +20,23 @@ import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.util.MultiValueMap;
 import sk.durovic.model.Car;
+import sk.durovic.model.Prices;
 import sk.durovic.services.CarService;
 import sk.durovic.services.PricesService;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.MatcherAssert.*;
 
 
 @WebMvcTest(CarController.class)
@@ -48,7 +57,7 @@ class CarControllerWebTest {
 
     @BeforeEach
     void setUp() {
-        car = new CarBuilder().setDefault();
+        car = new CarBuilder().getCarForTest();
 
         Mockito.when(carService.findById(Mockito.any())).thenReturn(car);
         Mockito.when(pricesService.findByCarId(Mockito.any())).thenReturn(Optional.empty());
@@ -67,7 +76,6 @@ class CarControllerWebTest {
 
     @Test
     @WithMockCustomUser
-    //@WithUserDetails(value = "abc@abc.com", userDetailsServiceBeanName = "getService")
     void showCarDetailPageWithId() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/car/detail/1")
@@ -134,7 +142,79 @@ class CarControllerWebTest {
                 .with(csrf())
                 .with(SecurityMockMvcRequestPostProcessors.user(user)))
                 .andExpect(status().isOk()).andExpect(view().name("saveCarForm3"));
+    }
 
+    @Test
+    @WithMockCustomUser
+    public void savingImagesEmptyParam() throws Exception {
+
+        mockMvc.perform(multipart("/car/new/step-3/"+car.getId())
+                .file("imageFiles",new byte[0])
+                .with(csrf())
+                .with(SecurityMockMvcRequestPostProcessors.user(user)))
+                .andExpect(status().isOk()).andExpect(view().name("saveCarForm3"));
+
+    }
+
+    @Test
+    @WithMockCustomUser
+    public void showSummaryPageAsCarOwner() throws Exception{
+        mockMvc.perform(post("/car/new/summary/"+car.getId())
+                .with(csrf())
+                .with(SecurityMockMvcRequestPostProcessors.user(user)))
+                .andExpect(status().isOk()).andExpect(view().name("summaryCarForm"));
+    }
+
+    @Test
+    @WithMockCustomUser
+    public void showSummaryPageWithNonExistIdParam() throws Exception{
+        Mockito.when(carService.findById(30L)).thenReturn(null);
+
+        mockMvc.perform(post("/car/new/summary/30")
+                .with(csrf())
+                .with(SecurityMockMvcRequestPostProcessors.user(user)))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockCustomUser
+    public void showSummaryPageWithLetterIdParam() throws Exception {
+        mockMvc.perform(post("/car/new/summary/test")
+                .with(csrf())
+                .with(SecurityMockMvcRequestPostProcessors.user(user)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockCustomUser
+    public void addingPricesToCarAsHttpRequest() throws Exception{
+        MultiValueMap<String, String> map = PricesHelper.getPricesParams();
+
+
+        mockMvc.perform(post("/car/new/summary/"+car.getId())
+                .with(csrf())
+                .with(SecurityMockMvcRequestPostProcessors.user(user))
+                .params(map))
+                .andExpect(status().isOk()).andExpect(view().name("summaryCarForm"));
+    }
+
+    @Test
+    @WithMockCustomUser
+    public void addingPricesToCarWithPricesExist() throws Exception {
+        MultiValueMap<String, String> map = PricesHelper.getPricesParams();
+        car.getPrices().add(Prices.builder(car).addDay(10).addPrice(2).build());
+
+        MvcResult mvcResult = mockMvc.perform(post("/car/new/summary/"+car.getId())
+                .with(csrf())
+                .with(SecurityMockMvcRequestPostProcessors.user(user))
+                .params(map))
+                .andExpect(model().attributeExists("prices"))
+                .andExpect(status().isOk()).andExpect(view().name("summaryCarForm"))
+                .andReturn();
+
+        Set<Prices> prices = (Set<Prices>) mvcResult.getModelAndView().getModel().get("prices");
+
+        assertThat(prices, Matchers.hasSize(2));
     }
 
 

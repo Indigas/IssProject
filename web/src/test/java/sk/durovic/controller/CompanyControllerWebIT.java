@@ -42,7 +42,7 @@ class CompanyControllerWebIT {
     void registerCompany() throws Exception {
 
         CompanyCredentials companyCredentials = new CompanyCredentials();
-        companyCredentials.setIdCompany("Marek");
+        companyCredentials.setUsername("Marek");
         CompanyCommand cc = new CompanyCommand();
         cc.setName("AAA");
 

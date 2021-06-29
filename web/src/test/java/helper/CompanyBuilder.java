@@ -27,4 +27,8 @@ public class CompanyBuilder {
     public Company build(){
         return this.company;
     }
+
+    public static Company getCompanyForTest(){
+        return new CompanyBuilder().setEmail("abc@abc.com").setId(1L).setName("CompanyTest").build();
+    }
 }

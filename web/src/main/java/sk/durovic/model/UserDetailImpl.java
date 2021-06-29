@@ -1,9 +1,7 @@
 package sk.durovic.model;
 
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import sk.durovic.services.CompanyService;
 
@@ -21,7 +19,7 @@ public class UserDetailImpl implements UserDetails {
     private final List<GrantedAuthority> grantedAuthorityList = new ArrayList<>();
 
     public UserDetailImpl(CompanyCredentials companyCredentials, CompanyService companyService) {
-        this.userName = companyCredentials.getIdCompany();
+        this.userName = companyCredentials.getUsername();
         this.password = companyCredentials.getPassword();
         this.isEnabled = true;
 
