@@ -3,10 +3,12 @@ package sk.durovic.controller;
 import config.WithMockCustomUser;
 import helper.CarBuilder;
 import helper.CarServiceHelper;
+import helper.CompanyBuilder;
 import helper.PricesHelper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -25,6 +27,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 import sk.durovic.model.Car;
+import sk.durovic.model.Company;
 import sk.durovic.model.Prices;
 import sk.durovic.services.CarService;
 import sk.durovic.services.PricesService;
@@ -117,6 +120,8 @@ class CarControllerWebTest {
         mockMvc.perform(post("/car/new/step-2/").with(csrf())
                 .with(SecurityMockMvcRequestPostProcessors.user(user)))
                 .andExpect(status().isOk()).andExpect(view().name("saveCarForm2"));
+
+        Mockito.verify(carService).save(ArgumentMatchers.any());
     }
 
     @Test
@@ -126,6 +131,8 @@ class CarControllerWebTest {
                 .with(SecurityMockMvcRequestPostProcessors.user(user)))
                 .andExpect(status().isOk())
                 .andExpect(view().name("saveCarForm2"));
+
+        Mockito.verify(carService).save(car);
     }
 
     @Test
@@ -138,6 +145,8 @@ class CarControllerWebTest {
                 .with(csrf())
                 .with(SecurityMockMvcRequestPostProcessors.user(user)))
                 .andExpect(status().isOk()).andExpect(view().name("saveCarForm3"));
+
+        Mockito.verify(carService).save(car);
     }
 
     @Test
@@ -150,6 +159,7 @@ class CarControllerWebTest {
                 .with(SecurityMockMvcRequestPostProcessors.user(user)))
                 .andExpect(status().isOk()).andExpect(view().name("saveCarForm3"));
 
+        Mockito.verify(carService).save(car);
     }
 
     @Test
@@ -159,6 +169,8 @@ class CarControllerWebTest {
                 .with(csrf())
                 .with(SecurityMockMvcRequestPostProcessors.user(user)))
                 .andExpect(status().isOk()).andExpect(view().name("summaryCarForm"));
+
+        Mockito.verify(carService).save(car);
     }
 
     @Test
@@ -211,6 +223,7 @@ class CarControllerWebTest {
         Set<Prices> prices = (Set<Prices>) mvcResult.getModelAndView().getModel().get("prices");
 
         assertThat(prices, Matchers.hasSize(2));
+        Mockito.verify(carService).save(car);
     }
 
     @Test
@@ -224,6 +237,7 @@ class CarControllerWebTest {
                 .andExpect(status().isOk()).andExpect(view().name("summaryCarForm"));
 
         assertFalse(car.isEnabled());
+        Mockito.verify(carService).save(car);
     }
 
     @Test
@@ -252,6 +266,9 @@ class CarControllerWebTest {
                 .with(csrf()).with(SecurityMockMvcRequestPostProcessors.user(user)))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/car/list"));
+
+        Mockito.verify(carService).deleteById(car.getId());
+
     }
 
     @Test
