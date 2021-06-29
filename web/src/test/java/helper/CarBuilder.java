@@ -24,6 +24,16 @@ public class CarBuilder {
         return this;
     }
 
+    public CarBuilder setBrand(String brand){
+        this.car.setBrand(brand);
+        return this;
+    }
+
+    public CarBuilder setModel(String model){
+        this.car.setModel(model);
+        return this;
+    }
+
     public CarBuilder setCompany(Company company){
         this.car.setCompany(company);
         return this;

@@ -145,7 +145,7 @@ public class CarController {
             model.addAttribute("images", ImagesHandler.getImages(car).collect(Collectors.toList()));
         } catch (IOException e){
             log.error("Error in loading images, car ID: " + car.getId());
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
 
