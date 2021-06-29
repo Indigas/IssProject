@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface CompanyCredentialsRepository extends CrudRepository<CompanyCredentials, Long> {
 
-    Optional<CompanyCredentials> findByIdCompany(String idCompany);
+    Optional<CompanyCredentials> findByUsername(String username);
 }

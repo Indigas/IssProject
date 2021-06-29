@@ -65,7 +65,7 @@ class CompanyControllerIT {
         assertThat(company, Matchers.notNullValue());
         assertThat(company, Matchers.samePropertyValuesAs(found, "id","listOfCars"));
         assertThat(companyCredentials, Matchers.samePropertyValuesAs(companyCredentialsService
-                .findByIdCompany(company.getEmail())
+                .findByUsername(company.getEmail())
                 .orElse(new CompanyCredentials()), "id", "password"));
     }
 

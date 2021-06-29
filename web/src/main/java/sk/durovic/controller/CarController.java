@@ -151,7 +151,7 @@ public class CarController {
         return "summaryCarForm";
     }
 
-    @GetMapping({"/publish/{id}", "/unpublish/{id}"})
+    @GetMapping({"/publish/{id}"})
     public String publishCar(@PathVariable("id") Long id, Model model,
                              @AuthenticationPrincipal UserDetails userDetail){
         Car car1 = carService.findById(id);
@@ -164,6 +164,7 @@ public class CarController {
 
 
         model.addAttribute("car", car1);
+        model.addAttribute("prices", car1.getPrices());
         return "summaryCarForm";
     }
 

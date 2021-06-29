@@ -2,7 +2,6 @@ package sk.durovic.model;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,7 +24,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
 
-        Optional<CompanyCredentials> companyCredentials = companyCredentialsService.findByIdCompany(s);
+        Optional<CompanyCredentials> companyCredentials = companyCredentialsService.findByUsername(s);
 
         companyCredentials.orElseThrow(() -> new UsernameNotFoundException("Not found"));
 

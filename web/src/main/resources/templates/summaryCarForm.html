@@ -19,7 +19,7 @@
           <h3>Listing Details</h3>
           <ol class="breadcrumb">
             <li th:if="${car.isEnabled == false}"><a th:href="@{${#strings.concat('/car/publish/', #strings.toString(car.id))}}" role="button" class="btn btn-success">Publish</a></li>
-            <li th:if="${car.isEnabled == true}"><a th:href="@{${#strings.concat('/car/unpublish/', #strings.toString(car.id))}}" role="button" class="btn btn-primary">Unpublish</a></li>
+            <li th:if="${car.isEnabled == true}"><a th:href="@{${#strings.concat('/car/publish/', #strings.toString(car.id))}}" role="button" class="btn btn-primary">Unpublish</a></li>
             <li><a th:href="@{${#strings.concat('/car/update/', #strings.toString(car.id))}}" role="button" class="btn btn-warning">Edit</a></li>
             <li class="active"><a href="@{${#strings.concat('/car/delete/', #strings.toString(car.id))}}" role="button" class="btn btn-danger">Delete</a></li>
           </ol>

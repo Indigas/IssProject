@@ -2,12 +2,11 @@ package sk.durovic.controller;
 
 import config.WithMockCustomUser;
 import helper.CarBuilder;
+import helper.CarServiceHelper;
 import helper.PricesHelper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,15 +23,16 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.context.WebApplicationContext;
 import sk.durovic.model.Car;
 import sk.durovic.model.Prices;
 import sk.durovic.services.CarService;
 import sk.durovic.services.PricesService;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -57,7 +57,7 @@ class CarControllerWebTest {
 
     @BeforeEach
     void setUp() {
-        car = new CarBuilder().getCarForTest();
+        car = CarBuilder.getCarForTest();
 
         Mockito.when(carService.findById(Mockito.any())).thenReturn(car);
         Mockito.when(pricesService.findByCarId(Mockito.any())).thenReturn(Optional.empty());
@@ -66,12 +66,7 @@ class CarControllerWebTest {
         try {
             user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (ClassCastException ignored){
-
         }
-
-
-
-
     }
 
     @Test
@@ -215,6 +210,19 @@ class CarControllerWebTest {
         Set<Prices> prices = (Set<Prices>) mvcResult.getModelAndView().getModel().get("prices");
 
         assertThat(prices, Matchers.hasSize(2));
+    }
+
+    @Test
+    @WithMockCustomUser
+    public void setPublishToggleButton() throws Exception{
+        car.setEnabled(true);
+
+        mockMvc.perform(get("/car/publish/"+car.getId())
+                .with(csrf())
+                .with(SecurityMockMvcRequestPostProcessors.user(user)))
+                .andExpect(status().isOk()).andExpect(view().name("summaryCarForm"));
+
+        assertFalse(car.isEnabled());
     }
 
 

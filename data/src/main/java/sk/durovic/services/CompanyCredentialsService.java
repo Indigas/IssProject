@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface CompanyCredentialsService {
 
-    Optional<CompanyCredentials> findByIdCompany(String idCompany);
+    Optional<CompanyCredentials> findByUsername(String username);
 
     CompanyCredentials save(CompanyCredentials object);
 
