@@ -11,13 +11,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import sk.durovic.model.Car;
 import sk.durovic.model.Company;
 
-import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.lang.reflect.*;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -26,7 +23,6 @@ import java.util.stream.Stream;
 import static org.hamcrest.MatcherAssert.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
 class FileStorageServiceImplTest {
 
     private FileStorageServiceImpl fileStorageService;

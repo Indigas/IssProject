@@ -1,10 +1,7 @@
 package sk.durovic.controller;
 
 import config.WithMockCustomUser;
-import helper.CarBuilder;
-import helper.CarServiceHelper;
-import helper.CompanyBuilder;
-import helper.PricesHelper;
+import helper.*;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,8 +29,12 @@ import sk.durovic.model.Prices;
 import sk.durovic.services.CarService;
 import sk.durovic.services.PricesService;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -149,7 +150,18 @@ class CarControllerWebTest {
                 .andExpect(status().isOk()).andExpect(view().name("saveCarForm3"));
 
         Mockito.verify(carService).save(car);
-        Files.deleteIfExists(Paths.get());
+
+        Path pathToDelete = Paths.get(File.separator + "companies" +
+                File.separator + "CompanyTest");
+
+        Files.walk(pathToDelete).sorted(Comparator.reverseOrder())
+                .forEach(path -> {
+                    try {
+                        Files.deleteIfExists(path);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
     }
 
     @Test
