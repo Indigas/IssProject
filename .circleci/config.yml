@@ -7,3 +7,7 @@ workflows:
   maven_test:
     jobs:
       - maven/test # checkout, build, test, and upload test results
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            /companies
