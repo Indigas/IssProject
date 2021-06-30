@@ -22,7 +22,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 
     public FileStorageServiceImpl(Company company) {
         this.company = company;
-        this.path = Paths.get( File.separator + "companies" + File.separator + company.getName());
+        this.path = Paths.get(File.separator + "/tmp"+ File.separator + "companies" + File.separator + company.getName());
     }
 
     @Override
