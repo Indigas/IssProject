@@ -151,7 +151,7 @@ class CarControllerWebTest {
 
         Mockito.verify(carService).save(car);
 
-        Path pathToDelete = Paths.get(File.separator + "companies" +
+        Path pathToDelete = Paths.get(File.separator + "tmp" + File.separator + "companies" +
                 File.separator + "CompanyTest");
 
         Files.walk(pathToDelete).sorted(Comparator.reverseOrder())
