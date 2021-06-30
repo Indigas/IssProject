@@ -24,7 +24,7 @@ import static org.hamcrest.MatcherAssert.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class FileStorageServiceImplTest {
-/*
+
     private FileStorageServiceImpl fileStorageService;
     private Company company;
     private Car car;
@@ -119,5 +119,5 @@ class FileStorageServiceImplTest {
 
         assertThat(path.toString(), Matchers.is(File.separator + "companies" +
                 File.separator + company.getName()));
-    }*/
+    }
 }
