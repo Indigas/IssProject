@@ -30,7 +30,9 @@ public class AvailabilityServiceImpl implements AvailabilityService {
                 listOfNotAvailableCars.add(t.getCarRented());
         });
 
-        listOfCars.removeAll(listOfNotAvailableCars);
+        if(!listOfNotAvailableCars.isEmpty())
+            listOfCars.removeAll(listOfNotAvailableCars);
+
         return listOfCars;
     }
 

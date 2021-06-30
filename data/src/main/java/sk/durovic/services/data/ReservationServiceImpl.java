@@ -14,7 +14,7 @@ import java.util.Set;
 @Service
 public class ReservationServiceImpl implements ReservationService {
 
-    ReservationRepository reservationRepository;
+    private ReservationRepository reservationRepository;
 
     public ReservationServiceImpl(ReservationRepository reservationRepository) {
         this.reservationRepository = reservationRepository;

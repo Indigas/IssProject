@@ -32,6 +32,8 @@ import sk.durovic.model.Prices;
 import sk.durovic.services.CarService;
 import sk.durovic.services.PricesService;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -147,6 +149,7 @@ class CarControllerWebTest {
                 .andExpect(status().isOk()).andExpect(view().name("saveCarForm3"));
 
         Mockito.verify(carService).save(car);
+        Files.deleteIfExists(Paths.get());
     }
 
     @Test

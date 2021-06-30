@@ -41,7 +41,7 @@ public class ImagesHandler {
                 continue;
 
             try {
-                Path path = fileStorageService.save(car, multipartFile.getOriginalFilename(),
+                fileStorageService.save(car, multipartFile.getOriginalFilename(),
                         multipartFile.getBytes());
             } catch (IOException e) {
                 e.printStackTrace();
