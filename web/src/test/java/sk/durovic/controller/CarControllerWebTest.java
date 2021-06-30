@@ -27,6 +27,7 @@ import sk.durovic.model.Car;
 import sk.durovic.model.Company;
 import sk.durovic.model.Prices;
 import sk.durovic.services.CarService;
+import sk.durovic.services.FileStorageService;
 import sk.durovic.services.PricesService;
 
 import java.io.File;
@@ -150,18 +151,6 @@ class CarControllerWebTest {
                 .andExpect(status().isOk()).andExpect(view().name("saveCarForm3"));
 
         Mockito.verify(carService).save(car);
-
-        Path pathToDelete = Paths.get(File.separator + "tmp" + File.separator + "companies" +
-                File.separator + "CompanyTest");
-
-        Files.walk(pathToDelete).sorted(Comparator.reverseOrder())
-                .forEach(path -> {
-                    try {
-                        Files.deleteIfExists(path);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
     }
 
     @Test
