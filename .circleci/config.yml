@@ -3,11 +3,16 @@ version: 2.1
 orbs:
   maven: circleci/maven@1.1.0
 
+jobs:
+  working_directory:
+    steps:
+      -persist_to_workspace:
+        root: /tmp
+        paths:
+          - /companies
+
 workflows:
   maven_test:
     jobs:
       - maven/test # checkout, build, test, and upload test results
-      - persist_to_workspace:
-          root: /tmp
-          paths:
-            /companies
+
