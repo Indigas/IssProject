@@ -1,21 +1,16 @@
 package sk.durovic.services.data;
 
-import com.google.common.jimfs.Configuration;
-import com.google.common.jimfs.Jimfs;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import sk.durovic.model.Car;
 import sk.durovic.model.Company;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.lang.reflect.Field;
+import java.nio.file.*;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.stream.Stream;
@@ -40,8 +35,10 @@ class FileStorageServiceImplTest {
         car.setId(1L);
 
         fileStorageService = new FileStorageServiceImpl(company);
-        pathToDelete = Paths.get(File.separator + "companies" +
+        pathToDelete = Paths.get(File.separator + "tmp" + File.separator + "companies" +
                 File.separator + company.getName());
+
+        setPrefix();
 
         String[] filenames = {"firstTest.txt", "secondTest.txt"};
         Arrays.stream(filenames).forEach(name ->
@@ -117,7 +114,14 @@ class FileStorageServiceImplTest {
     void getImagesPath() {
         Path path=fileStorageService.getImagesPath();
 
-        assertThat(path.toString(), Matchers.is(File.separator + "companies" +
-                File.separator + company.getName()));
+        assertThat(path.toString(), Matchers.is(pathToDelete.toString()));
+    }
+
+    void setPrefix() throws Exception{
+        Field field = fileStorageService.getClass().getDeclaredField("path");
+        field.setAccessible(true);
+        Path path = (Path) field.get(fileStorageService);
+        String tempPath = File.separator + "tmp" +path.toString();
+        field.set(fileStorageService, Paths.get(tempPath));
     }
 }
