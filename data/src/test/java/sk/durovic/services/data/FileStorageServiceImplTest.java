@@ -33,6 +33,8 @@ class FileStorageServiceImplTest {
 
     @BeforeEach
     void setUp() throws Exception {
+        System.setProperty("server.servlet.context-path", "/tmp");
+
         company = new Company();
         company.setName("CompanyTest");
         car = new Car();
