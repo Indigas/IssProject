@@ -3,9 +3,11 @@ package sk.durovic.api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import sk.durovic.controller.CarController;
+import sk.durovic.httpError.BadRequestArguments;
 import sk.durovic.httpError.NotAuthorized;
 import sk.durovic.model.Car;
 import sk.durovic.model.CarRestApi;
@@ -41,7 +43,7 @@ public class ImageApiHandler {
 
         Company company = userDetail.getCompany();
         FileStorageService fileStorageService = new FileStorageServiceImpl(company);
-        String imgPath = Paths.get(File.separator + "companies" + File.separator + company.getName() +
+        String imgPath = Paths.get(fileStorageService.getImagesPath() +
                 File.separator + carRestApi.getCarId() + File.separator + carRestApi.getImgName()).toString();
 
         try {
@@ -50,5 +52,11 @@ public class ImageApiHandler {
         } catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<String> getError(Exception exception){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 }
