@@ -13,7 +13,7 @@ import java.util.Map;
 @Controller
 public class MyErrorController implements ErrorViewResolver {
 
-    private String getErrorMessage(int errorMsg) {
+    /*private String getErrorMessage(int errorMsg) {
         String msg;
         switch (errorMsg){
             case 403: msg= "Not Authorized";
@@ -27,7 +27,7 @@ public class MyErrorController implements ErrorViewResolver {
         }
 
         return msg;
-    }
+    }*/
 
     @Override
     public ModelAndView resolveErrorView(HttpServletRequest request, HttpStatus status, Map<String, Object> model) {
@@ -38,4 +38,5 @@ public class MyErrorController implements ErrorViewResolver {
 
         return modelAndView;
     }
+
 }

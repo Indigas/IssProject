@@ -1,6 +1,7 @@
 package sk.durovic.controller;
 
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,18 +24,12 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequestMapping("/list")
 @Controller
+@AllArgsConstructor
 public class ListController {
 
     private final CompanyService companyService;
     private final CarService carService;
     private final AvailabilityService availabilityService;
-
-    public ListController(CompanyService companyService, CarService carService,
-                          AvailabilityService availabilityService) {
-        this.companyService = companyService;
-        this.carService = carService;
-        this.availabilityService = availabilityService;
-    }
 
     @RequestMapping("/car-grid")
     public String getListGridView(Model model){
@@ -43,7 +38,7 @@ public class ListController {
     }
 
     @GetMapping
-    private String getAllListings(Model model){
+    public String getAllListings(Model model){
 
         model.addAttribute("cars", carService.findByIsEnabled().orElse(new ArrayList<>()));
         model.addAttribute("priceComparator", new PricesComparatorByPrice());
@@ -52,7 +47,7 @@ public class ListController {
     }
 
     @GetMapping("/detail/{id}")
-    private String getCarDetail(Model model, @PathVariable("id") Long id){
+    public String getCarDetail(Model model, @PathVariable("id") Long id){
         Car car1 = carService.findById(id);
 
         if(car1==null || !car1.isEnabled())
@@ -73,7 +68,7 @@ public class ListController {
     };
 
     @PostMapping
-    private String getListingByDate(@ModelAttribute IndexSearch indexSearch, Model model){
+    public String getListingByDate(@ModelAttribute IndexSearch indexSearch, Model model){
         log.debug("ListController::getListingDate::"+indexSearch.toString());
 
         Set<Car> listCars = availabilityService.listOfAvailableCars(carService.findByIsEnabled()

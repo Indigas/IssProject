@@ -1,5 +1,6 @@
 package sk.durovic.controller;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,14 +21,12 @@ import java.util.Optional;
 
 @Controller
 @Slf4j
+@AllArgsConstructor
 @RequestMapping("/account")
 public class AccountController {
 
     @Autowired
-    ReservationService reservationService;
-
-    @Autowired
-    AvailabilityService availabilityService;
+    private ReservationService reservationService;
 
     @GetMapping
     public String showAccount(Model model, @AuthenticationPrincipal UserDetailImpl userDetail){
