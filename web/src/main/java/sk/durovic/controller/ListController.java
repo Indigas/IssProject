@@ -10,6 +10,7 @@ import sk.durovic.commands.IndexSearch;
 import sk.durovic.comparators.PricesComparatorByPrice;
 import sk.durovic.data.ImagesHandler;
 import sk.durovic.helper.DateTimeHelper;
+import sk.durovic.httpError.BadRequestArguments;
 import sk.durovic.httpError.NotFound;
 import sk.durovic.model.Car;
 import sk.durovic.model.Company;
@@ -27,7 +28,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ListController {
 
-    private final CompanyService companyService;
     private final CarService carService;
     private final AvailabilityService availabilityService;
 
@@ -61,7 +61,7 @@ public class ListController {
             model.addAttribute("images", ImagesHandler.getImages(car1).collect(Collectors.toList()));
         } catch (IOException e){
             log.error("Error in loading images, car ID: " + car1.getId());
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
         return "car-listing-details";
@@ -71,13 +71,18 @@ public class ListController {
     public String getListingByDate(@ModelAttribute IndexSearch indexSearch, Model model){
         log.debug("ListController::getListingDate::"+indexSearch.toString());
 
-        Set<Car> listCars = availabilityService.listOfAvailableCars(carService.findByIsEnabled()
-                        .map(TreeSet::new).orElseGet(TreeSet::new),
-                DateTimeHelper.getLocalDateTime(indexSearch.getStartDate(), indexSearch.getStartTime()),
-                DateTimeHelper.getLocalDateTime(indexSearch.getEndDate(), indexSearch.getEndTime()));
+        try {
+            Set<Car> listCars = availabilityService.listOfAvailableCars(carService.findByIsEnabled()
+                            .map(TreeSet::new).orElseGet(TreeSet::new),
+                    DateTimeHelper.getLocalDateTime(indexSearch.getStartDate(), indexSearch.getStartTime()),
+                    DateTimeHelper.getLocalDateTime(indexSearch.getEndDate(), indexSearch.getEndTime()));
+
+            model.addAttribute("cars", listCars);
+        } catch (NullPointerException e){
+            throw new BadRequestArguments();
+        }
 
 
-        model.addAttribute("cars", listCars);
         return "car-list-3col2";
     }
 

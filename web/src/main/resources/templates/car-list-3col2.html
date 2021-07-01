@@ -126,7 +126,7 @@
                                             <li th:text="${#strings.append(car.gear, ' prevodovka')}">2 bags</li>
                                             <li th:text="${#strings.append(car.powerKw, ' kW')}">150 mpg</li>
                                             <li th:text="${#strings.append(car.seats, ' sedadiel')}">airbags</li>
-                                            <li th:text="${#strings.append(car.airCondition.value, ' klimaticácia')}">manual/auto</li>
+                                            <li th:text="${#strings.append(car.airCondition, ' klimaticácia')}">manual/auto</li>
                                             <li th:text="${#strings.append(car.volume, ' objem motora')}">ac</li>
                                             <li th:text="${#strings.append('Výbava: ', car.pack)}"></li>
                                         </ul>
