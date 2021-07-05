@@ -36,12 +36,8 @@ public class MyUserPasswordRestAuthFilter extends UsernamePasswordAuthentication
         return (String) request.getAttribute("password");
     }
 
-    // Response body can also be written here
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        //String username = ((UserDetails)authResult.getPrincipal()).getUsername();
-
-        //response.getWriter().write(createResponseWithToken(username));
 
         super.successfulAuthentication(request, response, chain, authResult);
         chain.doFilter(request,response);
