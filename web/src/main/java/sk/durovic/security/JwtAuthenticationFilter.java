@@ -25,11 +25,8 @@ import java.io.IOException;
 
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    private AuthenticationManager authenticationManager;
-
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
-        super(new AntPathRequestMatcher("/api/login/**"), authenticationManager);
-        this.authenticationManager = authenticationManager;
+        super(new AntPathRequestMatcher("/api/data/**"), authenticationManager);
     }
 
 
@@ -46,7 +43,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
         Authentication auth = new JwtUserToken(jwtToken);
 
-        return authenticationManager.authenticate(auth);
+        return this.getAuthenticationManager().authenticate(auth);
     }
 
     @Override
@@ -63,7 +60,16 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
         super.successfulAuthentication(request, response, chain, authResult);
         chain.doFilter(request,response);
-        request.getSession().invalidate();
+       // request.getSession().invalidate();
 
+    }
+
+    private boolean shouldDoFilter(HttpServletRequest request){
+        return !request.getRequestURI().equals("/api/data/login");
+    }
+
+    @Override
+    protected boolean requiresAuthentication(HttpServletRequest request, HttpServletResponse response) {
+        return shouldDoFilter(request);
     }
 }

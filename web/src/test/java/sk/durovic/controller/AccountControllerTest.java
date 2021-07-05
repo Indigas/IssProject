@@ -28,7 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.MatcherAssert.*;
 
 @WebMvcTest(AccountController.class)
-@Import(UserDetailsTestService.class)
 class AccountControllerTest {
 
     @MockBean
