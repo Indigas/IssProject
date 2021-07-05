@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import sk.durovic.model.CompanyCredentials;
 import sk.durovic.model.UserDetailImpl;
 
@@ -27,6 +28,7 @@ public class UserDetailsTestService {
 
             UserDetails userDetails = new UserDetailImpl(companyCredentials,
                     new CompanyServiceHelper(1L, companyCredentials.getUsername()));
+
             return userDetails;
         }
     }
