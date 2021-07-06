@@ -31,6 +31,7 @@ import sk.durovic.model.Company;
 import sk.durovic.model.Prices;
 import sk.durovic.services.CarService;
 import sk.durovic.services.FileStorageService;
+import sk.durovic.services.JwtTokenService;
 import sk.durovic.services.PricesService;
 
 import java.io.File;
@@ -59,6 +60,9 @@ class CarControllerWebTest {
 
     @MockBean
     private PricesService pricesService;
+
+    @MockBean
+    private JwtTokenService jwtTokenService;
 
     @Autowired
     private MockMvc mockMvc;

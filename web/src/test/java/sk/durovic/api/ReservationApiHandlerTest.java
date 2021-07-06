@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import sk.durovic.model.Reservation;
 import sk.durovic.model.ReservationRestApi;
 import sk.durovic.services.AvailabilityService;
+import sk.durovic.services.JwtTokenService;
 import sk.durovic.services.ReservationService;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,6 +32,9 @@ class ReservationApiHandlerTest {
 
     @MockBean
     private AvailabilityService availabilityService;
+
+    @MockBean
+    private JwtTokenService jwtTokenService;
 
     @Autowired
     private MockMvc mockMvc;

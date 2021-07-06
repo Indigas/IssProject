@@ -39,8 +39,8 @@ public class SecurityConfigRest extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.addFilterBefore(new JwtUsernamePasswordAuthFilter(), UsernamePasswordAuthenticationFilter.class);
-        http.addFilterAfter(new MyUserPasswordRestAuthFilter(authenticationManagerBean()), JwtUsernamePasswordAuthFilter.class);
-        http.addFilterAfter(new JwtAuthenticationFilter(authenticationManagerBean()), MyUserPasswordRestAuthFilter.class);
+        http.addFilterAfter(new MyUserPasswordRestAuthFilter(this.authenticationManagerBean()), JwtUsernamePasswordAuthFilter.class);
+        http.addFilterAfter(new JwtAuthenticationFilter(this.authenticationManagerBean()), MyUserPasswordRestAuthFilter.class);
 
 
         http

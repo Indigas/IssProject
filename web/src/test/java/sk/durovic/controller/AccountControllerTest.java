@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import sk.durovic.model.Reservation;
+import sk.durovic.services.JwtTokenService;
 import sk.durovic.services.ReservationService;
 
 import java.util.List;
@@ -32,6 +33,9 @@ class AccountControllerTest {
 
     @MockBean
     private ReservationService reservationService;
+
+    @MockBean
+    private JwtTokenService jwtTokenService;
 
     @Autowired
     private MockMvc mockMvc;

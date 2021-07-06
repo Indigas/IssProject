@@ -22,6 +22,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import sk.durovic.security.JwtAuthenticationFilter;
 import sk.durovic.security.JwtAuthenticationProvider;
 import sk.durovic.security.JwtUsernamePasswordAuthFilter;
+import sk.durovic.services.JwtTokenService;
 
 
 @Configuration
@@ -33,8 +34,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     UserDetailsService userDetailService;
 
     @Autowired
+    JwtTokenService jwtTokenService;
+
+    @Autowired
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(new JwtAuthenticationProvider(userDetailService))
+        auth.authenticationProvider(new JwtAuthenticationProvider(userDetailService,
+                jwtTokenService))
                 .userDetailsService(userDetailService);
     }
 

@@ -60,7 +60,6 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
         super.successfulAuthentication(request, response, chain, authResult);
         chain.doFilter(request,response);
-       // request.getSession().invalidate();
 
     }
 

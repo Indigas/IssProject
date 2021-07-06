@@ -22,6 +22,7 @@ import sk.durovic.model.Company;
 import sk.durovic.services.AvailabilityService;
 import sk.durovic.services.CarService;
 import sk.durovic.services.CompanyService;
+import sk.durovic.services.JwtTokenService;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
@@ -41,6 +42,9 @@ class ListControllerTest {
 
     @MockBean
     private AvailabilityService availabilityService;
+
+    @MockBean
+    private JwtTokenService jwtTokenService;
 
     @Autowired
     private MockMvc mockMvc;

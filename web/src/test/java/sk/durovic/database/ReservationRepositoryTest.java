@@ -1,6 +1,7 @@
 package sk.durovic.database;
 
 
+import config.JwtTokenTestService;
 import helper.CompanyBuilder;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
@@ -10,10 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.Import;
 import org.springframework.dao.EmptyResultDataAccessException;
 import sk.durovic.model.Company;
 import sk.durovic.model.Reservation;
 import sk.durovic.repositories.ReservationRepository;
+import sk.durovic.services.JwtTokenService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,7 @@ import static org.hamcrest.MatcherAssert.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import(JwtTokenTestService.class)
 public class ReservationRepositoryTest {
 
     @Autowired

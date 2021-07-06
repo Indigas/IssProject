@@ -15,6 +15,7 @@ import sk.durovic.model.Company;
 import sk.durovic.model.CompanyCredentials;
 import sk.durovic.services.CompanyCredentialsService;
 import sk.durovic.services.CompanyService;
+import sk.durovic.services.JwtTokenService;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
@@ -32,6 +33,8 @@ class CompanyControllerWebIT {
     private CompanyCredentialsService companyCredentialsService;
     @MockBean
     private PasswordEncoder passwordEncoder;
+    @MockBean
+    private JwtTokenService jwtTokenService;
 
     @BeforeEach
     void setUp() {

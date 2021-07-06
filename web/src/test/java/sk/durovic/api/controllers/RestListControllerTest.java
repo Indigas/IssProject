@@ -4,6 +4,7 @@ import helper.CarBuilder;
 import helper.CompanyBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -14,6 +15,7 @@ import sk.durovic.model.Car;
 import sk.durovic.model.Company;
 import sk.durovic.services.AvailabilityService;
 import sk.durovic.services.CarService;
+import sk.durovic.services.JwtTokenService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,9 @@ class RestListControllerTest {
 
     @MockBean
     private AvailabilityService availabilityService;
+
+    @MockBean
+    private JwtTokenService jwtTokenService;
 
     @Autowired
     private MockMvc mockMvc;

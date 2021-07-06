@@ -18,8 +18,11 @@ import org.springframework.web.bind.annotation.*;
 import sk.durovic.model.AuthRequest;
 import sk.durovic.security.JwtUtil;
 
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 @Slf4j
 @RestController
@@ -29,17 +32,23 @@ public class JwtAuthentication {
 
     @PostMapping
     public ResponseEntity<?> login(@AuthenticationPrincipal UserDetails userDetails){
-        Map<String, String> model = new HashMap<>();
+        String token =  JwtUtil.createJWTtoken(userDetails.getUsername());
+
+        Map<String, String> model = new TreeMap<>();
         model.put("authentication", "successfull");
         model.put("username", userDetails.getUsername());
-        model.put("token", JwtUtil.createJWTtoken(userDetails.getUsername()));
+        model.put("expires at", JWT.decode(token).getExpiresAt().toString());
+        model.put("token",token);
         return ResponseEntity.status(HttpStatus.OK).body(model);
     }
 
     @GetMapping("/me")
-    public ResponseEntity<?> getCurrentUser(@AuthenticationPrincipal UserDetails userDetails){
+    public ResponseEntity<?> getCurrentUser(@AuthenticationPrincipal UserDetails userDetails,
+                                            @RequestHeader("Authorization") String jwtToken){
+        String token = jwtToken.substring(7).trim();
         Map<String, String> model = new HashMap<>();
         model.put("user", userDetails.getUsername());
+        model.put("token expires at", JWT.decode(token).getExpiresAt().toString());
 
         return ResponseEntity.ok(model);
     }

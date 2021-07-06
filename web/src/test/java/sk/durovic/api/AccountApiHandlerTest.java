@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import sk.durovic.model.Company;
 import sk.durovic.services.CompanyService;
+import sk.durovic.services.JwtTokenService;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,6 +26,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class AccountApiHandlerTest {
     @MockBean
     private CompanyService companyService;
+
+    @MockBean
+    private JwtTokenService jwtTokenService;
 
     @Autowired
     private MockMvc mockMvc;
