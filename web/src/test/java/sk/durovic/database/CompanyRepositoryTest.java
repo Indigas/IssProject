@@ -84,6 +84,7 @@ public class CompanyRepositoryTest {
     public void notDeleteCompany(){
         long id = testEntityManager.persistAndGetId(company, Long.class);
         Company saved = CompanyBuilder.getCompanyForTest();
+        saved.setId(2L);
 
         companyRepository.delete(saved);
 
