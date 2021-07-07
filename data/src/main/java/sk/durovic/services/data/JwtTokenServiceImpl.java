@@ -23,11 +23,20 @@ public class JwtTokenServiceImpl implements JwtTokenService {
 
     @Override
     public boolean isValid(String token){
-        return findByToken(token).isEmpty();
+        return findByToken(token).isPresent();
     }
 
     @Override
     public JwtToken save(JwtToken token) {
         return jwtTokenRepository.save(token);
     }
+
+    @Override
+    public JwtToken createToken(String token, Long userId){
+        jwtTokenRepository.deleteAllByUserId(userId);
+
+        return this.save(new JwtToken(token, userId));
+    }
+
+
 }

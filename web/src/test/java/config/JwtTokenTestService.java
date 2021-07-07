@@ -24,7 +24,7 @@ public class JwtTokenTestService {
                 case "empty":
                     return Optional.empty();
                 case "token":
-                    return Optional.of(new JwtToken("token"));
+                    return Optional.of(new JwtToken("token", 1L));
                 default:
                     return Optional.empty();
             }
@@ -38,6 +38,11 @@ public class JwtTokenTestService {
         @Override
         public JwtToken save(JwtToken token) {
             return token;
+        }
+
+        @Override
+        public JwtToken createToken(String token, Long userId) {
+            return new JwtToken("token",0L);
         }
     }
 

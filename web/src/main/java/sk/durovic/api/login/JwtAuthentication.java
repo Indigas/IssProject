@@ -16,7 +16,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import sk.durovic.model.AuthRequest;
+import sk.durovic.model.JwtToken;
+import sk.durovic.model.UserDetailImpl;
 import sk.durovic.security.JwtUtil;
+import sk.durovic.services.JwtTokenService;
 
 import java.time.LocalDateTime;
 import java.util.Calendar;
@@ -29,16 +32,24 @@ import java.util.TreeMap;
 @RequestMapping("/api/data/login")
 public class JwtAuthentication {
 
+    @Autowired
+    JwtTokenService jwtTokenService;
 
     @PostMapping
     public ResponseEntity<?> login(@AuthenticationPrincipal UserDetails userDetails){
         String token =  JwtUtil.createJWTtoken(userDetails.getUsername());
+
+        JwtToken saved = jwtTokenService.createToken(token, ((UserDetailImpl)userDetails).getCompany().getId());
+
+        if(!saved.getToken().equals(token))
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 
         Map<String, String> model = new TreeMap<>();
         model.put("authentication", "successfull");
         model.put("username", userDetails.getUsername());
         model.put("expires at", JWT.decode(token).getExpiresAt().toString());
         model.put("token",token);
+
         return ResponseEntity.status(HttpStatus.OK).body(model);
     }
 

@@ -11,4 +11,6 @@ public interface JwtTokenService {
     boolean isValid(String token);
 
     JwtToken save(JwtToken token);
+
+    public JwtToken createToken(String token, Long userId);
 }

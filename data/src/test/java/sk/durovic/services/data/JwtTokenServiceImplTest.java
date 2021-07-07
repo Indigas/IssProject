@@ -32,7 +32,7 @@ class JwtTokenServiceImplTest {
     @Test
     void findByToken() {
         Mockito.when(jwtTokenRepository.findByToken(Mockito.any()))
-                .thenReturn(Optional.of(new JwtToken("token")));
+                .thenReturn(Optional.of(new JwtToken("token", 0L)));
 
         boolean found = jwtTokenService.findByToken("token").isPresent();
 
@@ -47,24 +47,24 @@ class JwtTokenServiceImplTest {
 
         boolean valid = jwtTokenService.isValid("token");
 
-        assertTrue(valid);
+        assertFalse(valid);
         Mockito.verify(jwtTokenRepository, Mockito.atMostOnce()).findByToken(Mockito.any());
     }
 
     @Test
     void isNotValid(){
         Mockito.when(jwtTokenRepository.findByToken(Mockito.any()))
-                .thenReturn(Optional.of(new JwtToken("token")));
+                .thenReturn(Optional.of(new JwtToken("token",0L)));
 
         boolean valid = jwtTokenService.isValid("token");
 
-        assertFalse(valid);
+        assertTrue(valid);
         Mockito.verify(jwtTokenRepository, Mockito.atMostOnce()).findByToken(Mockito.any());
     }
 
     @Test
     void saved(){
-        JwtToken jwt = new JwtToken("token");
+        JwtToken jwt = new JwtToken("token",0L);
         Mockito.when(jwtTokenRepository.save(Mockito.any()))
                 .thenReturn(jwt);
 
@@ -72,5 +72,21 @@ class JwtTokenServiceImplTest {
 
         assertThat(saved, Matchers.is(jwt));
         Mockito.verify(jwtTokenRepository, Mockito.atMostOnce()).save(jwt);
+    }
+
+    @Test
+    void createTokenSuccessfull(){
+        Mockito.doNothing().when(jwtTokenRepository).deleteAllByUserId(Mockito.any());
+        Mockito.when(jwtTokenRepository.save(Mockito.any()))
+                .thenReturn(new JwtToken("token",0L));
+
+        JwtToken created = jwtTokenService.createToken("token", 0L);
+
+        Mockito.verify(jwtTokenRepository, Mockito.atMostOnce()).deleteAllByUserId(0L);
+        Mockito.verify(jwtTokenRepository, Mockito.atMostOnce()).save(Mockito.any());
+
+        assertThat(created, Matchers.hasProperty("token", Matchers.is("token")));
+        assertThat(created, Matchers.hasProperty("userId", Matchers.is(0L)));
+
     }
 }

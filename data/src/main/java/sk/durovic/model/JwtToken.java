@@ -12,4 +12,5 @@ import javax.persistence.Entity;
 @AllArgsConstructor
 public class JwtToken extends BaseEntity{
     private String token;
+    private Long userId;
 }

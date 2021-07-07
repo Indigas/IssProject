@@ -26,7 +26,6 @@ import static org.hamcrest.MatcherAssert.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import(JwtTokenTestService.class)
 public class AvailabilityRepositoryTest {
 
     @Autowired

@@ -12,11 +12,14 @@ import org.springframework.context.annotation.Import;
 import sk.durovic.model.JwtToken;
 import sk.durovic.repositories.JwtTokenRepository;
 
+import java.util.List;
+import java.util.Optional;
+
 import static org.hamcrest.MatcherAssert.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import(JwtTokenTestService.class)
 public class JwtTokenRepositoryTest {
 
     @Autowired
@@ -29,7 +32,7 @@ public class JwtTokenRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        jwtToken = new JwtToken("token");
+        jwtToken = new JwtToken("token", 0L);
     }
 
     @Test
@@ -50,4 +53,29 @@ public class JwtTokenRepositoryTest {
         assertThat(found, Matchers.notNullValue());
         assertThat(found, Matchers.samePropertyValuesAs(jwtToken, "id"));
     }
+
+    @Test
+    void findAllByUserId(){
+        testEntityManager.persist(new JwtToken("token",1L));
+        testEntityManager.persist(new JwtToken("test",1L));
+        testEntityManager.persist(new JwtToken("company",2L));
+
+        jwtTokenRepository.deleteAllByUserId(1L);
+
+        JwtToken found = testEntityManager.find(JwtToken.class, 1L);
+
+        assertThat(found, Matchers.nullValue());
+    }
+
+    @Test
+    void findAllByUserIdWithNotExistUserId(){
+        testEntityManager.persist(new JwtToken("token",1L));
+        testEntityManager.persist(new JwtToken("token",1L));
+
+        jwtTokenRepository.deleteAllByUserId(3L);
+
+        JwtToken found = testEntityManager.find(JwtToken.class, 1L);
+
+        assertThat(found, Matchers.nullValue());
+     }
 }
