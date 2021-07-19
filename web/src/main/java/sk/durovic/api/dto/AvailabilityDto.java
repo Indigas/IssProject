@@ -1,10 +1,11 @@
 package sk.durovic.api.dto;
 
-import sk.durovic.model.Car;
-
-import javax.persistence.ManyToOne;
+import lombok.Getter;
+import lombok.Setter;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 public class AvailabilityDto {
     private LocalDateTime start;
     private LocalDateTime end;

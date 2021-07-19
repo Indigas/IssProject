@@ -1,10 +1,18 @@
 package sk.durovic.api.dto;
 
-import sk.durovic.model.AirCondition;
-import sk.durovic.model.Category;
-import sk.durovic.model.Fuel;
-import sk.durovic.model.Gear;
+import lombok.Getter;
+import lombok.Setter;
+import sk.durovic.model.*;
 
+import javax.persistence.CascadeType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
+
+@Getter
+@Setter
 public class CarDto {
     private Long id;
     private String brand;
@@ -21,5 +29,8 @@ public class CarDto {
     private String pack;
     private Category category;
     private String notes;
-    private boolean isEnabled;
+
+    private CompanyDto company;
+    private Set<AvailabilityDto> rentDates;
+    private Set<PricesDto> prices;
 }

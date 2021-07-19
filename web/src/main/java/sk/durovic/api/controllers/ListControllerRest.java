@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sk.durovic.api.dto.CarDto;
 import sk.durovic.commands.IndexSearch;
 import sk.durovic.helper.DateTimeHelper;
+import sk.durovic.mappers.CarMapper;
 import sk.durovic.model.Car;
 import sk.durovic.model.Company;
 import sk.durovic.model.Prices;
@@ -49,12 +51,13 @@ public class ListControllerRest {
         if (car==null || !car.isEnabled())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
+        CarDto carDto = CarMapper.INSTANCE.toDto(car);
         Optional<List<Prices>> pricesList = pricesService.findByCarId(id);
         Set<Prices> pricesSet = new TreeSet<>(pricesList.orElse(new ArrayList<>()));
 
         car.setPrices(pricesSet);
 
-        return ResponseEntity.ok(car);
+        return ResponseEntity.ok(carDto);
     }
 
     @GetMapping("/company/{id}")

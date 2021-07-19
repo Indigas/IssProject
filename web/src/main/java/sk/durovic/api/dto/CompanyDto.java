@@ -1,7 +1,12 @@
 package sk.durovic.api.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Set;
 
+@Getter
+@Setter
 public class CompanyDto {
     private Long id;
     private String name;
@@ -10,5 +15,5 @@ public class CompanyDto {
     private String phone;
     private String email;
 
-    private Set<CarDto> listOfCars;
+    //private Set<CarDto> listOfCars;
 }
