@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import sk.durovic.controller.CarController;
+import sk.durovic.helper.CarOwnerHelper;
 import sk.durovic.httpError.BadRequestArguments;
 import sk.durovic.httpError.NotAuthorized;
 import sk.durovic.model.Car;
@@ -36,7 +37,7 @@ public class ImageApiHandler {
                          @RequestBody CarRestApi carRestApi){
 
 
-        if(!CarController.isOwnerOfCar(userDetail, carService.findById(carRestApi.getCarId()) )){
+        if(!CarOwnerHelper.isOwnerOfCar(userDetail, carService.findById(carRestApi.getCarId()) )){
             log.debug("Not authorized to delete images of car:: " + carRestApi);
             throw new NotAuthorized();
         }

@@ -39,10 +39,7 @@ public class JwtAuthentication {
     public ResponseEntity<?> login(@AuthenticationPrincipal UserDetails userDetails){
         String token =  JwtUtil.createJWTtoken(userDetails.getUsername());
 
-        JwtToken saved = jwtTokenService.createToken(token, ((UserDetailImpl)userDetails).getCompany().getId());
-
-        if(!saved.getToken().equals(token))
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        jwtTokenService.createToken(token, ((UserDetailImpl)userDetails).getCompany().getId());
 
         Map<String, String> model = new TreeMap<>();
         model.put("authentication", "successfull");

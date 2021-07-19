@@ -55,8 +55,6 @@ public class JwtAuthenticationProvider extends AbstractUserDetailsAuthentication
         if(!this.validateToken((String) jwtUserToken.getPrincipal()))
             throw new BadCredentialsException("Not valid JWT token");
 
-        //DecodedJWT decodedJWT = JWT.decode((String) jwtUserToken.getPrincipal());
-
         String username = decodedJWT.getClaim("user").asString();
 
         return userDetailsService.loadUserByUsername(username);

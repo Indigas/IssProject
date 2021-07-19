@@ -131,7 +131,7 @@
     <div class="row">
         <div class="col-md-12">
             <h2>Choose your primary image</h2><br>
-            <form th:action="@{${#strings.concat('/car/new/summary',carId)}}" method="post">
+            <form th:action="@{${#strings.concat('/car/new/summary/',carId)}}" method="post">
 
                 <select class="image-picker" name="mainImage">
                     <option th:each="image : ${images}" th:data-img-src="${image.toString()}"

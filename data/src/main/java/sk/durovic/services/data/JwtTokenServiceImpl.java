@@ -1,6 +1,7 @@
 package sk.durovic.services.data;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import sk.durovic.model.JwtToken;
 import sk.durovic.repositories.JwtTokenRepository;
 import sk.durovic.services.JwtTokenService;
@@ -32,6 +33,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     }
 
     @Override
+    @Transactional
     public JwtToken createToken(String token, Long userId){
         jwtTokenRepository.deleteAllByUserId(userId);
 

@@ -55,6 +55,15 @@ public class JwtTokenRepositoryTest {
     }
 
     @Test
+    void notFoundByToken(){
+        testEntityManager.persist(jwtToken);
+
+        Optional<JwtToken> token = jwtTokenRepository.findByToken("test");
+
+        assertTrue(token.isEmpty());
+    }
+
+    @Test
     void findAllByUserId(){
         testEntityManager.persist(new JwtToken("token",1L));
         testEntityManager.persist(new JwtToken("test",1L));

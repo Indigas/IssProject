@@ -47,7 +47,7 @@ public class JwtUsernamePasswordAuthFilter extends GenericFilterBean {
         char[] body = new char[128];
         int read=0;
         StringBuilder bodyString = new StringBuilder();
-        while((read = bfr.read(body, read, body.length)) != -1){
+        while((read = bfr.read(body, 0, body.length)) != -1){
             bodyString.append(body);
         }
 

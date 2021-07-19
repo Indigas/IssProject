@@ -49,6 +49,11 @@ public class CarBuilder {
         return this;
     }
 
+    public CarBuilder setEnabled(boolean enabled){
+        this.car.setEnabled(enabled);
+        return this;
+    }
+
     public static Car getCarForTest(){
         return new CarBuilder().setId(1L).setIdCompany(1L).setEmailCompany("abc@abc.com").build();
     }

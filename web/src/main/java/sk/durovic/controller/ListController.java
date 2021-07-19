@@ -72,8 +72,8 @@ public class ListController {
         log.debug("ListController::getListingDate::"+indexSearch.toString());
 
         try {
-            Set<Car> listCars = availabilityService.listOfAvailableCars(carService.findByIsEnabled()
-                            .map(TreeSet::new).orElseGet(TreeSet::new),
+            Set<Car> listCars = availabilityService.listOfAvailableCars(new TreeSet<>(carService
+                            .findByIsEnabled().orElse(new ArrayList<>())),
                     DateTimeHelper.getLocalDateTime(indexSearch.getStartDate(), indexSearch.getStartTime()),
                     DateTimeHelper.getLocalDateTime(indexSearch.getEndDate(), indexSearch.getEndTime()));
 

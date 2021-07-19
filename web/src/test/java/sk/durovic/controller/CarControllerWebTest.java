@@ -128,7 +128,7 @@ class CarControllerWebTest {
     @Test
     @WithMockCustomUser
     public void continuingCreatingCarInStepTwo() throws Exception {
-        mockMvc.perform(post("/car/new/step-2/").with(csrf())
+        mockMvc.perform(post("/car/new/step-2").with(csrf())
                 .with(SecurityMockMvcRequestPostProcessors.user(user)))
                 .andExpect(status().isOk()).andExpect(view().name("saveCarForm2"));
 

@@ -13,6 +13,7 @@ import sk.durovic.comparators.PricesComparatorByPrice;
 import sk.durovic.converters.CarCommandToCar;
 import sk.durovic.converters.CarToCarCommand;
 import sk.durovic.data.ImagesHandler;
+import sk.durovic.helper.CarOwnerHelper;
 import sk.durovic.httpError.NotAuthorized;
 import sk.durovic.model.*;
 import sk.durovic.services.CarService;
@@ -26,11 +27,13 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static sk.durovic.helper.CarOwnerHelper.isOwnerOfCar;
+
 
 @Slf4j
 @Controller
 @RequestMapping("/car")
-public class CarController {
+public class CarController implements sk.durovic.helper.CarOwnerHelper {
 
     private final CarService carService;
     private final PricesService pricesService;
@@ -69,10 +72,10 @@ public class CarController {
         return "saveCarForm";
     }
 
-    @PostMapping({"/new/step-2", "/new/step-2/{id}"})
+    @PostMapping({"/new/step-2","/new/step-2/{id}"})
     public String saveImageForm(Model model, @ModelAttribute("carCommand") CarCommand carCommand,
                                 @AuthenticationPrincipal UserDetails userDetail,
-                                @Nullable @PathVariable("id")Long id) {
+                                @PathVariable(value = "id",required = false)Long id) {
 
         Car car = new CarCommandToCar().convert(carCommand);
 
@@ -80,12 +83,12 @@ public class CarController {
         Company company = ((UserDetailImpl)userDetail).getCompany();
 
         if(id!=null) {
-            if (isOwnerOfCar(userDetail, carService.findById(id)))
+            if (isOwnerOfCar(userDetail, carService.findById(id))) {
                 car.setId(id);
+            }
             else
                 throw new NotAuthorized();
         }
-
 
 
         car.setCompany(company);
@@ -98,7 +101,7 @@ public class CarController {
 
     @PostMapping("/new/step-3/{id}")
     public String saveImagesToCar(@AuthenticationPrincipal UserDetails userDetail, Model model,
-                                  @PathVariable("id") Long id,
+                                  @PathVariable(value = "id", required = true) Long id,
                                   @RequestParam("imageFiles") MultipartFile... multipartFiles) {
 
         Car car = carService.findById(id);
@@ -126,7 +129,7 @@ public class CarController {
 
     @PostMapping("/new/summary/{id}")
     public String carSummary(HttpServletRequest request, Model model,
-                             @PathVariable("id") Long id,
+                             @PathVariable(value = "id", required = true) Long id,
                              @AuthenticationPrincipal UserDetails userDetail) {
 
         Car car = carService.findById(id);
@@ -153,7 +156,7 @@ public class CarController {
     }
 
     @GetMapping({"/publish/{id}"})
-    public String publishCar(@PathVariable("id") Long id, Model model,
+    public String publishCar(@PathVariable(value = "id", required = true) Long id, Model model,
                              @AuthenticationPrincipal UserDetails userDetail){
         Car car1 = carService.findById(id);
 
@@ -170,7 +173,7 @@ public class CarController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteCar(@PathVariable("id") Long id,
+    public String deleteCar(@PathVariable(value = "id", required = true) Long id,
                             @AuthenticationPrincipal UserDetails userDetail){
         Car car1 = carService.findById(id);
 
@@ -183,7 +186,7 @@ public class CarController {
     }
 
     @GetMapping("/update/{id}")
-    public String updateCar(@PathVariable("id") Long id, Model model,
+    public String updateCar(@PathVariable(value = "id", required = true) Long id, Model model,
                             @AuthenticationPrincipal UserDetails userDetail){
         Car car1 = carService.findById(id);
 
@@ -243,15 +246,6 @@ public class CarController {
         }
     }
 
-    public static boolean isOwnerOfCar(UserDetails userDetail, Car car1) {
-        if(userDetail==null || car1==null || !((UserDetailImpl)userDetail).getCompany().getId().equals(car1.getCompany().getId())) {
-            log.debug("User not authorized to change car.");
-            log.debug("user::"+userDetail);
-            return false;
-        }
-
-        return true;
-    }
 }
 
 

@@ -25,7 +25,7 @@ public class Company extends BaseEntity implements Comparable<Company>{
     private String email;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
-    private final Set<Car> listOfCars = new TreeSet<>();
+    private Set<Car> listOfCars = new TreeSet<>();
 
     @Override
     public String toString() {

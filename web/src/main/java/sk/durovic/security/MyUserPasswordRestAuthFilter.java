@@ -52,14 +52,4 @@ public class MyUserPasswordRestAuthFilter extends UsernamePasswordAuthentication
         });
         return handler;
     }
-
-    private String createResponseWithToken(String username) throws JsonProcessingException {
-        Map<String, String> model = new HashMap<>();
-        model.put("authentication", "successfull");
-        model.put("username", username);
-        model.put("token", JwtUtil.createJWTtoken(username));
-
-        return new ObjectMapper()
-                .writeValueAsString(model);
-    }
 }
