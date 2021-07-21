@@ -1,16 +1,20 @@
 package sk.durovic.api.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sk.durovic.api.dto.CarDto;
+import sk.durovic.api.dto.PricesDto;
 import sk.durovic.commands.IndexSearch;
 import sk.durovic.helper.DateTimeHelper;
 import sk.durovic.mappers.CarMapper;
+import sk.durovic.mappers.PricesMapper;
 import sk.durovic.model.Car;
 import sk.durovic.model.Company;
 import sk.durovic.model.Prices;
@@ -20,11 +24,14 @@ import sk.durovic.services.PricesService;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @Slf4j
 @RequestMapping("/api/list")
 public class ListControllerRest {
+
+    private ObjectMapper jsonData = new ObjectMapper();
 
     @Autowired
     private CarService carService;
@@ -37,14 +44,19 @@ public class ListControllerRest {
 
     @GetMapping()
     public ResponseEntity<?> getAllListings(){
-        Optional<List<Car>> optionalCars = carService.findByIsEnabled();
+        List<JsonNode> jsonNodes = carService.findByIsEnabled()
+                .orElse(new ArrayList<>()).stream()
+                .map(CarMapper.INSTANCE::toDto).map(jsonData::<JsonNode>valueToTree)
+                .collect(Collectors.toList());
 
-        return ResponseEntity.ok(optionalCars.orElse(new ArrayList<>()));
+        jsonNodes.forEach(json -> ((ObjectNode)json).remove("enabled"));
+
+        return ResponseEntity.ok(jsonNodes);
     }
 
     @GetMapping("/detail/{id}")
     public ResponseEntity<?> getCarDetail(@PathVariable(value = "id",
-            required = true) Long id){
+            required = true) Long id) throws JsonProcessingException {
 
         Car car = carService.findById(id);
 
@@ -52,12 +64,11 @@ public class ListControllerRest {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         CarDto carDto = CarMapper.INSTANCE.toDto(car);
-        Optional<List<Prices>> pricesList = pricesService.findByCarId(id);
-        Set<Prices> pricesSet = new TreeSet<>(pricesList.orElse(new ArrayList<>()));
 
-        car.setPrices(pricesSet);
+        JsonNode jn = jsonData.valueToTree(carDto);
+        ((ObjectNode)jn).remove("enabled");
 
-        return ResponseEntity.ok(carDto);
+        return ResponseEntity.ok(jn);
     }
 
     @GetMapping("/company/{id}")
@@ -72,10 +83,15 @@ public class ListControllerRest {
         if(carList.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-        List<Car> enabledCars = carList.orElse(new ArrayList<>()).stream()
-                .filter(Car::isEnabled).collect(Collectors.toList());
+        List<JsonNode> enabledCars = carList.orElse(new ArrayList<>()).stream()
+                .filter(Car::isEnabled).map(CarMapper.INSTANCE::toDto)
+                .map(jsonData::<JsonNode>valueToTree)
+                .collect(Collectors.toList());
 
-        enabledCars.forEach(car -> car.setPrices(null));
+        enabledCars.forEach(json -> {
+            ((ObjectNode)json).remove("enabled");
+            ((ObjectNode)json).remove("company");
+        });
 
         return ResponseEntity.ok(enabledCars);
     }
@@ -90,8 +106,13 @@ public class ListControllerRest {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         Optional<List<Prices>> prices = pricesService.findByCarId(id);
+        List<PricesDto> pricesDtos = new ArrayList<>();
 
-        return ResponseEntity.ok(prices.orElse(new ArrayList<>()));
+        if(prices.isPresent())
+            pricesDtos = prices.get().stream()
+                    .map(PricesMapper.INSTANCE::toDto).collect(Collectors.toList());
+
+        return ResponseEntity.ok(pricesDtos);
     }
 
     @GetMapping("/available")
@@ -103,7 +124,13 @@ public class ListControllerRest {
                     DateTimeHelper.getLocalDateTime(indexSearch.getStartDate(), indexSearch.getStartTime()),
                     DateTimeHelper.getLocalDateTime(indexSearch.getEndDate(), indexSearch.getEndTime()));
 
-            return ResponseEntity.ok(carSet);
+            List<JsonNode> carDtos = carSet.stream().map(CarMapper.INSTANCE::toDto)
+                    .map(jsonData::<JsonNode>valueToTree)
+                    .collect(Collectors.toList());
+
+            carDtos.forEach(json -> ((ObjectNode)json).remove("enabled"));
+
+            return ResponseEntity.ok(carDtos);
 
         } catch (NullPointerException e){
             IndexSearch indexSearch1 = new IndexSearch();

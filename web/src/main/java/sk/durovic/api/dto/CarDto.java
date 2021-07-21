@@ -29,6 +29,8 @@ public class CarDto {
     private String pack;
     private Category category;
     private String notes;
+    private String[] images;
+    private boolean isEnabled;
 
     private CompanyDto company;
     private Set<AvailabilityDto> rentDates;

@@ -14,6 +14,4 @@ public class CompanyDto {
     private String city;
     private String phone;
     private String email;
-
-    //private Set<CarDto> listOfCars;
 }

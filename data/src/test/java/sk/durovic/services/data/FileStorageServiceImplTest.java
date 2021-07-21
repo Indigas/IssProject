@@ -36,7 +36,7 @@ class FileStorageServiceImplTest {
 
         fileStorageService = new FileStorageServiceImpl(company);
         pathToDelete = Paths.get(File.separator + "tmp" + File.separator + "companies" +
-                File.separator + company.getName());
+                File.separator + company.getId());
 
         setPrefix();
 

@@ -1,5 +1,6 @@
 package sk.durovic.api.controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import config.UserDetailsTestService;
 import helper.CarBuilder;
@@ -19,6 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import sk.durovic.api.dto.CarDto;
+import sk.durovic.api.dto.CompanyDto;
 import sk.durovic.model.Car;
 import sk.durovic.model.Company;
 import sk.durovic.security.JwtUtil;
@@ -67,11 +70,11 @@ class CompanyControllerRestTest {
                 .andReturn();
 
         String content = mvcResult.getResponse().getContentAsString();
-        Company company = jsonData.readValue(content, Company.class);
+        JsonNode jsonNode = jsonData.readTree(content);
+        CompanyDto company = jsonData.readValue(content, CompanyDto.class);
 
         Mockito.verify(jwtTokenService, Mockito.atMostOnce()).isValid(Mockito.any());
-        assertThat(company, Matchers.hasProperty("email",
-                Matchers.is("testUser")));
+        assertThat(jsonNode.path("email").asText(), Matchers.is("testUser"));
     }
 
     @Test
@@ -87,10 +90,16 @@ class CompanyControllerRestTest {
                 .andReturn();
 
         String content = mvcResult.getResponse().getContentAsString();
-        List<Car> cars = (List<Car>) jsonData.readValue(content, List.class);
+        JsonNode jsonNode = jsonData.readTree(content);
+        for(JsonNode arrayNode : jsonNode){
+            CarDto carDto = jsonData.treeToValue(arrayNode, CarDto.class);
+            assertEquals(1L, (long) carDto.getId());
+            assertTrue(arrayNode.path("company").isMissingNode());
+        }
 
         Mockito.verify(jwtTokenService, Mockito.atMostOnce()).isValid(Mockito.any());
         Mockito.verify(carService, Mockito.atMostOnce()).findByCompany(Mockito.any());
-        assertThat(cars, Matchers.hasSize(1));
+        assertTrue(jsonNode.isArray());
+
     }
 }

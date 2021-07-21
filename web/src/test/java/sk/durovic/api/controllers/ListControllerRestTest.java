@@ -1,6 +1,8 @@
 package sk.durovic.api.controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import helper.CarBuilder;
 import helper.CompanyBuilder;
 import org.hamcrest.Matchers;
@@ -15,7 +17,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import sk.durovic.api.dto.CarDto;
+import sk.durovic.api.dto.PricesDto;
 import sk.durovic.commands.IndexSearch;
+import sk.durovic.mappers.CarMapper;
 import sk.durovic.model.Car;
 import sk.durovic.model.Company;
 import sk.durovic.model.Prices;
@@ -70,7 +75,7 @@ class ListControllerRestTest {
                 .andExpect(status().isOk()).andReturn();
 
         String content = mvcResult.getResponse().getContentAsString();
-        Car[] carList = jsonData.readValue(content, Car[].class);
+        CarDto[] carList = jsonData.readValue(content, CarDto[].class);
 
         Mockito.verify(carService,Mockito.atMostOnce()).findByIsEnabled();
 
@@ -86,10 +91,10 @@ class ListControllerRestTest {
                 .andExpect(status().isOk()).andReturn();
 
         String content = mvcResult.getResponse().getContentAsString();
-        Car car = jsonData.readValue(content, Car.class);
+        CarDto car = jsonData.readValue(content, CarDto.class);
 
         assertThat(car, Matchers.notNullValue());
-        assertTrue(car.getId()>0);
+        assertEquals(car.getId(), list.get(0).getId());
     }
 
     @Test
@@ -100,7 +105,7 @@ class ListControllerRestTest {
                 .andExpect(status().isOk()).andReturn();
 
         String content = mvcResult.getResponse().getContentAsString();
-        List<Car> car = (List<Car>) jsonData.readValue(content, List.class);
+        List<CarDto> car = (List<CarDto>) jsonData.readValue(content, List.class);
 
         Mockito.verify(carService, Mockito.atMostOnce()).findByCompany(Mockito.any());
         assertThat(car, Matchers.notNullValue());
@@ -118,7 +123,7 @@ class ListControllerRestTest {
                         +"/prices")).andExpect(status().isOk()).andReturn();
 
         String content = mvcResult.getResponse().getContentAsString();
-        List<Prices> prices = (List<Prices>) jsonData.readValue(content, List.class);
+        List<PricesDto> prices = (List<PricesDto>) jsonData.readValue(content, List.class);
 
         Mockito.verify(carService, Mockito.atMostOnce()).findById(Mockito.any());
         Mockito.verify(pricesService, Mockito.atMostOnce()).findByCarId(Mockito.any());
@@ -144,14 +149,14 @@ class ListControllerRestTest {
                 .andExpect(status().isOk()).andReturn();
 
         String content = mvcResult.getResponse().getContentAsString();
-        List<Prices> prices = (List<Prices>) jsonData.readValue(content, List.class);
+        List<CarDto> carDtos = (List<CarDto>) jsonData.readValue(content, List.class);
 
         Mockito.verify(availabilityService, Mockito.atMostOnce()).listOfAvailableCars(
                 Mockito.any(), Mockito.any(), Mockito.any());
         Mockito.verify(carService, Mockito.atMostOnce()).findByIsEnabled();
 
-        assertThat(prices, Matchers.notNullValue());
-        assertThat(prices, Matchers.hasSize(3));
+        assertThat(carDtos, Matchers.notNullValue());
+        assertThat(carDtos, Matchers.hasSize(3));
     }
 
     @Test
