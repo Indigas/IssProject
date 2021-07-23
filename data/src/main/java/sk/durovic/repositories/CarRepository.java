@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface CarRepository extends CrudRepository<Car, Long> {
 
-    Optional<List<Car>> findByIsEnabledTrue();
+    Optional<List<Car>> findByEnabledTrue();
 
     Optional<List<Car>> findByCompanyId(Long companyId);
 }

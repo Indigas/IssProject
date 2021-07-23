@@ -42,7 +42,7 @@ public class Car extends BaseEntity implements Comparable<Car>{
     private String pack="";
     private Category category;
     private String notes="";
-    private boolean isEnabled = false;
+    private boolean enabled = false;
 
     @Override
     public int hashCode() {
@@ -77,6 +77,10 @@ public class Car extends BaseEntity implements Comparable<Car>{
         return 1;
     }
 
+    }
+
+    public boolean isEnabled(){
+        return this.enabled;
     }
 
     @Override

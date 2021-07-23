@@ -90,11 +90,11 @@ class CarServiceImplTest {
 
     @Test
     void findByIsEnabled() {
-        Mockito.when(carRepository.findByIsEnabledTrue()).thenReturn(Optional.of(List.of(car, new Car())));
+        Mockito.when(carRepository.findByEnabledTrue()).thenReturn(Optional.of(List.of(car, new Car())));
 
         List<Car> list = carService.findByIsEnabled().orElse(null);
 
-        Mockito.verify(carRepository, Mockito.atMostOnce()).findByIsEnabledTrue();
+        Mockito.verify(carRepository, Mockito.atMostOnce()).findByEnabledTrue();
         assertThat(list, Matchers.notNullValue());
         assertThat(list, Matchers.hasSize(2));
         assertThat(list, Matchers.hasItem(car));

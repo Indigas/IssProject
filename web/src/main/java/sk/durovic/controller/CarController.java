@@ -1,7 +1,6 @@
 package sk.durovic.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -13,17 +12,14 @@ import sk.durovic.comparators.PricesComparatorByPrice;
 import sk.durovic.converters.CarCommandToCar;
 import sk.durovic.converters.CarToCarCommand;
 import sk.durovic.data.ImagesHandler;
-import sk.durovic.helper.CarOwnerHelper;
 import sk.durovic.httpError.NotAuthorized;
 import sk.durovic.model.*;
 import sk.durovic.services.CarService;
 import sk.durovic.services.FileStorageService;
 import sk.durovic.services.PricesService;
-import sk.durovic.services.data.FileStorageServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 

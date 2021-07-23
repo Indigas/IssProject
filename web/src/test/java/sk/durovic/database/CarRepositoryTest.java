@@ -16,8 +16,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import sk.durovic.model.Car;
 import sk.durovic.model.Company;
 import sk.durovic.repositories.CarRepository;
-import sk.durovic.services.CarService;
-import sk.durovic.services.data.CarServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;

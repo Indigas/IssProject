@@ -16,7 +16,6 @@ import sk.durovic.model.Car;
 import sk.durovic.model.Company;
 import sk.durovic.services.AvailabilityService;
 import sk.durovic.services.CarService;
-import sk.durovic.services.CompanyService;
 
 import java.io.IOException;
 import java.util.*;

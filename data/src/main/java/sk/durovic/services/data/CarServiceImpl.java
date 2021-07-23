@@ -46,7 +46,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public Optional<List<Car>> findByIsEnabled() {
-        return carRepository.findByIsEnabledTrue();
+        return carRepository.findByEnabledTrue();
     }
 
     @Override
