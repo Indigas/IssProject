@@ -16,11 +16,13 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.spring5.expression.Fields;
 import sk.durovic.api.dto.CarDto;
+import sk.durovic.data.ImagesHandler;
 import sk.durovic.helper.DateTimeHelper;
 import sk.durovic.httpError.NotAuthorized;
 import sk.durovic.httpError.NotFound;
@@ -28,14 +30,16 @@ import sk.durovic.mappers.CarMapper;
 import sk.durovic.model.*;
 import sk.durovic.services.AvailabilityService;
 import sk.durovic.services.CarService;
+import sk.durovic.services.FileStorageService;
 import sk.durovic.services.PricesService;
+import sk.durovic.services.data.FileStorageServiceImpl;
 
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.lang.reflect.Field;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static sk.durovic.helper.CarOwnerHelper.isOwnerOfCar;
 import static sk.durovic.helper.DateTimeHelper.getLocalDateTime;
@@ -66,10 +70,7 @@ public class CarControllerRest {
         else if(!isOwnerOfCar(userDetails, car))
             throw new NotAuthorized();
 
-        //// refactor code
-        JsonNode jsonNode = getJsonNodeFromCar(car);
-
-        return ResponseEntity.ok(jsonNode);
+        return ResponseEntity.ok(getJsonNodeFromCar(car));
     }
 
     @PostMapping(value = "/new", consumes = "application/json")
@@ -95,7 +96,7 @@ public class CarControllerRest {
     @ResponseStatus(HttpStatus.OK)
     public void deleteCar(@PathVariable("id") Long id,
                           @RequestBody String jsonBody,
-                          @AuthenticationPrincipal UserDetails userDetails) throws JsonProcessingException {
+                          @AuthenticationPrincipal UserDetails userDetails) throws IOException {
         Car car = carService.findById(id);
         Set<Long> listPrices = pricesService.findAll().stream().map(Prices::getId)
                 .collect(Collectors.toSet());
@@ -118,6 +119,23 @@ public class CarControllerRest {
         if(!jn.path("rentDates").isMissingNode()){
             long[] rentDates = jsonData.treeToValue(jn.path("rentDates"), long[].class);
             Arrays.stream(rentDates).filter(listRentDates::contains).forEach(availabilityService::deleteById);
+            isEmptyBody=false;
+        }
+
+        if(!jn.path("images").isMissingNode()){
+            String[] images= jsonData.treeToValue(jn.path("images"), String[].class);
+            FileStorageService fss = new FileStorageServiceImpl(car.getCompany());
+            Set<String> paths = fss.loadAll(car).map(Path::getFileName).map(Path::toString).collect(Collectors.toSet());
+            Arrays.stream(images)
+                    .filter(paths::contains)
+                    .forEach(path -> {
+                        try {
+                            fss.delete(transformPath(fss, car.getId(), path));
+                        } catch (IOException e){
+                            log.error("Error in deleting images of car");
+                        }
+                    });
+
             isEmptyBody=false;
         }
 
@@ -162,16 +180,36 @@ public class CarControllerRest {
         return ResponseEntity.status(200).body(getJsonNodeFromCar(updateCar));
     }
 
+    @PostMapping(value = "/{id}", consumes = "multipart/form-data")
+    @ResponseStatus(HttpStatus.OK)
+    public void uploadImages(@AuthenticationPrincipal UserDetails userDetails,
+                             @PathVariable("id") Long id,
+                             @RequestParam("images") MultipartFile... files) throws JsonProcessingException {
+        Car car = carService.findById(id);
+
+        if(!isOwnerOfCar(userDetails, car))
+            throw new NotAuthorized();
+
+        ImagesHandler.saveImages(userDetails, car, files, carService);
+    }
+
+    private String transformPath(FileStorageService fss, Long id, String path) {
+        return fss.getImagesPath() + File.separator + id.toString() + File.separator + path;
+    }
+
     private Object getValue(Field field, Map.Entry<String, JsonNode> map, Car car) throws JsonProcessingException {
         Class<?> clazz = field.getType();
 
-        if(map.getKey().equals("prices")){
-            return getPrices(map, car);
+        switch (map.getKey()){
+            case "prices":
+                return getPrices(map, car);
+            case "rentDates":
+                return getRentDates(map, car);
+            case "mainImage":
+                return new String(File.separator + "companies" + File.separator + car.getCompany().getId()
+                        + File.separator + car.getId() + File.separator+map.getValue().asText());
+
         }
-
-        if(map.getKey().equals("rentDates"))
-            return getRentDates(map, car);
-
         return jsonData.treeToValue(map.getValue(), clazz);
 
     }
@@ -247,7 +285,7 @@ public class CarControllerRest {
     }
 
     private JsonNode getJsonNodeFromCar(Car car) {
-        car.setCompany(null);
+        car.getCompany().setListOfCars(new HashSet<>());
         Set<Prices> pricesSet = new TreeSet<>(car.getPrices());
         car.setPrices(new HashSet<>());
         Set<Availability> availabilitySet = new HashSet<>(car.getRentDates());
@@ -270,6 +308,15 @@ public class CarControllerRest {
             availableNode.put("start", available.getStart().toString());
             availableNode.put("end", available.getEnd().toString());
         }
+
+        ArrayNode arrayNode = ((ObjectNode) jsonNode).putArray("images");
+        FileStorageService fss = new FileStorageServiceImpl(car.getCompany());
+        try {
+            fss.loadAll(car).map(Path::toString).forEach(arrayNode::add);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return jsonNode;
     }
 

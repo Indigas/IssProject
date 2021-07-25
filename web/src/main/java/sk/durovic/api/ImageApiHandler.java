@@ -45,7 +45,7 @@ public class ImageApiHandler {
         Company company = userDetail.getCompany();
         FileStorageService fileStorageService = new FileStorageServiceImpl(company);
         String imgPath = Paths.get(fileStorageService.getImagesPath() +
-                File.separator + carRestApi.getCarId() + File.separator + carRestApi.getImgName()).toString();
+                File.separator + carRestApi.getImgName()).toString();
 
         try {
             fileStorageService.delete(imgPath);
