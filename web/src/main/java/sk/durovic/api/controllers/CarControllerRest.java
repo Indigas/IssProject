@@ -61,29 +61,7 @@ public class CarControllerRest {
             throw new NotAuthorized();
 
         //// refactor code
-        car.setCompany(null);
-        Set<Prices> pricesSet = new TreeSet<>(car.getPrices());
-        car.setPrices(new HashSet<>());
-        Set<Availability> availabilitySet = new HashSet<>(car.getRentDates());
-        car.setRentDates(new HashSet<>());
-        JsonNode jsonNode = jsonData.valueToTree(car);
-        ((ObjectNode)jsonNode).remove("company");
-        ArrayNode prices = (ArrayNode) jsonNode.path("prices");
-        ArrayNode availability = (ArrayNode) jsonNode.path("rentDates");
-
-        for(Prices price : pricesSet) {
-            ObjectNode priceNode = prices.addObject();
-            priceNode.put("id", price.getId());
-            priceNode.put("days", price.getDays());
-            priceNode.put("price", price.getPrice());
-        }
-
-        for(Availability available : availabilitySet){
-            ObjectNode availableNode = availability.addObject();
-            availableNode.put("id", available.getId());
-            availableNode.put("start", available.getStart().toString());
-            availableNode.put("end", available.getEnd().toString());
-        }
+        JsonNode jsonNode = getJsonNodeFromCar(car);
 
         return ResponseEntity.ok(jsonNode);
     }
@@ -106,30 +84,7 @@ public class CarControllerRest {
 
         Car saved = carService.save(car);
 
-        /// same as code above
-        car.setCompany(null);
-        Set<Prices> pricesSet = new TreeSet<>(car.getPrices());
-        car.setPrices(new HashSet<>());
-        Set<Availability> availabilitySet = new HashSet<>(car.getRentDates());
-        car.setRentDates(new HashSet<>());
-        JsonNode jsonNode = jsonData.valueToTree(car);
-        ((ObjectNode)jsonNode).remove("company");
-        ArrayNode prices = (ArrayNode) jsonNode.path("prices");
-        ArrayNode availability = (ArrayNode) jsonNode.path("rentDates");
-
-        for(Prices price : pricesSet) {
-            ObjectNode priceNode = prices.addObject();
-            priceNode.put("id", price.getId());
-            priceNode.put("days", price.getDays());
-            priceNode.put("price", price.getPrice());
-        }
-
-        for(Availability available : availabilitySet){
-            ObjectNode availableNode = availability.addObject();
-            availableNode.put("id", available.getId());
-            availableNode.put("start", available.getStart().toString());
-            availableNode.put("end", available.getEnd().toString());
-        }
+        JsonNode jsonNode = getJsonNodeFromCar(car);
 
 
         return ResponseEntity.ok(jsonNode);
@@ -148,41 +103,113 @@ public class CarControllerRest {
         JsonNode updateFields = jsonData.readTree(car);
 
         /// prerobit na samostatne funkcie
+        boolean changed = false;
         Iterator<Map.Entry<String, JsonNode>> it = updateFields.fields();
+
         while(it.hasNext()){
             Map.Entry<String, JsonNode> map = it.next();
 
-            if(map.getKey().equals("id"))
+            if(map.getKey().equals("id") || map.getKey().equals("company"))
                 continue;
 
             Field field = Car.class.getDeclaredField(map.getKey());
             field.setAccessible(true);
-            Object valueOfField = getValue(field, map);
-            field.set(updateCar, valueOfField);
+            Object valueOfField = getValue(field, map, updateCar);
+
+            if(valueOfField!=null) {
+                field.set(updateCar, valueOfField);
+                changed=true;
+            }
+        }
+
+        if (changed)
+            updateCar = carService.save(updateCar);
+
+        JsonNode jsonNode = getJsonNodeFromCar(updateCar);
+
+        return ResponseEntity.status(200).body(jsonNode);
+    }
+
+    private Object getValue(Field field, Map.Entry<String, JsonNode> map, Car car) throws JsonProcessingException {
+        Class<?> clazz = field.getType();
+
+        if(map.getKey().equals("prices")){
+            Set<Prices> pricesSet = car.getPrices();
+            ArrayNode arrayNode = (ArrayNode) map.getValue();
+            Iterator<JsonNode> it = arrayNode.iterator();
+
+            while(it.hasNext()){
+                JsonNode jn = it.next();
+                Prices prices = new Prices();
+
+                if(jn.path("prices").path("days").isMissingNode() ||
+                    jn.path("prices").path("price").isMissingNode())
+                    continue;
+
+                if(!jn.path("prices").path("id").isMissingNode())
+                    prices = pricesSet.stream().filter(price -> price.getId().equals(jn.get("id").asLong()))
+                        .findFirst().orElse(Prices.builder(car).build());
+                else
+                    prices = pricesSet.stream().filter(price -> price.getDays().equals(jn.get("days").asInt()))
+                        .findFirst().orElse(Prices.builder(car).build());
+
+
+                Iterator<Map.Entry<String, JsonNode>> itPrice = jn.fields();
+
+                while(itPrice.hasNext()){
+                    Map.Entry<String, JsonNode> mapPrice = itPrice.next();
+
+                    switch (mapPrice.getKey()) {
+                        case "days":
+                            prices.setDays(mapPrice.getValue().asInt());
+                            break;
+                        case "price":
+                            prices.setPrice(mapPrice.getValue().asInt());
+                            break;
+                    }
+
+                }
+
+                if(prices.getDays()!=null && prices.getPrice()!=null)
+                    pricesSet.add(prices);
+            }
+
+            return pricesSet;
         }
 
 
 
-        return ResponseEntity.status(200).body(CarMapper.INSTANCE.toDto(updateCar));
+        return jsonData.treeToValue(map.getValue(), clazz);
+
     }
 
-    private Object getValue(Field field, Map.Entry<String, JsonNode> map) throws JsonProcessingException {
-        Class<?> clazz = field.getType();
+    private JsonNode getJsonNodeFromCar(Car car) {
+        car.setCompany(null);
+        Set<Prices> pricesSet = new TreeSet<>(car.getPrices());
+        car.setPrices(new HashSet<>());
+        Set<Availability> availabilitySet = new HashSet<>(car.getRentDates());
+        car.setRentDates(new HashSet<>());
+        JsonNode jsonNode = jsonData.valueToTree(car);
+        ((ObjectNode) jsonNode).remove("company");
+        ArrayNode prices = (ArrayNode) jsonNode.path("prices");
+        ArrayNode availability = (ArrayNode) jsonNode.path("rentDates");
 
-        if(clazz.equals(int.class))
-            return map.getValue().asInt();
-        else if(clazz.equals(String.class))
-            return map.getValue().asText();
-        else if(clazz.equals(boolean.class))
-            return map.getValue().asBoolean();
-        else if(clazz.equals(double.class))
-            return map.getValue().asDouble();
-        else if(clazz.equals(Fuel.class) || clazz.equals(Category.class)
-                || clazz.equals(Gear.class))
-            return jsonData.treeToValue(map.getValue(), clazz);
-        else
-            return null;
+        for (Prices price : pricesSet) {
+            ObjectNode priceNode = prices.addObject();
+            priceNode.put("id", price.getId());
+            priceNode.put("days", price.getDays());
+            priceNode.put("price", price.getPrice());
+        }
+
+        for (Availability available : availabilitySet) {
+            ObjectNode availableNode = availability.addObject();
+            availableNode.put("id", available.getId());
+            availableNode.put("start", available.getStart().toString());
+            availableNode.put("end", available.getEnd().toString());
+        }
+        return jsonNode;
     }
+
 
     @ExceptionHandler(EmptyResultDataAccessException.class)
     public ResponseEntity<?> deleteByIdError(Exception e){

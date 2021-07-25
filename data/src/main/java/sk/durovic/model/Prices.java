@@ -60,4 +60,9 @@ public class Prices extends BaseEntity implements Comparable<Prices> {
     public static Builder builder(Car car){
         return new Builder(car);
     }
+
+    public boolean equals(Prices obj) {
+        return this.getId().equals(obj.getId()) ||
+                this.getDays().equals(obj.getDays());
+    }
 }
