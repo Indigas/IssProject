@@ -27,13 +27,8 @@ public class Availability extends BaseEntity{
         return super.hashCode();
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if(!(obj instanceof Availability))
-            throw new IllegalArgumentException();
-
-        Availability av = (Availability) obj;
-        return getId() == av.getId();
+    public boolean equals(Availability obj) {
+        return this.getId().equals(obj.getId());
     }
 
     @Override

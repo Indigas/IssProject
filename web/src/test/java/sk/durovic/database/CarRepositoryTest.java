@@ -117,7 +117,7 @@ public class CarRepositoryTest {
         car.setEnabled(true);
         long id = testEntityManager.persistAndGetId(car, Long.class);
 
-        List<Car> found = carRepository.findByIsEnabledTrue().orElse(new ArrayList<>());
+        List<Car> found = carRepository.findByEnabledTrue().orElse(new ArrayList<>());
 
         assertThat(found, Matchers.hasSize(1));
         assertThat(found, Matchers.contains(car));
@@ -128,7 +128,7 @@ public class CarRepositoryTest {
         car.setEnabled(false);
         long id = testEntityManager.persistAndGetId(car, Long.class);
 
-        List<Car> found = carRepository.findByIsEnabledTrue().orElse(new ArrayList<>());
+        List<Car> found = carRepository.findByEnabledTrue().orElse(new ArrayList<>());
 
         assertThat(found, Matchers.empty());
     }

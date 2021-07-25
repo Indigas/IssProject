@@ -25,10 +25,10 @@ public class Car extends BaseEntity implements Comparable<Car>{
     @ManyToOne
     private Company company;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "carRented")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "carRented", fetch = FetchType.LAZY)
     private Set<Availability> rentDates = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "car")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "car", fetch = FetchType.LAZY)
     private Set<Prices> prices = new TreeSet<>();
 
     private int powerKw;
