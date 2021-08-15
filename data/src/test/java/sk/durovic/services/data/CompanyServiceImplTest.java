@@ -32,6 +32,7 @@ class CompanyServiceImplTest {
         companyService = new CompanyServiceImpl(companyRepository);
         company = new Company();
         company.setId(1L);
+        company.setName("testing");
     }
 
     @Test

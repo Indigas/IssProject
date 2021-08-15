@@ -13,6 +13,10 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.EntityLinks;
+import org.springframework.hateoas.server.ExposesResourceFor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -43,10 +47,12 @@ import java.util.stream.Stream;
 
 import static sk.durovic.helper.CarOwnerHelper.isOwnerOfCar;
 import static sk.durovic.helper.DateTimeHelper.getLocalDateTime;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @Slf4j
 @RequestMapping("/api/data/car")
+@ExposesResourceFor(Car.class)
 public class CarControllerRest {
 
     @Autowired
@@ -58,9 +64,24 @@ public class CarControllerRest {
     @Autowired
     AvailabilityService availabilityService;
 
+    @Autowired
+    private EntityLinks entityLinks;
+
     private final ObjectMapper jsonData = new ObjectMapper();
 
-    @GetMapping("/{id}")
+    @GetMapping(produces = "application/hal+json")
+    public ResponseEntity<?> getAllCars(@AuthenticationPrincipal UserDetails userDetails){
+        Optional<List<Car>> carList = carService.findByCompany(((UserDetailImpl)userDetails).getCompany());
+
+        List<CarDto> carDtos = carList.orElseGet(ArrayList::new).stream()
+                .map(CarMapper.INSTANCE::toDto).collect(Collectors.toList());
+
+        CollectionModel<CarDto> collectionModel = CollectionModel.of(carDtos);
+
+        return ResponseEntity.ok(collectionModel);
+    }
+
+    @GetMapping(value = "/{id}")
     public ResponseEntity<?> getDetailOfCar(@PathVariable("id") Long id,
                                             @AuthenticationPrincipal UserDetails userDetails) throws JsonProcessingException {
         Car car = carService.findById(id);
