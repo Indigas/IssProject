@@ -1,0 +1,7 @@
+version: "3.8"
+
+services:
+  issproject:
+    image: indigas/issproject
+    ports:
+      - "8080:8080"
