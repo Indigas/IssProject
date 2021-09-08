@@ -45,6 +45,7 @@ public class ImageApiHandler {
         Company company = userDetail.getCompany();
         FileStorageService fileStorageService = new FileStorageServiceImpl(company);
         String imgPath = Paths.get(fileStorageService.getImagesPath() +
+                File.separator + carRestApi.getCarId().toString() +
                 File.separator + carRestApi.getImgName()).toString();
 
         try {
@@ -58,6 +59,7 @@ public class ImageApiHandler {
     @ExceptionHandler(NullPointerException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<String> getError(Exception exception){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .build();
     }
 }
