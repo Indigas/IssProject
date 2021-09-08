@@ -13,7 +13,6 @@
     <packaging>war</packaging>
 
     <properties>
-        <changed.class>changed.class</changed.class>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
     </properties>
 
@@ -63,7 +62,6 @@
 
 
     <build>
-        <pluginManagement>
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -84,19 +82,7 @@
                         </annotationProcessorPaths>
                     </configuration>
                 </plugin>
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <executions>
-                        <execution>
-                            <configuration>
-                                <mainClass>sk.durovic.IssProjectApplication</mainClass>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
             </plugins>
-        </pluginManagement>
     </build>
 
 
