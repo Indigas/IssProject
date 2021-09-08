@@ -23,7 +23,7 @@ import static org.hamcrest.MatcherAssert.*;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-class CompanyControllerIT {
+class CompanyControllerITTest {
 
     @Autowired
     private CompanyService companyService;

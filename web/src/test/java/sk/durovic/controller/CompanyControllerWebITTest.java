@@ -22,7 +22,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import java.util.Set;
 
 @WebMvcTest(CompanyController.class)
-class CompanyControllerWebIT {
+class CompanyControllerWebITTest {
 
     @Autowired
     private MockMvc mockMvc;
