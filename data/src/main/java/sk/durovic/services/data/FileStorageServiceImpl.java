@@ -32,6 +32,8 @@ public class FileStorageServiceImpl implements FileStorageService {
             Files.createDirectories(Paths.get(folder));
 
 
+        fileName = fileName.replaceAll("[^a-zA-Z0-9_\\.]", "");
+
         Path path = Paths.get(folder + fileName);
         Files.write(path, imageBytes);
 

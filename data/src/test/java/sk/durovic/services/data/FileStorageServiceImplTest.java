@@ -66,10 +66,14 @@ class FileStorageServiceImplTest {
 
     @Test
     void save() throws Exception {
-        String filename = "test.txt";
+        String filename = "test(-?)_9.txt";
 
         Path path = fileStorageService.save(car, filename, "test".getBytes());
 
+        String correctPath = fileStorageService.getImagesPath().toString() +
+                File.separator + car.getId() + File.separator + "test_9.txt";
+
+        assertEquals(correctPath, path.toString());
         assertTrue(Files.exists(path));
         Files.deleteIfExists(path);
     }
