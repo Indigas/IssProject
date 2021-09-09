@@ -42,7 +42,7 @@ public class JwtTokenTestService {
 
         @Override
         public JwtToken createToken(String token, Long userId) {
-            return new JwtToken("token",0L);
+            return new JwtToken("token",1L);
         }
     }
 
